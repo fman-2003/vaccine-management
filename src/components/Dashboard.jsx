@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { Box, Button, Typography, TextField, InputLabel } from "@mui/material";
 import Grid from "@mui/material/Grid2";
+import CircularProgress from "@mui/material/CircularProgress";
 
 import "@fontsource/roboto";
 import haceyLogo from "../assets/hacey-svg.svg";
@@ -21,55 +22,89 @@ export default function Dashboard() {
   const [openVaccine, setOpenVaccine] = React.useState(false);
   const [openParent, setOpenParent] = React.useState(false);
   const [openChild, setOpenChild] = React.useState(false);
-  const [parentInfo, setParentInfo] = React.useState({});
-  const [childInfo, setChildInfo] = React.useState({});
-  const [parentId, setParentId] = React.useState(null);
+  // const [parentInfo, setParentInfo] = React.useState({});
+  // const [childInfo, setChildInfo] = React.useState({});
+  const [parentId, setParentId] = React.useState("");
+
+  React.useEffect(() => {
+    console.log(localStorage.getItem("token"));
+  }, []);
 
   const parentMutation = useMutation({
     mutationFn: onboardParent,
     onSuccess: (data) => {
-      const parentId = data.data.id;
-      setParentId(parentId);
+      setOpenParent(false);
+      setOpenChild(true);
+      const parentId = data;
+      localStorage.setItem("parentId", parentId);
+      // setParentId(parentId);
     },
   });
 
   const childMutation = useMutation({
     mutationFn: onboardChild,
+    onSuccess: (data) => {
+      setOpenChild(false);
+      console.log(data);
+    },
   });
 
+  const handleCloseParent = () => {
+    setOpenParent(false);
+  };
+
   const handleOpenParent = () => setOpenParent(true);
-  const handleCloseParent = (e) => {
+  const handleSubmitParent = (e) => {
     e.preventDefault();
     const parentData = new FormData(e.target);
-    setParentInfo({
+    // setParentInfo();
+    parentMutation.mutate({
       title: parentData.get("parent-role").trim(),
       firstName: parentData.get("first-name").trim(),
       lastName: parentData.get("last-name").trim(),
       email: parentData.get("email").trim(),
       phoneNumber: parentData.get("phone-no").toString().trim(),
       dateOfBirth: parentData.get("dob").toString().trim(),
-      hospitalNumber: parentData.get("hospital-no").toString().trim(),
-      nhis: parentData.get("nhis").toString().trim(),
+      // hospitalNumber: parentData.get("hospital-no").toString().trim(),
+      // nhis: parentData.get("nhis").toString().trim(),
     });
-    parentMutation.mutate(parentInfo);
-    console.log(parentInfo)
-    setOpenParent(false);
-    setOpenChild(true);
+    console.log({
+      title: parentData.get("parent-role").trim(),
+      firstName: parentData.get("first-name").trim(),
+      lastName: parentData.get("last-name").trim(),
+      email: parentData.get("email").trim(),
+      phoneNumber: parentData.get("phone-no").toString().trim(),
+      dateOfBirth: parentData.get("dob").toString().trim(),
+      // hospitalNumber: parentData.get("hospital-no").toString().trim(),
+      // nhis: parentData.get("nhis").toString().trim(),
+    });
   };
 
   const handleSubmitChild = (e) => {
     e.preventDefault();
     const childData = new FormData(e.target);
-    setChildInfo({
-      firstName: childData.get("child-first-name").trim(),
-      lastName: childData.get("child-last-name").trim(),
-      gender: childData.get("child-sex").trim(),
-      dateOfBirth: childData.get("dob-child").toString().trim(),
-      weightAtBirth: childData.get("weight").toString().trim(),
+    // setChildInfo();
+    childMutation.mutate({
+      data: {
+        firstName: childData.get("child-first-name").trim(),
+        lastName: childData.get("child-last-name").trim(),
+        gender: childData.get("child-sex").trim(),
+        dateOfBirth: childData.get("dob-child").toString().trim(),
+        // weightAtBirth: childData.get("weight").toString().trim(),
+      },
+      parentId: localStorage.getItem("parentId"),
     });
-    childMutation.mutate({ data: childInfo, parentId });
-    // console.log(childInfo);
-    setOpenChild(false);
+
+    console.log(
+      {
+        firstName: childData.get("child-first-name").trim(),
+        lastName: childData.get("child-last-name").trim(),
+        gender: childData.get("child-sex").trim(),
+        dateOfBirth: childData.get("dob-child").toString().trim(),
+        // weightAtBirth: childData.get("weight").toString().trim(),
+      },
+      localStorage.getItem("parentId")
+    );
   };
   const handleOpenVaccine = () => setOpenVaccine(true);
   const handleCloseVaccine = () => setOpenVaccine(false);
@@ -77,287 +112,285 @@ export default function Dashboard() {
   return (
     <Grid container spacing={4} sx={{ width: "95%" }}>
       <Grid size={8}>
-        {
-          <ModalWindow onClose={handleCloseVaccine} open={openVaccine}>
-            <Grid
+        <ModalWindow onClose={handleCloseVaccine} open={openVaccine}>
+          <Grid
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "flex-start",
+              width: "fit-content",
+            }}
+          >
+            <Button
+              onClick={handleCloseVaccine}
+              variant="text"
               sx={{
+                textTransform: "none",
                 display: "flex",
-                flexDirection: "column",
-                alignItems: "flex-start",
-                width: "fit-content",
+                flexDirection: "row",
+                gap: "5px",
+                marginBottom: "20px",
               }}
+              disableRipple
             >
-              <Button
-                onClick={handleCloseVaccine}
-                variant="text"
-                sx={{
-                  textTransform: "none",
-                  display: "flex",
-                  flexDirection: "row",
-                  gap: "5px",
-                  marginBottom: "20px",
-                }}
-                disableRipple
-              >
-                <ArrowBackSharpIcon sx={{ color: "#1F8E1F" }} />{" "}
-                <Typography
-                  sx={{ color: "#000000", fontSize: "16px", fontWeight: 400 }}
-                >
-                  Back
-                </Typography>
-              </Button>
+              <ArrowBackSharpIcon sx={{ color: "#1F8E1F" }} />{" "}
               <Typography
-                sx={{
-                  width: "100%",
-                  color: "#000000",
-                  fontWeight: 600,
-                  fontSize: "24px",
-                  lineHeight: "36px",
-                  marginBottom: "20px",
-                }}
+                sx={{ color: "#000000", fontSize: "16px", fontWeight: 400 }}
               >
-                New Vaccine
+                Back
               </Typography>
-              <Grid sx={{ width: "100%" }}>
-                <Box sx={{ marginBottom: "25px" }}>
-                  <InputLabel
-                    sx={{
-                      color: "#222222",
-                      fontWeight: 500,
-                      fontSize: "16px",
-                      lineHeight: "24px",
-                      marginBottom: "10px",
-                    }}
-                  >
-                    Type of Vaccine
-                  </InputLabel>
-                  <TextField
-                    placeholder="johndoe@gmail.com"
-                    sx={{ width: "600px" }}
-                    name="vaccine-type"
-                  />
-                </Box>
-                <Box sx={{ marginBottom: "25px" }}>
-                  <InputLabel
-                    sx={{
-                      color: "#222222",
-                      fontWeight: 500,
-                      fontSize: "16px",
-                      lineHeight: "24px",
-                      marginBottom: "10px",
-                    }}
-                  >
-                    Minimum Target Age of Child
-                  </InputLabel>
-                  <TextField
-                    placeholder="johndoe@gmail.com"
-                    sx={{ width: "600px" }}
-                    name="child-target-age"
-                  />
-                </Box>
-                <Box sx={{ marginBottom: "25px" }}>
-                  <InputLabel
-                    sx={{
-                      color: "#222222",
-                      fontWeight: 500,
-                      fontSize: "16px",
-                      lineHeight: "24px",
-                      marginBottom: "10px",
-                    }}
-                  >
-                    Dosage
-                  </InputLabel>
-                  <TextField
-                    placeholder="johndoe@gmail.com"
-                    sx={{ width: "600px" }}
-                    name="dosage"
-                  />
-                </Box>
-                <Box sx={{ marginBottom: "25px" }}>
-                  <InputLabel
-                    sx={{
-                      color: "#222222",
-                      fontWeight: 500,
-                      fontSize: "16px",
-                      lineHeight: "24px",
-                      marginBottom: "10px",
-                    }}
-                  >
-                    Route of Administration
-                  </InputLabel>
-                  <TextField
-                    placeholder="johndoe@gmail.com"
-                    sx={{ width: "600px" }}
-                    name="administration-route"
-                  />
-                </Box>
-                <Box sx={{ marginBottom: "25px" }}>
-                  <InputLabel
-                    sx={{
-                      color: "#222222",
-                      fontWeight: 500,
-                      fontSize: "16px",
-                      lineHeight: "24px",
-                      marginBottom: "10px",
-                    }}
-                  >
-                    Site of Administration
-                  </InputLabel>
-                  <TextField
-                    placeholder="johndoe@gmail.com"
-                    sx={{ width: "600px" }}
-                    name="administration-site"
-                  />
-                </Box>
-                <Button
-                  sx={{
-                    width: "100%",
-                    backgroundColor: "#1F8E1F",
-                    paddingY: "12px",
-                    paddingX: "36px",
-                    borderRadius: "80px",
-                    color: "#FFFFFF",
-                    textTransform: "none",
-                  }}
-                >
-                  Create New Vaccine
-                </Button>
-                <Box
-                  sx={{
-                    margin: "auto",
-                    display: "flex",
-                    flexDirection: "row",
-                    width: "100%",
-                    textAlign: "center",
-                    alignItems: "center",
-                    marginTop: "10px",
-                    justifyContent: "center",
-                    gap: 1,
-                  }}
-                >
-                  <Typography>Powered by</Typography>
-                  <img src={haceyLogo} alt="" />
-                </Box>
-              </Grid>
-            </Grid>
-          </ModalWindow>
-        }
-        {
-          <ModalWindow onClose={handleCloseParent} open={openParent}>
-            <Grid
+            </Button>
+            <Typography
               sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "flex-start",
                 width: "100%",
+                color: "#000000",
+                fontWeight: 600,
+                fontSize: "24px",
+                lineHeight: "36px",
+                marginBottom: "20px",
               }}
             >
-              <Button
-                onClick={handleCloseParent}
-                variant="text"
-                sx={{
-                  textTransform: "none",
-                  display: "flex",
-                  flexDirection: "row",
-                  gap: "5px",
-                  marginBottom: "5px",
-                }}
-                disableRipple
-              >
-                <ArrowBackSharpIcon sx={{ color: "#1F8E1F" }} />{" "}
-                <Typography
-                  sx={{ color: "#000000", fontSize: "16px", fontWeight: 400 }}
+              New Vaccine
+            </Typography>
+            <Grid sx={{ width: "100%" }}>
+              <Box sx={{ marginBottom: "25px" }}>
+                <InputLabel
+                  sx={{
+                    color: "#222222",
+                    fontWeight: 500,
+                    fontSize: "16px",
+                    lineHeight: "24px",
+                    marginBottom: "10px",
+                  }}
                 >
-                  Back
-                </Typography>
-              </Button>
-              <Typography
+                  Type of Vaccine
+                </InputLabel>
+                <TextField
+                  placeholder="johndoe@gmail.com"
+                  sx={{ width: "600px" }}
+                  name="vaccine-type"
+                />
+              </Box>
+              <Box sx={{ marginBottom: "25px" }}>
+                <InputLabel
+                  sx={{
+                    color: "#222222",
+                    fontWeight: 500,
+                    fontSize: "16px",
+                    lineHeight: "24px",
+                    marginBottom: "10px",
+                  }}
+                >
+                  Minimum Target Age of Child
+                </InputLabel>
+                <TextField
+                  placeholder="johndoe@gmail.com"
+                  sx={{ width: "600px" }}
+                  name="child-target-age"
+                />
+              </Box>
+              <Box sx={{ marginBottom: "25px" }}>
+                <InputLabel
+                  sx={{
+                    color: "#222222",
+                    fontWeight: 500,
+                    fontSize: "16px",
+                    lineHeight: "24px",
+                    marginBottom: "10px",
+                  }}
+                >
+                  Dosage
+                </InputLabel>
+                <TextField
+                  placeholder="johndoe@gmail.com"
+                  sx={{ width: "600px" }}
+                  name="dosage"
+                />
+              </Box>
+              <Box sx={{ marginBottom: "25px" }}>
+                <InputLabel
+                  sx={{
+                    color: "#222222",
+                    fontWeight: 500,
+                    fontSize: "16px",
+                    lineHeight: "24px",
+                    marginBottom: "10px",
+                  }}
+                >
+                  Route of Administration
+                </InputLabel>
+                <TextField
+                  placeholder="johndoe@gmail.com"
+                  sx={{ width: "600px" }}
+                  name="administration-route"
+                />
+              </Box>
+              <Box sx={{ marginBottom: "25px" }}>
+                <InputLabel
+                  sx={{
+                    color: "#222222",
+                    fontWeight: 500,
+                    fontSize: "16px",
+                    lineHeight: "24px",
+                    marginBottom: "10px",
+                  }}
+                >
+                  Site of Administration
+                </InputLabel>
+                <TextField
+                  placeholder="johndoe@gmail.com"
+                  sx={{ width: "600px" }}
+                  name="administration-site"
+                />
+              </Box>
+              <Button
                 sx={{
                   width: "100%",
-                  color: "#000000",
-                  fontWeight: 600,
-                  fontSize: "24px",
-                  lineHeight: "36px",
-                  marginBottom: "5px",
+                  backgroundColor: "#1F8E1F",
+                  paddingY: "12px",
+                  paddingX: "36px",
+                  borderRadius: "80px",
+                  color: "#FFFFFF",
+                  textTransform: "none",
                 }}
               >
-                Onboard Parent
-              </Typography>
-              <Grid sx={{ width: "100%" }}>
-                <form onSubmit={handleCloseParent}>
-                  <Box sx={{ marginBottom: "5px" }}>
-                    <InputLabel
-                      sx={{
-                        color: "#222222",
-                        fontWeight: 500,
-                        fontSize: "16px",
-                        lineHeight: "24px",
-                        marginBottom: "5px",
-                      }}
-                    >
-                      First Name
-                    </InputLabel>
-                    <TextField
-                      placeholder="e.g Abubakar"
-                      sx={{ width: "600px" }}
-                      name="first-name"
-                      type="text"
-                    />
-                  </Box>
-                  <Box sx={{ marginBottom: "5px" }}>
-                    <InputLabel
-                      sx={{
-                        color: "#222222",
-                        fontWeight: 500,
-                        fontSize: "16px",
-                        lineHeight: "24px",
-                        marginBottom: "5px",
-                      }}
-                    >
-                      Last Name
-                    </InputLabel>
-                    <TextField
-                      placeholder="e.g Olatunji"
-                      sx={{ width: "600px" }}
-                      name="last-name"
-                      type="text"
-                    />
-                  </Box>
-                  <Box sx={{ marginBottom: "5px" }}>
-                    <InputLabel
-                      sx={{
-                        color: "#222222",
-                        fontWeight: 500,
-                        fontSize: "16px",
-                        lineHeight: "24px",
-                        marginBottom: "5px",
-                      }}
-                    >
-                      Parental Role
-                    </InputLabel>
-                    <TextField
-                      placeholder="e.g Mom"
-                      sx={{ width: "600px" }}
-                      name="parent-role"
-                      type="text"
-                    />
-                  </Box>
+                Create New Vaccine
+              </Button>
+              <Box
+                sx={{
+                  margin: "auto",
+                  display: "flex",
+                  flexDirection: "row",
+                  width: "100%",
+                  textAlign: "center",
+                  alignItems: "center",
+                  marginTop: "10px",
+                  justifyContent: "center",
+                  gap: 1,
+                }}
+              >
+                <Typography>Powered by</Typography>
+                <img src={haceyLogo} alt="" />
+              </Box>
+            </Grid>
+          </Grid>
+        </ModalWindow>
 
-                  <Box sx={{ marginBottom: "5px" }}>
-                    <InputLabel
-                      sx={{
-                        color: "#222222",
-                        fontWeight: 500,
-                        fontSize: "16px",
-                        lineHeight: "24px",
-                        marginBottom: "5px",
-                      }}
-                    >
-                      Date of Birth
-                    </InputLabel>
-                    <TextField sx={{ width: "600px" }} name="dob" type="date" />
-                  </Box>
-                  <Box sx={{ marginBottom: "5px" }}>
+        <ModalWindow onClose={handleCloseParent} open={openParent}>
+          <Grid
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "flex-start",
+              width: "100%",
+            }}
+          >
+            <Button
+              onClick={handleCloseParent}
+              variant="text"
+              sx={{
+                textTransform: "none",
+                display: "flex",
+                flexDirection: "row",
+                gap: "5px",
+                marginBottom: "5px",
+              }}
+              disableRipple
+            >
+              <ArrowBackSharpIcon sx={{ color: "#1F8E1F" }} />{" "}
+              <Typography
+                sx={{ color: "#000000", fontSize: "16px", fontWeight: 400 }}
+              >
+                Back
+              </Typography>
+            </Button>
+            <Typography
+              sx={{
+                width: "100%",
+                color: "#000000",
+                fontWeight: 600,
+                fontSize: "24px",
+                lineHeight: "36px",
+                marginBottom: "5px",
+              }}
+            >
+              Onboard Parent
+            </Typography>
+            <Grid sx={{ width: "100%" }}>
+              <form onSubmit={handleSubmitParent}>
+                <Box sx={{ marginBottom: "5px" }}>
+                  <InputLabel
+                    sx={{
+                      color: "#222222",
+                      fontWeight: 500,
+                      fontSize: "16px",
+                      lineHeight: "24px",
+                      marginBottom: "5px",
+                    }}
+                  >
+                    First Name
+                  </InputLabel>
+                  <TextField
+                    placeholder="e.g Abubakar"
+                    sx={{ width: "600px" }}
+                    name="first-name"
+                    type="text"
+                  />
+                </Box>
+                <Box sx={{ marginBottom: "5px" }}>
+                  <InputLabel
+                    sx={{
+                      color: "#222222",
+                      fontWeight: 500,
+                      fontSize: "16px",
+                      lineHeight: "24px",
+                      marginBottom: "5px",
+                    }}
+                  >
+                    Last Name
+                  </InputLabel>
+                  <TextField
+                    placeholder="e.g Olatunji"
+                    sx={{ width: "600px" }}
+                    name="last-name"
+                    type="text"
+                  />
+                </Box>
+                <Box sx={{ marginBottom: "5px" }}>
+                  <InputLabel
+                    sx={{
+                      color: "#222222",
+                      fontWeight: 500,
+                      fontSize: "16px",
+                      lineHeight: "24px",
+                      marginBottom: "5px",
+                    }}
+                  >
+                    Parental Role
+                  </InputLabel>
+                  <TextField
+                    placeholder="e.g Mom"
+                    sx={{ width: "600px" }}
+                    name="parent-role"
+                    type="text"
+                  />
+                </Box>
+
+                <Box sx={{ marginBottom: "5px" }}>
+                  <InputLabel
+                    sx={{
+                      color: "#222222",
+                      fontWeight: 500,
+                      fontSize: "16px",
+                      lineHeight: "24px",
+                      marginBottom: "5px",
+                    }}
+                  >
+                    Date of Birth
+                  </InputLabel>
+                  <TextField sx={{ width: "600px" }} name="dob" type="date" />
+                </Box>
+                {/* <Box sx={{ marginBottom: "5px" }}>
                     <InputLabel
                       sx={{
                         color: "#222222",
@@ -375,8 +408,8 @@ export default function Dashboard() {
                       name="hospital-no"
                       type="text"
                     />
-                  </Box>
-                  <Box sx={{ marginBottom: "5px" }}>
+                  </Box> */}
+                {/* <Box sx={{ marginBottom: "5px" }}>
                     <InputLabel
                       sx={{
                         color: "#222222",
@@ -394,202 +427,212 @@ export default function Dashboard() {
                       name="nhis"
                       type="text"
                     />
-                  </Box>
-                  <Box sx={{ marginBottom: "5px" }}>
-                    <InputLabel
-                      sx={{
-                        color: "#222222",
-                        fontWeight: 500,
-                        fontSize: "16px",
-                        lineHeight: "24px",
-                        marginBottom: "5px",
-                      }}
-                    >
-                      Email Address
-                    </InputLabel>
-                    <TextField
-                      placeholder="e.g johndoe@gmail.com"
-                      sx={{ width: "600px" }}
-                      type="email"
-                      name="email"
-                    />
-                  </Box>
-                  <Box sx={{ marginBottom: "5px" }}>
-                    <InputLabel
-                      sx={{
-                        color: "#222222",
-                        fontWeight: 500,
-                        fontSize: "16px",
-                        lineHeight: "24px",
-                        marginBottom: "5px",
-                      }}
-                    >
-                      Phone Number
-                    </InputLabel>
-                    <TextField
-                      placeholder="e.g 08084972144"
-                      sx={{ width: "600px" }}
-                      name="phone-no"
-                      type="tel"
-                    />
-                  </Box>
-                  <Button
+                  </Box> */}
+                <Box sx={{ marginBottom: "5px" }}>
+                  <InputLabel
                     sx={{
-                      width: "100%",
-                      backgroundColor: "#1F8E1F",
-                      paddingY: "12px",
-                      paddingX: "36px",
-                      borderRadius: "80px",
-                      color: "#FFFFFF",
-                      textTransform: "none",
+                      color: "#222222",
+                      fontWeight: 500,
+                      fontSize: "16px",
+                      lineHeight: "24px",
+                      marginBottom: "5px",
                     }}
-                    type="submit"
                   >
-                    Add New Parent
-                  </Button>
-                </form>
-                <Box
-                  sx={{
-                    margin: "auto",
-                    display: "flex",
-                    flexDirection: "row",
-                    width: "100%",
-                    textAlign: "center",
-                    alignItems: "center",
-                    marginTop: "10px",
-                    justifyContent: "center",
-                    gap: 1,
-                  }}
-                >
-                  <Typography>Powered by</Typography>
-                  <img src={haceyLogo} alt="" />
+                    Email Address
+                  </InputLabel>
+                  <TextField
+                    placeholder="e.g johndoe@gmail.com"
+                    sx={{ width: "600px" }}
+                    type="email"
+                    name="email"
+                  />
                 </Box>
-              </Grid>
-            </Grid>
-          </ModalWindow>
-        }
-        {
-          <ModalWindow onClose={handleCloseChild} open={openChild}>
-            <Grid
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "flex-start",
-                width: "100%",
-              }}
-            >
-              <Button
-                onClick={handleCloseParent}
-                variant="text"
+                <Box sx={{ marginBottom: "5px" }}>
+                  <InputLabel
+                    sx={{
+                      color: "#222222",
+                      fontWeight: 500,
+                      fontSize: "16px",
+                      lineHeight: "24px",
+                      marginBottom: "5px",
+                    }}
+                  >
+                    Phone Number
+                  </InputLabel>
+                  <TextField
+                    placeholder="e.g 08084972144"
+                    sx={{ width: "600px" }}
+                    name="phone-no"
+                    type="tel"
+                  />
+                </Box>
+                <Button
+                  sx={{
+                    width: "100%",
+                    backgroundColor: "#1F8E1F",
+                    paddingY: "12px",
+                    paddingX: "36px",
+                    borderRadius: "80px",
+                    color: "#FFFFFF",
+                    textTransform: "none",
+                  }}
+                  type="submit"
+                  disabled={parentMutation.isPending}
+                  // onClick={handleCloseParent}
+                >
+                  {parentMutation.isPending ? (
+                    <CircularProgress
+                      sx={{
+                        color: "#FFFFFF",
+                      }}
+                      size={"30px"}
+                    />
+                  ) : (
+                    "Add New Parent"
+                  )}
+                </Button>
+              </form>
+              <Box
                 sx={{
-                  textTransform: "none",
+                  margin: "auto",
                   display: "flex",
                   flexDirection: "row",
-                  gap: "5px",
-                  marginBottom: "5px",
-                }}
-                disableRipple
-              >
-                <ArrowBackSharpIcon sx={{ color: "#1F8E1F" }} />{" "}
-                <Typography
-                  sx={{ color: "#000000", fontSize: "16px", fontWeight: 400 }}
-                >
-                  Back
-                </Typography>
-              </Button>
-              <Typography
-                sx={{
                   width: "100%",
-                  color: "#000000",
-                  fontWeight: 600,
-                  fontSize: "24px",
-                  lineHeight: "36px",
-                  marginBottom: "5px",
+                  textAlign: "center",
+                  alignItems: "center",
+                  marginTop: "10px",
+                  justifyContent: "center",
+                  gap: 1,
                 }}
               >
-                Onboard a Child
+                <Typography>Powered by</Typography>
+                <img src={haceyLogo} alt="" />
+              </Box>
+            </Grid>
+          </Grid>
+        </ModalWindow>
+
+        <ModalWindow onClose={handleCloseChild} open={openChild}>
+          <Grid
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "flex-start",
+              width: "100%",
+            }}
+          >
+            <Button
+              onClick={handleCloseChild}
+              variant="text"
+              sx={{
+                textTransform: "none",
+                display: "flex",
+                flexDirection: "row",
+                gap: "5px",
+                marginBottom: "5px",
+              }}
+              disableRipple
+            >
+              <ArrowBackSharpIcon sx={{ color: "#1F8E1F" }} />{" "}
+              <Typography
+                sx={{ color: "#000000", fontSize: "16px", fontWeight: 400 }}
+              >
+                Back
               </Typography>
-              <Grid sx={{ width: "100%" }}>
-                <form onSubmit={handleSubmitChild}>
-                  <Box sx={{ marginBottom: "5px" }}>
-                    <InputLabel
-                      sx={{
-                        color: "#222222",
-                        fontWeight: 500,
-                        fontSize: "16px",
-                        lineHeight: "24px",
-                        marginBottom: "5px",
-                      }}
-                    >
-                      First Name
-                    </InputLabel>
-                    <TextField
-                      placeholder="e.g Oreoluwa"
-                      sx={{ width: "600px" }}
-                      name="child-first-name"
-                      type="text"
-                    />
-                  </Box>
-                  <Box sx={{ marginBottom: "5px" }}>
-                    <InputLabel
-                      sx={{
-                        color: "#222222",
-                        fontWeight: 500,
-                        fontSize: "16px",
-                        lineHeight: "24px",
-                        marginBottom: "5px",
-                      }}
-                    >
-                      Last Name
-                    </InputLabel>
-                    <TextField
-                      placeholder="e.g Adepoju"
-                      sx={{ width: "600px" }}
-                      name="child-last-name"
-                      type="text"
-                    />
-                  </Box>
-                  <Box sx={{ marginBottom: "5px" }}>
-                    <InputLabel
-                      sx={{
-                        color: "#222222",
-                        fontWeight: 500,
-                        fontSize: "16px",
-                        lineHeight: "24px",
-                        marginBottom: "5px",
-                      }}
-                    >
-                      Sex
-                    </InputLabel>
-                    <TextField
-                      placeholder="e.g Female"
-                      sx={{ width: "600px" }}
-                      name="child-sex"
-                      type="text"
-                    />
-                  </Box>
+            </Button>
+            <Typography
+              sx={{
+                width: "100%",
+                color: "#000000",
+                fontWeight: 600,
+                fontSize: "24px",
+                lineHeight: "36px",
+                marginBottom: "5px",
+              }}
+            >
+              Onboard a Child
+            </Typography>
+            <Grid sx={{ width: "100%" }}>
+              <form onSubmit={handleSubmitChild}>
+                <Box sx={{ marginBottom: "5px" }}>
+                  <InputLabel
+                    sx={{
+                      color: "#222222",
+                      fontWeight: 500,
+                      fontSize: "16px",
+                      lineHeight: "24px",
+                      marginBottom: "5px",
+                    }}
+                  >
+                    First Name
+                  </InputLabel>
+                  <TextField
+                    placeholder="e.g Oreoluwa"
+                    sx={{ width: "600px" }}
+                    name="child-first-name"
+                    type="text"
+                  />
+                </Box>
+                <Box sx={{ marginBottom: "5px" }}>
+                  <InputLabel
+                    sx={{
+                      color: "#222222",
+                      fontWeight: 500,
+                      fontSize: "16px",
+                      lineHeight: "24px",
+                      marginBottom: "5px",
+                    }}
+                  >
+                    Last Name
+                  </InputLabel>
+                  <TextField
+                    placeholder="e.g Adepoju"
+                    sx={{ width: "600px" }}
+                    name="child-last-name"
+                    type="text"
+                  />
+                </Box>
+                <Box sx={{ marginBottom: "5px" }}>
+                  <InputLabel
+                    sx={{
+                      color: "#222222",
+                      fontWeight: 500,
+                      fontSize: "16px",
+                      lineHeight: "24px",
+                      marginBottom: "5px",
+                    }}
+                  >
+                    Sex
+                  </InputLabel>
+                  <TextField
+                    placeholder="e.g Female"
+                    sx={{ width: "600px" }}
+                    name="child-sex"
+                    type="text"
+                  />
+                </Box>
 
-                  <Box sx={{ marginBottom: "5px" }}>
-                    <InputLabel
-                      sx={{
-                        color: "#222222",
-                        fontWeight: 500,
-                        fontSize: "16px",
-                        lineHeight: "24px",
-                        marginBottom: "5px",
-                      }}
-                    >
-                      Date of Birth
-                    </InputLabel>
-                    <TextField
-                      //   placeholder=""
-                      sx={{ width: "600px" }}
-                      name="dob-child"
-                      type="date"
-                    />
-                  </Box>
+                <Box sx={{ marginBottom: "5px" }}>
+                  <InputLabel
+                    sx={{
+                      color: "#222222",
+                      fontWeight: 500,
+                      fontSize: "16px",
+                      lineHeight: "24px",
+                      marginBottom: "5px",
+                    }}
+                  >
+                    Date of Birth
+                  </InputLabel>
+                  <TextField
+                    //   placeholder=""
+                    sx={{ width: "600px" }}
+                    name="dob-child"
+                    type="date"
+                  />
+                </Box>
 
-                  <Box sx={{ marginBottom: "5px" }}>
+                {/* <Box sx={{ marginBottom: "5px" }}>
                     <InputLabel
                       sx={{
                         color: "#222222",
@@ -619,42 +662,46 @@ export default function Dashboard() {
                       name="weight"
                       type="text"
                     />
-                  </Box>
-                  <Button
-                    sx={{
-                      width: "100%",
-                      backgroundColor: "#1F8E1F",
-                      paddingY: "12px",
-                      paddingX: "36px",
-                      borderRadius: "80px",
-                      color: "#FFFFFF",
-                      textTransform: "none",
-                    }}
-                    type="submit"
-                  >
-                    Onboard
-                  </Button>
-                </form>
-                <Box
+                  </Box> */}
+                <Button
                   sx={{
-                    margin: "auto",
-                    display: "flex",
-                    flexDirection: "row",
                     width: "100%",
-                    textAlign: "center",
-                    alignItems: "center",
-                    marginTop: "10px",
-                    justifyContent: "center",
-                    gap: 1,
+                    backgroundColor: "#1F8E1F",
+                    paddingY: "12px",
+                    paddingX: "36px",
+                    borderRadius: "80px",
+                    color: "#FFFFFF",
+                    textTransform: "none",
                   }}
+                  type="submit"
                 >
-                  <Typography>Powered by</Typography>
-                  <img src={haceyLogo} alt="" />
-                </Box>
-              </Grid>
+                  {childMutation.isPending ? (
+                    <CircularProgress size={"20px"} />
+                  ) : (
+                    "Onboard"
+                  )}
+                </Button>
+              </form>
+              <Box
+                sx={{
+                  margin: "auto",
+                  display: "flex",
+                  flexDirection: "row",
+                  width: "100%",
+                  textAlign: "center",
+                  alignItems: "center",
+                  marginTop: "10px",
+                  justifyContent: "center",
+                  gap: 1,
+                }}
+              >
+                <Typography>Powered by</Typography>
+                <img src={haceyLogo} alt="" />
+              </Box>
             </Grid>
-          </ModalWindow>
-        }
+          </Grid>
+        </ModalWindow>
+
         <Grid
           size={12}
           sx={{

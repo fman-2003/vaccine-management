@@ -31,7 +31,8 @@ export const Login = async (data) => {
       throw new Error("User exists already!");
     }
     console.log(response.data);
-    return response.data;
+    const token = response.data.data.accessToken;
+    localStorage.setItem("token", token);
   } catch (error) {
     console.log(error);
     return error;
@@ -39,17 +40,22 @@ export const Login = async (data) => {
 };
 
 export const onboardParent = async (data) => {
-  const url = "https://itrams-4c9984ff9ef0.herokuapp.com/v1/immuno/parent/";
+  const url = "https://itrams-4c9984ff9ef0.herokuapp.com/v1/immuno/parent";
 
+  const token = getToken();
+  console.log(token);
   try {
-    const response = await axios.post(url, data);
-
+    const response = await axios.post(url, data, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
     if (response.status !== 200) {
       throw new Error("COULD NOT SEND DATA");
     }
-
-    console.log(response.data);
-    return response.data;
+    console.log(response.data.data.id);
+    return response.data.data.id;
   } catch (error) {
     console.log(error);
     return error;
@@ -59,8 +65,15 @@ export const onboardParent = async (data) => {
 export const onboardChild = async ({ data, parentId }) => {
   const url = `https://itrams-4c9984ff9ef0.herokuapp.com/v1/immuno/parent/${parentId}/child`;
 
+  const token = getToken();
+  console.log(parentId);
   try {
-    const response = await axios.post(url, { data });
+    const response = await axios.post(url, data, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
     if (response.status !== 200) {
       throw new Error("COULD NOT SEND DATA");
@@ -75,9 +88,9 @@ export const onboardChild = async ({ data, parentId }) => {
 };
 
 export const getToken = () => {
-  return JSON.parse(localStorage.getItem("token"));
+  return localStorage.getItem("token");
 };
 
 export const removeToken = () => {
-  return (localStorage.removeItem("token"));
+  return localStorage.removeItem("token");
 };

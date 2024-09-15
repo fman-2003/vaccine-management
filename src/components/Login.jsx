@@ -153,12 +153,6 @@ export default function Login() {
 
   const loginMutation = useMutation({
     mutationFn: LoginUser,
-    onSuccess: (data) => {
-      localStorage.setItem("token", JSON.stringify(data.data.accessToken));
-      navigate("/dashboard");
-      console.log(data);
-    },
-    onError: (error) => console.error(error),
   });
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -190,7 +184,17 @@ export default function Login() {
 
   const handleLoginSubmit = (event) => {
     event.preventDefault();
-    loginMutation.mutate(loginDetails);
+    loginMutation.mutate(loginDetails, {
+      onError: (error) => {
+        navigate("?mode=login");
+        console.error(error);
+      },
+      onSuccess: (data) => {
+        // localStorage.setItem("token", JSON.stringify(data.data.accessToken));
+        navigate("/dashboard");
+        console.log(data.data);
+      },
+    });
     console.log(loginDetails);
   };
 
@@ -415,7 +419,6 @@ export default function Login() {
                           color: "#FF3B3B",
                         }}
                       >
-                        error={signUpPasswordError}
                         {signUpPasswordHelperText}
                       </Typography>
                     </FormControl>
