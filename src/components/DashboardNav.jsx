@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
+import Box from '@mui/material/Box';
 
 import haceyLogo from "../assets/hacey-svg.svg";
 import avatar from "../assets/avatar.svg";
@@ -46,6 +46,7 @@ TabPanel.propTypes = {
 };
 
 export default function DashboardNav() {
+
   const navigate = useNavigate();
   const location = useLocation();
   const [value, setValue] = React.useState(0);

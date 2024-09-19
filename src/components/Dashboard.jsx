@@ -4,6 +4,7 @@ import { useMutation } from "@tanstack/react-query";
 import { Box, Button, Typography, TextField, InputLabel } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import CircularProgress from "@mui/material/CircularProgress";
+import { motion } from "framer-motion";
 
 import "@fontsource/roboto";
 import haceyLogo from "../assets/hacey-svg.svg";
@@ -22,8 +23,6 @@ export default function Dashboard() {
   const [openVaccine, setOpenVaccine] = React.useState(false);
   const [openParent, setOpenParent] = React.useState(false);
   const [openChild, setOpenChild] = React.useState(false);
-  // const [parentInfo, setParentInfo] = React.useState({});
-  // const [childInfo, setChildInfo] = React.useState({});
   const [parentId, setParentId] = React.useState("");
 
   React.useEffect(() => {
@@ -35,9 +34,9 @@ export default function Dashboard() {
     onSuccess: (data) => {
       setOpenParent(false);
       setOpenChild(true);
-      const parentId = data;
-      localStorage.setItem("parentId", parentId);
-      // setParentId(parentId);
+      setParentId(data);
+      console.log(parentId)
+      // localStorage.setItem("parentId", parentId);
     },
   });
 
@@ -59,14 +58,12 @@ export default function Dashboard() {
     const parentData = new FormData(e.target);
     // setParentInfo();
     parentMutation.mutate({
-      title: parentData.get("parent-role").trim(),
-      firstName: parentData.get("first-name").trim(),
-      lastName: parentData.get("last-name").trim(),
-      email: parentData.get("email").trim(),
-      phoneNumber: parentData.get("phone-no").toString().trim(),
-      dateOfBirth: parentData.get("dob").toString().trim(),
-      // hospitalNumber: parentData.get("hospital-no").toString().trim(),
-      // nhis: parentData.get("nhis").toString().trim(),
+      title: parentData.get("parent-role"),
+      firstName: parentData.get("first-name"),
+      lastName: parentData.get("last-name"),
+      email: parentData.get("email"),
+      phoneNumber: parentData.get("phone-no"),
+      dateOfBirth: parentData.get("dob"),
     });
     console.log({
       title: parentData.get("parent-role").trim(),
@@ -88,11 +85,11 @@ export default function Dashboard() {
       data: {
         firstName: childData.get("child-first-name").trim(),
         lastName: childData.get("child-last-name").trim(),
-        gender: childData.get("child-sex").trim(),
+        gender: childData.get("child-sex").toUpperCase().trim(),
         dateOfBirth: childData.get("dob-child").toString().trim(),
         // weightAtBirth: childData.get("weight").toString().trim(),
       },
-      parentId: localStorage.getItem("parentId"),
+      parentId,
     });
 
     console.log(
@@ -103,7 +100,7 @@ export default function Dashboard() {
         dateOfBirth: childData.get("dob-child").toString().trim(),
         // weightAtBirth: childData.get("weight").toString().trim(),
       },
-      localStorage.getItem("parentId")
+      parentId
     );
   };
   const handleOpenVaccine = () => setOpenVaccine(true);
@@ -770,104 +767,106 @@ export default function Dashboard() {
             </Grid>
           </Grid>
         </Grid>
-        <Grid
-          onClick={handleOpenParent}
-          size={12}
-          sx={{
-            minHeight: "200px",
-            borderRadius: "20px",
-            zIndex: 5,
-            marginBottom: "30px",
-          }}
-        >
+        <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
           <Grid
+            onClick={handleOpenParent}
+            size={12}
             sx={{
-              minWidth: "100%",
               minHeight: "200px",
-              backgroundImage: `url(${splash})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
               borderRadius: "20px",
-              paddingX: "6%",
-              paddingY: "3%",
-
-              backgroundRepeat: "no-repeat",
-              backgroundColor: "#1F8E1F4D",
-              position: "relative",
-              "&::after": {
-                content: '""',
-                position: "absolute",
-                top: 0,
-                left: 0,
-                borderRadius: "20px",
-                right: 0,
-                bottom: 0,
-                backgroundColor: "#1F8E1FE5",
-                zIndex: 1,
-              },
-              "&:hover": {
-                border: 1,
-                borderColor: "#1F8E1F",
-                transform: "scale(1.05)",
-                transition: "0.3s ease",
-                cursor: "pointer",
-              },
+              zIndex: 5,
+              marginBottom: "30px",
             }}
           >
             <Grid
               sx={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
+                minWidth: "100%",
+                minHeight: "200px",
+                backgroundImage: `url(${splash})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                borderRadius: "20px",
+                paddingX: "6%",
+                paddingY: "3%",
+
+                backgroundRepeat: "no-repeat",
+                backgroundColor: "#1F8E1F4D",
+                position: "relative",
+                "&::after": {
+                  content: '""',
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  borderRadius: "20px",
+                  right: 0,
+                  bottom: 0,
+                  backgroundColor: "#1F8E1FE5",
+                  zIndex: 1,
+                },
+                "&:hover": {
+                  border: 1,
+                  borderColor: "#1F8E1F",
+                  // transform: "scale(1.05)",
+                  // transition: "0.3s ease",
+                  cursor: "pointer",
+                },
               }}
             >
               <Grid
                 sx={{
                   display: "flex",
-                  flexDirection: "column",
-                  gap: "24px",
-                  maxWidth: "460px",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
                 }}
               >
-                <Typography
+                <Grid
                   sx={{
-                    color: "#FFFFFF",
-                    fontWeight: 600,
-                    fontSize: "24px",
-                    lineHeight: "36px",
-                    zIndex: 10,
-                    width: "150px",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "24px",
+                    maxWidth: "460px",
                   }}
                 >
-                  Onboard New Parent
-                </Typography>
-                <Typography
-                  sx={{
-                    color: "#FFFFFF",
-                    fontWeight: 400,
-                    fontSize: "16px",
-                    lineHeight: "24px",
-                    zIndex: 10,
-                    width: "200px",
-                  }}
-                >
-                  Add a New Parent and then a new child
-                </Typography>
-              </Grid>
-              <Grid sx={{ zIndex: 17 }}>
-                <AddCircleRoundedIcon
-                  sx={{
-                    color: "#FFFFFF",
-                    width: "60px",
-                    height: "60px",
-                    zIndex: 17,
-                  }}
-                />
+                  <Typography
+                    sx={{
+                      color: "#FFFFFF",
+                      fontWeight: 600,
+                      fontSize: "24px",
+                      lineHeight: "36px",
+                      zIndex: 10,
+                      width: "150px",
+                    }}
+                  >
+                    Onboard New Parent
+                  </Typography>
+                  <Typography
+                    sx={{
+                      color: "#FFFFFF",
+                      fontWeight: 400,
+                      fontSize: "16px",
+                      lineHeight: "24px",
+                      zIndex: 10,
+                      width: "200px",
+                    }}
+                  >
+                    Add a New Parent and then a new child
+                  </Typography>
+                </Grid>
+                <Grid sx={{ zIndex: 17 }}>
+                  <AddCircleRoundedIcon
+                    sx={{
+                      color: "#FFFFFF",
+                      width: "60px",
+                      height: "60px",
+                      zIndex: 17,
+                    }}
+                  />
+                </Grid>
               </Grid>
             </Grid>
           </Grid>
-        </Grid>
+        </motion.div>
         <Grid
           size={12}
           sx={{
@@ -1328,61 +1327,62 @@ export default function Dashboard() {
         </Grid>
       </Grid>
       <Grid size={4}>
-        <Grid
-          size={12}
-          onClick={handleOpenVaccine}
-          sx={{
-            backgroundColor: "#D9ECD9",
-            borderRadius: "20px",
-            marginBottom: "30px",
-            paddingX: "7%",
-            minHeight: "200px",
-            paddingY: "7%",
-            height: "fit-content",
-            display: "flex",
-            flexDirection: "row",
-            gap: 3,
-            alignItems: "center",
-            "&:hover": {
-              //   backgroundColor: "#1F8E1F0D",
-              //   borderRadius: "15px",
-              border: 1,
-              borderColor: "#1F8E1F",
-              transform: "scale(1.05)",
-              transition: "0.3s ease",
-              cursor: "pointer",
-            },
-          }}
-        >
-          <Grid>
-            <Typography
-              sx={{
-                fontWeight: 600,
-                fontSize: "24px",
-                lineHeight: "36px",
-                color: "#1F8E1F",
-              }}
-            >
-              Add a New Vaccine
-            </Typography>
-            <Typography
-              sx={{
-                fontWeight: 400,
-                fontSize: "16px",
-                lineHeight: "24px",
+        <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
+          <Grid
+            size={12}
+            onClick={handleOpenVaccine}
+            sx={{
+              backgroundColor: "#D9ECD9",
+              borderRadius: "20px",
+              marginBottom: "30px",
+              paddingX: "7%",
+              minHeight: "200px",
+              paddingY: "7%",
+              height: "fit-content",
+              display: "flex",
+              flexDirection: "row",
+              gap: 3,
+              alignItems: "center",
+              "&:hover": {
+                //   backgroundColor: "#1F8E1F0D",
+                //   borderRadius: "15px",
+                border: 1,
+                borderColor: "#1F8E1F",
 
-                color: "#1F8E1F",
-              }}
-            >
-              Add a New Vaccine to be administer to all
-            </Typography>
+                cursor: "pointer",
+              },
+            }}
+          >
+            <Grid>
+              <Typography
+                sx={{
+                  fontWeight: 600,
+                  fontSize: "24px",
+                  lineHeight: "36px",
+                  color: "#1F8E1F",
+                }}
+              >
+                Add a New Vaccine
+              </Typography>
+              <Typography
+                sx={{
+                  fontWeight: 400,
+                  fontSize: "16px",
+                  lineHeight: "24px",
+
+                  color: "#1F8E1F",
+                }}
+              >
+                Add a New Vaccine to be administer to all
+              </Typography>
+            </Grid>
+            <Grid>
+              <AddCircleRoundedIcon
+                sx={{ color: "#1F8E1F", height: "50px", width: "50px" }}
+              />
+            </Grid>
           </Grid>
-          <Grid>
-            <AddCircleRoundedIcon
-              sx={{ color: "#1F8E1F", height: "50px", width: "50px" }}
-            />
-          </Grid>
-        </Grid>
+        </motion.div>
 
         <Grid
           size={12}

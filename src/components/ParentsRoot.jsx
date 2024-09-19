@@ -12,8 +12,8 @@ export default function ParentsRootLayout() {
           width: "100%",
           backgroundColor: "#E1F0E1",
           minHeight: "250px",
-          paddingLeft: "10%",
-          paddingTop: "7%",
+          paddingLeft: "180px",
+          paddingTop: "120px",
         }}
       >
         <Outlet />

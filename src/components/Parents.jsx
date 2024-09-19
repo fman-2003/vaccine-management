@@ -9,6 +9,7 @@ import {
   InputLabel,
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
+import { motion } from "framer-motion";
 
 import "@fontsource/roboto";
 import splash from "../assets/splash.svg";
@@ -34,6 +35,8 @@ export default function Parents() {
   return (
     <Grid container spacing={3} sx={{ width: "95%" }}>
       <Grid size={9}>
+        <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
+        
         <Grid
           onClick={handleOpenParent}
           size={12}
@@ -54,7 +57,7 @@ export default function Parents() {
               borderRadius: "20px",
               paddingX: "6%",
               paddingY: "3%",
-              // paddingLeft: "50px",
+              
               backgroundRepeat: "no-repeat",
               backgroundColor: "#1F8E1F4D",
               position: "relative",
@@ -70,12 +73,10 @@ export default function Parents() {
                 zIndex: 1,
               },
               "&:hover": {
-                //   backgroundColor: "#1F8E1F0D",
-                //   borderRadius: "15px",
+              
                 border: 1,
                 borderColor: "#1F8E1F",
-                transform: "scale(1.05)",
-                transition: "0.3s ease",
+                
                 cursor: "pointer",
               },
             }}
@@ -134,6 +135,7 @@ export default function Parents() {
             </Grid>
           </Grid>
         </Grid>
+        </motion.div>
         <Grid
           sx={{
             maxHeight: "1011px",

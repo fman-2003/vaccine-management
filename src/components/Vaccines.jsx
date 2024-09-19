@@ -8,6 +8,7 @@ import {
   Box,
   InputAdornment,
 } from "@mui/material";
+import { motion } from "framer-motion";
 
 import haceyLogo from "../assets/hacey-svg.svg";
 import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
@@ -345,6 +346,8 @@ export default function Vaccines() {
             </Grid>
           </ModalWindow>
         }
+        <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
+
         <Grid
           size={12}
           onClick={handleOpenVaccine}
@@ -364,8 +367,7 @@ export default function Vaccines() {
             "&:hover": {
               border: 1,
               borderColor: "#1F8E1F",
-              transform: "scale(1.05)",
-              transition: "0.3s ease",
+              
               cursor: "pointer",
             },
           }}
@@ -401,6 +403,7 @@ export default function Vaccines() {
             />
           </Grid>
         </Grid>
+        </motion.div>
         <Grid
           sx={{
             maxHeight: "1011px",

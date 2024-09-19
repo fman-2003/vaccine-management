@@ -9,6 +9,7 @@ import {
   InputLabel,
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
+import { motion } from "framer-motion";
 
 import "@fontsource/roboto";
 import splash from "../assets/splash.svg";
@@ -616,7 +617,6 @@ export default function Children() {
           <ModalWindow onClose={handleCloseParent} open={openParent}>
             <Grid
               sx={{
-                
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "flex-start",
@@ -807,110 +807,108 @@ export default function Children() {
             </Grid>
           </ModalWindow>
         }
-        <Grid
-          onClick={handleOpenParent}
-          size={12}
-          sx={{
-            
-            borderRadius: "20px",
-            zIndex: 5,
-            marginBottom: "30px",
-          }}
-        >
+        <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
           <Grid
+            onClick={handleOpenParent}
+            size={12}
             sx={{
-              minWidth: "100%",
-              minHeight: "350px",
-              backgroundImage: `url(${splash})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
               borderRadius: "20px",
-              paddingX: "6%",
-              paddingY: "10%",
-              // paddingLeft: "50px",
-              backgroundRepeat: "no-repeat",
-              backgroundColor: "#1F8E1F4D",
-              position: "relative",
-              "&::after": {
-                content: '""',
-                position: "absolute",
-                top: 0,
-                left: 0,
-                borderRadius: "20px",
-                right: 0,
-                bottom: 0,
-                backgroundColor: "#1F8E1FE5",
-                zIndex: 1,
-              },
-              "&:hover": {
-                //   backgroundColor: "#1F8E1F0D",
-                //   borderRadius: "15px",
-                border: 1,
-                borderColor: "#1F8E1F",
-                transform: "scale(1.05)",
-                transition: "0.3s ease",
-                cursor: "pointer",
-              },
+              zIndex: 5,
+              marginBottom: "30px",
             }}
           >
             <Grid
               sx={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-                gap: 4,
+                minWidth: "100%",
+                minHeight: "350px",
+                backgroundImage: `url(${splash})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                borderRadius: "20px",
+                paddingX: "6%",
+                paddingY: "10%",
+
+                backgroundRepeat: "no-repeat",
+                backgroundColor: "#1F8E1F4D",
+                position: "relative",
+                "&::after": {
+                  content: '""',
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  borderRadius: "20px",
+                  right: 0,
+                  bottom: 0,
+                  backgroundColor: "#1F8E1FE5",
+                  zIndex: 1,
+                },
+                "&:hover": {
+                  border: 1,
+                  borderColor: "#1F8E1F",
+
+                  cursor: "pointer",
+                },
               }}
             >
               <Grid
                 sx={{
                   display: "flex",
                   flexDirection: "column",
-                  gap: "24px",
-                  maxWidth: "460px",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  gap: 4,
                 }}
               >
-                <Typography
+                <Grid
                   sx={{
-                    color: "#FFFFFF",
-                    fontWeight: 600,
-                    fontSize: "24px",
-                    lineHeight: "36px",
-                    zIndex: 10,
-                    width: "150px",
-                    margin: "auto",
-                    textAlign: "center",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "24px",
+                    maxWidth: "460px",
                   }}
                 >
-                  Onboard New Parent
-                </Typography>
-                <Typography
-                  sx={{
-                    color: "#FFFFFF",
-                    fontWeight: 400,
-                    fontSize: "16px",
-                    lineHeight: "24px",
-                    zIndex: 10,
-                    width: "200px",
-                    textAlign: "center",
-                  }}
-                >
-                  Add a New Parent and then a new child
-                </Typography>
-              </Grid>
-              <Grid sx={{ zIndex: 17 }}>
-                <AddCircleRoundedIcon
-                  sx={{
-                    color: "#FFFFFF",
-                    width: "80px",
-                    height: "80px",
-                    zIndex: 17,
-                  }}
-                />
+                  <Typography
+                    sx={{
+                      color: "#FFFFFF",
+                      fontWeight: 600,
+                      fontSize: "24px",
+                      lineHeight: "36px",
+                      zIndex: 10,
+                      width: "150px",
+                      margin: "auto",
+                      textAlign: "center",
+                    }}
+                  >
+                    Onboard New Parent
+                  </Typography>
+                  <Typography
+                    sx={{
+                      color: "#FFFFFF",
+                      fontWeight: 400,
+                      fontSize: "16px",
+                      lineHeight: "24px",
+                      zIndex: 10,
+                      width: "200px",
+                      textAlign: "center",
+                    }}
+                  >
+                    Add a New Parent and then a new child
+                  </Typography>
+                </Grid>
+                <Grid sx={{ zIndex: 17 }}>
+                  <AddCircleRoundedIcon
+                    sx={{
+                      color: "#FFFFFF",
+                      width: "80px",
+                      height: "80px",
+                      zIndex: 17,
+                    }}
+                  />
+                </Grid>
               </Grid>
             </Grid>
           </Grid>
-        </Grid>
+        </motion.div>
         <Grid
           sx={{
             backgroundColor: "#D9ECD9",

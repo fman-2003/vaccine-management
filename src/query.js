@@ -40,7 +40,7 @@ export const Login = async (data) => {
 };
 
 export const onboardParent = async (data) => {
-  const url = "https://itrams-4c9984ff9ef0.herokuapp.com/v1/immuno/parent";
+  const url = "https://itrams-4c9984ff9ef0.herokuapp.com/api/v1/immuno/parent";
 
   const token = getToken();
   console.log(token);
@@ -48,6 +48,7 @@ export const onboardParent = async (data) => {
     const response = await axios.post(url, data, {
       headers: {
         "Content-Type": "application/json",
+        Accept: "application/json",
         Authorization: `Bearer ${token}`,
       },
     });

@@ -1,6 +1,7 @@
 import React from "react";
 import Grid from "@mui/material/Grid2";
 import { Box, Typography, TextField, Button, InputLabel } from "@mui/material";
+import { motion } from "framer-motion";
 
 import splash from "../assets/splash.svg";
 import haceyLogo from "../assets/hacey-svg.svg";
@@ -395,109 +396,109 @@ export default function Schedules() {
             </Link>
           </Grid>
         </Grid>
-        <Grid
-          onClick={handleOpenParent}
-          size={4}
-          sx={{
-            borderRadius: "20px",
-            zIndex: 5,
-            marginBottom: "30px",
-          }}
-        >
+        <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
           <Grid
+            onClick={handleOpenParent}
+            size={12}
             sx={{
-              minWidth: "100%",
-              minHeight: "350px",
-              backgroundImage: `url(${splash})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
               borderRadius: "20px",
-              paddingX: "6%",
-              paddingY: "12%",
-              // paddingLeft: "50px",
-              backgroundRepeat: "no-repeat",
-              backgroundColor: "#1F8E1F4D",
-              position: "relative",
-              "&::after": {
-                content: '""',
-                position: "absolute",
-                top: 0,
-                left: 0,
-                borderRadius: "20px",
-                right: 0,
-                bottom: 0,
-                backgroundColor: "#1F8E1FE5",
-                zIndex: 1,
-              },
-              "&:hover": {
-                //   backgroundColor: "#1F8E1F0D",
-                //   borderRadius: "15px",
-                border: 1,
-                borderColor: "#1F8E1F",
-                transform: "scale(1.05)",
-                transition: "0.3s ease",
-                cursor: "pointer",
-              },
+              zIndex: 5,
+              marginBottom: "30px",
+              minHeight: "400px",
+              // minWidth: "100%",
             }}
           >
             <Grid
               sx={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-                gap: 4,
+                minHeight: "400px",
+                backgroundImage: `url(${splash})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                borderRadius: "20px",
+                paddingX: "6%",
+                paddingY: "12%",
+                // paddingLeft: "50px",
+                backgroundRepeat: "no-repeat",
+                backgroundColor: "#1F8E1F4D",
+                position: "relative",
+                "&::after": {
+                  content: '""',
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  borderRadius: "20px",
+                  right: 0,
+                  bottom: 0,
+                  backgroundColor: "#1F8E1FE5",
+                  zIndex: 1,
+                },
+                "&:hover": {
+                  border: 1,
+                  borderColor: "#1F8E1F",
+
+                  cursor: "pointer",
+                },
               }}
             >
               <Grid
                 sx={{
                   display: "flex",
                   flexDirection: "column",
-                  gap: "24px",
-                  maxWidth: "460px",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  gap: 4,
                 }}
               >
-                <Typography
+                <Grid
                   sx={{
-                    color: "#FFFFFF",
-                    fontWeight: 600,
-                    fontSize: "24px",
-                    lineHeight: "36px",
-                    zIndex: 10,
-                    width: "150px",
-                    margin: "auto",
-                    textAlign: "center",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "24px",
+                    maxWidth: "460px",
                   }}
                 >
-                  Onboard New Parent
-                </Typography>
-                <Typography
-                  sx={{
-                    color: "#FFFFFF",
-                    fontWeight: 400,
-                    fontSize: "16px",
-                    lineHeight: "24px",
-                    zIndex: 10,
-                    width: "200px",
-                    textAlign: "center",
-                  }}
-                >
-                  Add a New Parent and then a new child
-                </Typography>
-              </Grid>
-              <Grid sx={{ zIndex: 17 }}>
-                <AddCircleRoundedIcon
-                  sx={{
-                    color: "#FFFFFF",
-                    width: "80px",
-                    height: "80px",
-                    zIndex: 17,
-                  }}
-                />
+                  <Typography
+                    sx={{
+                      color: "#FFFFFF",
+                      fontWeight: 600,
+                      fontSize: "24px",
+                      lineHeight: "36px",
+                      zIndex: 10,
+                      width: "150px",
+                      margin: "auto",
+                      textAlign: "center",
+                    }}
+                  >
+                    Onboard New Parent
+                  </Typography>
+                  <Typography
+                    sx={{
+                      color: "#FFFFFF",
+                      fontWeight: 400,
+                      fontSize: "16px",
+                      lineHeight: "24px",
+                      zIndex: 10,
+                      width: "200px",
+                      textAlign: "center",
+                    }}
+                  >
+                    Add a New Parent and then a new child
+                  </Typography>
+                </Grid>
+                <Grid sx={{ zIndex: 17 }}>
+                  <AddCircleRoundedIcon
+                    sx={{
+                      color: "#FFFFFF",
+                      width: "80px",
+                      height: "80px",
+                      zIndex: 17,
+                    }}
+                  />
+                </Grid>
               </Grid>
             </Grid>
           </Grid>
-        </Grid>
+        </motion.div>
         <Grid
           size={12}
           sx={{
