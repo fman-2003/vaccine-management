@@ -1,6 +1,9 @@
-const User = require('../models/User');
-const {generateToken} = require('../jwt/token');
-const { isDuplicateKeyError, getDuplicateKeyField } = require('../util/duplicateKeyError');
+const User = require("../models/User");
+const { generateToken } = require("../jwt/token");
+const {
+  isDuplicateKeyError,
+  getDuplicateKeyField,
+} = require("../util/duplicateKeyError");
 
 const signup = async (req, res, next) => {
   try {
@@ -24,22 +27,42 @@ const login = async (req, res, next) => {
   try {
     const { username, password } = req.body;
 
-    const user = await User.findOne({ username }).select('+password');
+    const user = await User.findOne({ username }).select("+password");
     if (!user) {
-      return res.status(401).json({ message: 'Invalid username or password' });
+      return res.status(401).json({ message: "Invalid username or password" });
     }
 
     const isMatch = await user.comparePassword(password);
     if (!isMatch) {
-      return res.status(401).json({ message: 'Invalid username or password' });
+      return res.status(401).json({ message: "Invalid username or password" });
     }
 
     const token = generateToken(user._id);
 
-    res.status(200).json({ token, user });
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 60 * 60 * 1000,
+    });
+
+    res.status(200).json({ data: user, message: "Login successful" });
   } catch (error) {
     next(error);
   }
 };
 
-module.exports = { signup, login };
+const logout = async (req, res, next) => {
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+  });
+  res.status(200).json({ message: "Logged out successfully" });
+};
+
+export const checkAuth = (req, res) => {
+  res.json({ authenticated: true });
+};
+
+module.exports = { signup, login, logout };

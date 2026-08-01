@@ -12,7 +12,9 @@ const {
 const createParent = async (req, res, next) => {
   try {
     const parent = await Parent.create(req.body);
-    res.status(201).json(parent);
+    res
+      .status(201)
+      .json({ data: parent, message: "Parent profile created successfully!" });
   } catch (error) {
     if (isDuplicateKeyError(error)) {
       return res.status(409).json({
@@ -32,7 +34,7 @@ const getAllParents = async (req, res, next) => {
       Parent.countDocuments(),
     ]);
 
-    res.status(200).json(buildPaginatedResponse(parents, total, page, limit));
+    res.status(200).json({data: buildPaginatedResponse(parents, total, page, limit)});
   } catch (error) {
     next(error);
   }
@@ -51,7 +53,7 @@ const getParentById = async (req, res, next) => {
       "firstName lastName dateOfBirth gender",
     );
 
-    res.status(200).json({ ...parent.toObject(), children });
+    res.status(200).json({ data: {...parent.toObject(), children: children} });
   } catch (error) {
     next(error);
   }
@@ -70,7 +72,7 @@ const updateParent = async (req, res, next) => {
       return res.status(404).json({ message: "Parent not found" });
     }
 
-    res.status(200).json(parent);
+    res.status(200).json({data: parent, message: "Parent profile updated successfully"});
   } catch (error) {
     if (isDuplicateKeyError(error)) {
       return res.status(409).json({

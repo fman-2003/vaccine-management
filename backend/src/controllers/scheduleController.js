@@ -24,7 +24,7 @@ const createSchedule = async (req, res, next) => {
 
     const schedule = await Schedule.create({ child, vaccine, earliestDate });
 
-    res.status(201).json(schedule);
+    res.status(201).json({data: schedule, message: "New schedule created"});
   } catch (error) {
     next(error);
   }
@@ -75,7 +75,7 @@ const getSchedulesByChild = async (req, res, next) => {
       .populate("vaccine")
       .sort({ earliestDate: 1 });
 
-    res.status(200).json(schedules);
+    res.status(200).json({data: schedules});
   } catch (error) {
     next(error);
   }
@@ -94,7 +94,7 @@ const updateSchedule = async (req, res, next) => {
       return res.status(404).json({ message: "Schedule not found" });
     }
 
-    res.status(200).json(schedule);
+    res.status(200).json({data: schedule, message: "Schedule updated"});
   } catch (error) {
     next(error);
   }

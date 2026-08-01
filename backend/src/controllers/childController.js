@@ -1,15 +1,25 @@
-const Child = require('../models/Child');
-const Parent = require('../models/Parent');
-const Schedule = require('../models/Schedule');
-const { getPaginationParams, buildPaginatedResponse } = require('../util/pagination');
+const Child = require("../models/Child");
+const Parent = require("../models/Parent");
+const Schedule = require("../models/Schedule");
+const {
+  getPaginationParams,
+  buildPaginatedResponse,
+} = require("../util/pagination");
 
 const createChild = async (req, res, next) => {
   try {
-    const { firstName, lastName, gender, dateOfBirth, weightAtBirth, parentId } = req.body;
+    const {
+      firstName,
+      lastName,
+      gender,
+      dateOfBirth,
+      weightAtBirth,
+      parentId,
+    } = req.body;
 
     const parentExists = await Parent.findById(parentId);
     if (!parentExists) {
-      return res.status(404).json({ message: 'Parent not found' });
+      return res.status(404).json({ message: "Parent not found" });
     }
 
     const child = await Child.create({
@@ -21,7 +31,9 @@ const createChild = async (req, res, next) => {
       parent: parentId,
     });
 
-    res.status(201).json(child);
+    res
+      .status(201)
+      .json({ data: child, message: "Child profile created successfully" });
   } catch (error) {
     next(error);
   }
@@ -36,14 +48,16 @@ const getAllChildren = async (req, res, next) => {
 
     const [children, total] = await Promise.all([
       Child.find(filter)
-        .populate('parent', 'firstName lastName')
+        .populate("parent", "firstName lastName")
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit),
       Child.countDocuments(filter),
     ]);
 
-    res.status(200).json(buildPaginatedResponse(children, total, page, limit));
+    res
+      .status(200)
+      .json({ data: buildPaginatedResponse(children, total, page, limit) });
   } catch (error) {
     next(error);
   }
@@ -53,12 +67,12 @@ const getChildById = async (req, res, next) => {
   try {
     const { id } = req.params;
 
-    const child = await Child.findById(id).populate('parent');
+    const child = await Child.findById(id).populate("parent");
     if (!child) {
-      return res.status(404).json({ message: 'Child not found' });
+      return res.status(404).json({ message: "Child not found" });
     }
 
-    res.status(200).json(child);
+    res.status(200).json({ data: child });
   } catch (error) {
     next(error);
   }
@@ -74,10 +88,10 @@ const updateChild = async (req, res, next) => {
     });
 
     if (!child) {
-      return res.status(404).json({ message: 'Child not found' });
+      return res.status(404).json({ message: "Child not found" });
     }
 
-    res.status(200).json(child);
+    res.status(200).json({ data: child, message: "Child data updated" });
   } catch (error) {
     next(error);
   }
@@ -89,12 +103,14 @@ const deleteChild = async (req, res, next) => {
 
     const child = await Child.findByIdAndDelete(id);
     if (!child) {
-      return res.status(404).json({ message: 'Child not found' });
+      return res.status(404).json({ message: "Child not found" });
     }
 
     await Schedule.deleteMany({ child: id });
 
-    res.status(200).json({ message: 'Child and associated schedules deleted successfully' });
+    res
+      .status(200)
+      .json({ message: "Child and associated schedules deleted successfully" });
   } catch (error) {
     next(error);
   }

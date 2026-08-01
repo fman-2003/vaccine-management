@@ -12,7 +12,9 @@ const {
 const createVaccine = async (req, res, next) => {
   try {
     const vaccine = await Vaccine.create(req.body);
-    res.status(201).json(vaccine);
+    res
+      .status(201)
+      .json({ data: vaccine, message: "Vaccine created successfully" });
   } catch (error) {
     if (isDuplicateKeyError(error)) {
       return res.status(409).json({
@@ -32,7 +34,9 @@ const getAllVaccines = async (req, res, next) => {
       Vaccine.countDocuments(),
     ]);
 
-    res.status(200).json(buildPaginatedResponse(vaccines, total, page, limit));
+    res
+      .status(200)
+      .json({ data: buildPaginatedResponse(vaccines, total, page, limit) });
   } catch (error) {
     next(error);
   }
@@ -47,7 +51,7 @@ const getVaccineById = async (req, res, next) => {
       return res.status(404).json({ message: "Vaccine not found" });
     }
 
-    res.status(200).json(vaccine);
+    res.status(200).json({ data: vaccine });
   } catch (error) {
     next(error);
   }
@@ -66,7 +70,7 @@ const updateVaccine = async (req, res, next) => {
       return res.status(404).json({ message: "Vaccine not found" });
     }
 
-    res.status(200).json(vaccine);
+    res.status(200).json({ data: vaccine });
   } catch (error) {
     if (isDuplicateKeyError(error)) {
       return res.status(409).json({
