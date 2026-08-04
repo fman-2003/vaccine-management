@@ -34,7 +34,7 @@ const getAllParents = async (req, res, next) => {
       Parent.countDocuments(),
     ]);
 
-    res.status(200).json({data: buildPaginatedResponse(parents, total, page, limit)});
+    res.status(200).json( buildPaginatedResponse(parents, total, page, limit));
   } catch (error) {
     next(error);
   }

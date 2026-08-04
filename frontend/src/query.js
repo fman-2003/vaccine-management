@@ -9,7 +9,7 @@ export const signup = async ({ username, email, password }) => {
   const res = await axios.post(
     `${API_BASE_URL}/auth/signup`,
     { username, email, password },
-    {
+    {withCredentials: true,
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
@@ -34,7 +34,7 @@ export const login = async ({ username, password }) => {
   const res = await axios.post(
     `${API_BASE_URL}/auth/login`,
     { username, password },
-    {
+    {withCredentials: true,
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",

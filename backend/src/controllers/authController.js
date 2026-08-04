@@ -43,10 +43,12 @@ const login = async (req, res, next) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
-      maxAge: 60 * 60 * 1000,
+      maxAge: 120 * 60 * 1000,
     });
 
-    res.status(200).json({ data: user, message: "Login successful" });
+    res
+      .status(200)
+      .json({ data: user, token: token, message: "Login successful" });
   } catch (error) {
     next(error);
   }
@@ -61,8 +63,12 @@ const logout = async (req, res, next) => {
   res.status(200).json({ message: "Logged out successfully" });
 };
 
-export const checkAuth = (req, res) => {
-  res.json({ authenticated: true });
+const checkAuth = async (req, res) => {
+  try {
+    res.status(200).json({ authenticated: true });
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
+  }
 };
 
-module.exports = { signup, login, logout };
+module.exports = { signup, login, logout, checkAuth };

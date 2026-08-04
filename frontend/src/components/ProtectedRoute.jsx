@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { checkAuth } from "../query";
 
 export default function ProtectedRoute() {
-  const { data, isLoading, isError } = useQuery({
+  const { data, isLoading, isError, error } = useQuery({
     queryKey: ["auth-check"],
     queryFn: checkAuth,
     retry: false,

@@ -1,0 +1,14 @@
+# ---- OS-generated files (can appear anywhere in the tree) ----
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ---- Editor / IDE ----
+.vscode/
+.idea/
+*.swp
+
+# ---- Env files at root level, just in case ----
+.env
+.env.*
+!.env.example

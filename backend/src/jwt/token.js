@@ -7,7 +7,7 @@ const generateToken = (userId) => {
 };
 
 const verifyToken = (req, res, next) => {
-  const token = res.cookies.token
+  const token = req.cookies.token
 
   if (!token) {
     return res.status(401).json({ message: "No token provided" });

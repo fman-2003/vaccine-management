@@ -55,9 +55,7 @@ const getAllChildren = async (req, res, next) => {
       Child.countDocuments(filter),
     ]);
 
-    res
-      .status(200)
-      .json({ data: buildPaginatedResponse(children, total, page, limit) });
+    res.status(200).json(buildPaginatedResponse(children, total, page, limit));
   } catch (error) {
     next(error);
   }
