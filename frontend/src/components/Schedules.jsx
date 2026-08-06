@@ -22,7 +22,7 @@ export default function Schedules() {
   const handleCloseParent = () => setOpenParent(false);
   return (
     // <React.Fragment>
-    <Grid container sx={{ width: "95%" }}>
+    <Grid container sx={{ width: "95%", minHeight: "100vh" }}>
       {
         <ModalWindow onClose={handleCloseParent} open={openParent}>
           <Grid

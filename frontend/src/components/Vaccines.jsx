@@ -24,7 +24,7 @@ export default function Vaccines() {
   const handleOpenVaccine = () => setOpenVaccine(true);
   const handleCloseVaccine = () => setOpenVaccine(false);
   return (
-    <Grid container spacing={5} sx={{ width: "95%" }}>
+    <Grid container spacing={5} sx={{ width: "95%", minHeight: "100vh" }}>
       <Grid size={8}>
         {
           <ModalWindow onClose={handleCloseVaccine} open={openVaccine}>
@@ -696,7 +696,7 @@ export default function Vaccines() {
           </Grid>
         </Grid>
       </Grid>
-      <Grid size={4}>
+      <Grid size={3}>
         <Grid
           size={12}
           sx={{

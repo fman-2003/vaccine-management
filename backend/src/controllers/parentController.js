@@ -30,11 +30,27 @@ const getAllParents = async (req, res, next) => {
     const { page, limit, skip } = getPaginationParams(req.query);
 
     const [parents, total] = await Promise.all([
-      Parent.find().sort({ createdAt: -1 }).skip(skip).limit(limit),
+      Parent.aggregate([
+        { $sort: { createdAt: -1 } },
+        { $skip: skip },
+        { $limit: limit },
+        {
+          $lookup: {
+            from: "children",
+            localField: "_id",
+            foreignField: "parent",
+            as: "children",
+          },
+        },
+        {
+          $addFields: { childrenCount: { $size: "$children" } },
+        },
+        { $project: { children: 0 } },
+      ]),
       Parent.countDocuments(),
     ]);
 
-    res.status(200).json( buildPaginatedResponse(parents, total, page, limit));
+    res.status(200).json(buildPaginatedResponse(parents, total, page, limit));
   } catch (error) {
     next(error);
   }
@@ -53,7 +69,9 @@ const getParentById = async (req, res, next) => {
       "firstName lastName dateOfBirth gender",
     );
 
-    res.status(200).json({ data: {...parent.toObject(), children: children} });
+    res
+      .status(200)
+      .json({ data: { ...parent.toObject(), children: children } });
   } catch (error) {
     next(error);
   }
@@ -72,7 +90,9 @@ const updateParent = async (req, res, next) => {
       return res.status(404).json({ message: "Parent not found" });
     }
 
-    res.status(200).json({data: parent, message: "Parent profile updated successfully"});
+    res
+      .status(200)
+      .json({ data: parent, message: "Parent profile updated successfully" });
   } catch (error) {
     if (isDuplicateKeyError(error)) {
       return res.status(409).json({

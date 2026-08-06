@@ -67,6 +67,7 @@ export default function Dashboard() {
     queryKey: ["children"],
     queryFn: getChildren,
   });
+
   console.log(getChildrenQuery.data);
 
   const getDailyScheduleQuery = useQuery({
@@ -103,7 +104,10 @@ export default function Dashboard() {
   };
   const handleOpenVaccine = () => setOpenVaccine(true);
   const handleCloseVaccine = () => setOpenVaccine(false);
-  const handleCloseChild = () => setOpenChild(false);
+  const handleCloseChild = () => {
+    setOpenChild(false);
+    setParentId("");
+  };
 
   const handleSubmitParent = (e) => {
     e.preventDefault();
@@ -204,7 +208,7 @@ export default function Dashboard() {
     };
     vaccineMutation.mutate(vaccineDetails, {
       onSuccess: (data) => {
-        console.log(data)
+        console.log(data);
         setOpenVaccine(false);
         alert.showSuccess(data.message);
       },
@@ -230,7 +234,7 @@ export default function Dashboard() {
   };
   return (
     <>
-      <Grid container spacing={4} sx={{ width: "95%" }}>
+      <Grid container spacing={4} sx={{ width: "95%", minHeight: "100vh" }}>
         {<AlertMessage {...alert.props} />}
         <Grid size={8}>
           <ModalWindow onClose={handleCloseVaccine} open={openVaccine}>
@@ -1227,7 +1231,7 @@ export default function Dashboard() {
             </List>
           </Grid>
         </Grid>
-        <Grid size={4}>
+        <Grid size={3.5}>
           <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
             <Grid
               size={12}
@@ -1316,7 +1320,7 @@ export default function Dashboard() {
               >
                 No. of Children
               </Typography>
-              <Link style={{ textDecoration: "none" }}>
+              <Link to={"/children"} style={{ textDecoration: "none" }}>
                 <Typography
                   sx={{
                     fontWeight: "300px",
@@ -1399,11 +1403,16 @@ export default function Dashboard() {
               <SearchSharpIcon />
             </Grid> */}
             </Grid>
-            <List
-              sx={{ overflowY: "auto", whiteSpace: "nowrap", margin: "auto" }}
+            <Box
+              sx={{
+                overflowY: "auto",
+                whiteSpace: "nowrap",
+                display: "flex",
+                flexDirection: "column",
+              }}
             >
               {getParentsQuery.isPending && (
-                <CircularProgress sx={{ color: "green" }} />
+                <CircularProgress sx={{ color: "green", margin: "auto" }} />
               )}
               {getParentsQuery.isSuccess &&
                 getParentsQuery.data.data.length === 0 && (
@@ -1412,42 +1421,54 @@ export default function Dashboard() {
                   </Typography>
                 )}
               {getParentsQuery.isSuccess &&
+                getParentsQuery.data.data &&
                 getParentsQuery.data.data.map((parent) => {
-                  <ListItem
-                    sx={{
-                      borderBottom: 1,
-                      borderColor: "rgba(0, 0, 0, 0.1)",
-                      display: "flex",
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                      paddingY: "10%",
-                    }}
-                  >
-                    <Typography
+                  return (
+                    <Box
+                      key={parent._id}
                       sx={{
-                        color: "#000000",
-                        fontWeight: 500,
-                        fontSize: "16px",
-                        lineHeight: "24px",
-                        maxWidth: "145px",
+                        borderBottom: 1,
+                        borderColor: "rgba(0, 0, 0, 0.1)",
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        paddingY: "10%",
+                        "&:hover": {
+                          backgroundColor: "#1F8E1F0D",
+                          borderRadius: "15px",
+                          border: 1,
+                          borderColor: "#1F8E1F",
+                          cursor: "pointer",
+                        },
                       }}
                     >
-                      {parent.firstName} {parent.lastName}
-                    </Typography>
-                    <Typography
-                      sx={{
-                        color: "#1F8E1F",
-                        fontWeight: 300,
-                        fontSize: "16px",
-                        lineHeight: "24px",
-                        maxWidth: "145px",
-                      }}
-                    >
-                      3 Children
-                    </Typography>
-                  </ListItem>;
+                      <Typography
+                        sx={{
+                          color: "#000000",
+                          fontWeight: 500,
+                          fontSize: "16px",
+                          lineHeight: "24px",
+                          maxWidth: "145px",
+                        }}
+                      >
+                        {parent.firstName} {parent.lastName}
+                      </Typography>
+                      <Typography
+                        sx={{
+                          color: "#1F8E1F",
+                          fontWeight: 300,
+                          fontSize: "16px",
+                          lineHeight: "24px",
+                          maxWidth: "145px",
+                        }}
+                      >
+                        {parent.childrenCount}{" "}
+                        {parent.childrenCount === 1 ? "child" : "children"}
+                      </Typography>
+                    </Box>
+                  );
                 })}
-            </List>
+            </Box>
           </Grid>
         </Grid>
       </Grid>

@@ -36,10 +36,12 @@ const parentSchema = new mongoose.Schema(
     hospitalNumber: {
       type: String,
       trim: true,
+      unique: true,
     },
     nhis: {
       type: String,
       trim: true,
+      unique: true,
     },
   },
   { timestamps: true },

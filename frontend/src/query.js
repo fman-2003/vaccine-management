@@ -331,7 +331,7 @@ export const createVaccine = async (data) => {
     return validationErrors;
   }
 
-  if (res.status !== 200) {
+  if (res.status !== 201) {
     const message =
       res.data?.errors?.[0]?.msg || res.data?.message || "Something went wrong";
     throw new Error(message);
@@ -465,7 +465,7 @@ export const createSchedule = async (data) => {
     return validationErrors;
   }
 
-  if (res.status !== 200) {
+  if (res.status !== 201) {
     const message =
       res.data?.errors?.[0]?.msg || res.data?.message || "Something went wrong";
     throw new Error(message);
