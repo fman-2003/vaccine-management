@@ -34,9 +34,7 @@ const getAllVaccines = async (req, res, next) => {
       Vaccine.countDocuments(),
     ]);
 
-    res
-      .status(200)
-      .json({ data: buildPaginatedResponse(vaccines, total, page, limit) });
+    res.status(200).json(buildPaginatedResponse(vaccines, total, page, limit));
   } catch (error) {
     next(error);
   }

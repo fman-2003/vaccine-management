@@ -22,6 +22,7 @@ import VaccinesRootLayout from "./components/VaccinesRoot.jsx";
 import Vaccines from "./components/Vaccines.jsx";
 import SchedulesRootLayout from "./components/SchedulesRoot.jsx";
 import Schedules from "./components/Schedules.jsx";
+import VaccineProfile from "./components/VaccineProfile.jsx";
 
 const router = createBrowserRouter([
   {
@@ -53,10 +54,7 @@ const router = createBrowserRouter([
             index: true,
             element: <Children />,
           },
-          {
-            path: "child",
-            element: <ChildProfile />,
-          },
+          { path: ":childId", element: <ChildProfile /> },
         ],
       },
       {
@@ -73,10 +71,8 @@ const router = createBrowserRouter([
         path: "/vaccines",
         element: <VaccinesRootLayout />,
         children: [
-          {
-            index: true,
-            element: <Vaccines />,
-          },
+          { index: true, element: <Vaccines /> },
+          { path: ":vaccineId", element: <VaccineProfile /> },
         ],
       },
       {

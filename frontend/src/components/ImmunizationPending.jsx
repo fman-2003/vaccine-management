@@ -4,8 +4,27 @@ import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import PropTypes from "prop-types";
+import formatDate from "../helper/format-date";
 
-export default function ImmunizationPending() {
+// pending vs. missed get slightly different accent colors so the tab
+// isn't visually flat when a child has overdue doses mixed in
+const STATUS_COLORS = {
+  pending: "#C91919",
+  missed: "#FF9900",
+};
+
+export default function ImmunizationPending({ schedules = [] }) {
+  if (schedules.length === 0) {
+    return (
+      <Grid sx={{ padding: "5%", textAlign: "center" }}>
+        <Typography sx={{ color: "#00000099" }}>
+          No pending immunizations. All caught up!
+        </Typography>
+      </Grid>
+    );
+  }
+
   return (
     <Grid sx={{ display: "flex", flexDirection: "column", width: "100%" }}>
       <Grid
@@ -42,403 +61,223 @@ export default function ImmunizationPending() {
           Status
         </Typography>
       </Grid>
+
       <Grid>
-        <Accordion
-          elevation={0}
-          sx={{
-            backgroundColor: "#FFFFFF",
-            borderBottom: 1,
-            borderColor: "#0000001A",
-            border: "none",
-            "&:hover": {
-              backgroundColor: "#1F8E1F0D",
-              borderRadius: "12px",
-              border: 1,
-              borderColor: "#1F8E1F",
-              cursor: "pointer",
-            },
-            "&.Mui-expanded": {
-              backgroundColor: "#1F8E1F0D",
-              borderRadius: "12px",
-              border: 1,
-              borderColor: "#1F8E1F",
-              cursor: "pointer",
-            },
-          }}
-        >
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1-content"
-            id="panel1-header"
-            sx={{ flexDirection: "row-reverse", paddingY: "2%" }}
-          >
-            <Grid
+        {schedules.map((schedule) => {
+          const statusColor =
+            STATUS_COLORS[schedule.status] ?? STATUS_COLORS.pending;
+          const statusLabel =
+            schedule.status === "missed" ? "Missed" : "Pending";
+
+          return (
+            <Accordion
+              key={schedule._id}
+              elevation={0}
               sx={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                width: "100%",
+                backgroundColor: "#FFFFFF",
+                borderBottom: 1,
+                borderColor: "#0000001A",
+                "&:hover": {
+                  backgroundColor: "#1F8E1F0D",
+                  borderRadius: "12px",
+                  border: 1,
+                  borderColor: "#1F8E1F",
+                  cursor: "pointer",
+                },
+                "&.Mui-expanded": {
+                  backgroundColor: "#1F8E1F0D",
+                  borderRadius: "12px",
+                  border: 1,
+                  borderColor: "#1F8E1F",
+                  cursor: "pointer",
+                },
               }}
             >
-              <Typography
-                sx={{
-                  fontWeight: 500,
-                  fontSize: "16px",
-                  lineHeight: "24px",
-                  color: "#000000",
-                  paddingLeft: "2%",
-                }}
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                sx={{ flexDirection: "row-reverse", paddingY: "2%" }}
               >
-                BCG ( Bacilli Calmette Guerin)
-              </Typography>
-              <Typography
-                sx={{
-                  color: "#C91919",
-                  fontWeight: 400,
-                  fontSize: "12px",
-                  lineHeight: "14px",
-                  backgroundColor: "#C9191926",
-                  borderRadius: "900px",
-                  paddingY: "8px",
-                  paddingX: "16px",
-                }}
-              >
-                Pending 0/3
-              </Typography>
-            </Grid>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography
-              component={"p"}
-              sx={{
-                color: "#000000",
-                fontWeight: 600,
-                fontSize: "16px",
-                lineHeight: "24px",
-                marginBottom: "5px",
-              }}
-            >
-              BCG (Dose 1)
-            </Typography>
-            <Typography
-              component={"p"}
-              sx={{
-                color: "#222222B2",
-                fontWeight: 300,
-                fontSize: "12px",
-                lineHeight: "18px",
-                marginBottom: "20px",
-              }}
-            >
-              This dose is taken at birth or as soon as possible after birth
-            </Typography>
-            <Grid
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-evenly",
-              }}
-            >
-              <Box>
-                <Typography
+                <Grid
                   sx={{
-                    fontWeight: 200,
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    width: "100%",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      fontWeight: 500,
+                      fontSize: "16px",
+                      lineHeight: "24px",
+                      color: "#000000",
+                      paddingLeft: "2%",
+                    }}
+                  >
+                    {schedule.vaccine?.type ?? "Unknown vaccine"}
+                  </Typography>
+                  <Typography
+                    sx={{
+                      color: statusColor,
+                      fontWeight: 400,
+                      fontSize: "12px",
+                      lineHeight: "14px",
+                      backgroundColor: `${statusColor}26`,
+                      borderRadius: "900px",
+                      paddingY: "8px",
+                      paddingX: "16px",
+                    }}
+                  >
+                    {statusLabel}
+                  </Typography>
+                </Grid>
+              </AccordionSummary>
+
+              <AccordionDetails>
+                <Typography
+                  component="p"
+                  sx={{
+                    color: "#000000",
+                    fontWeight: 600,
+                    fontSize: "16px",
+                    lineHeight: "24px",
+                    marginBottom: "5px",
+                  }}
+                >
+                  {schedule.vaccine?.type}
+                </Typography>
+                <Typography
+                  component="p"
+                  sx={{
+                    color: "#222222B2",
+                    fontWeight: 300,
                     fontSize: "12px",
                     lineHeight: "18px",
-                    color: "#000000",
+                    marginBottom: "20px",
                   }}
-                  component={"p"}
                 >
-                  Status
+                  Dosage: {schedule.vaccine?.dosage || "—"} • Route:{" "}
+                  {schedule.vaccine?.routeOfAdministration || "—"} • Site:{" "}
+                  {schedule.vaccine?.siteOfAdministration || "—"}
                 </Typography>
-                <Box
+
+                <Grid
                   sx={{
-                    border: 1,
-                    textAlign: "center",
-                    borderColor: "#1F8E1F",
-                    padding: "4px",
-                    borderRadius: "4px",
-                    height: "30px",
-                  }}
-                ></Box>
-              </Box>
-              <Box>
-                <Typography
-                  sx={{
-                    fontWeight: 200,
-                    fontSize: "12px",
-                    lineHeight: "18px",
-                    color: "#000000",
-                  }}
-                  component={"p"}
-                >
-                  Earliest Date
-                </Typography>
-                <Box
-                  sx={{
-                    padding: "16px",
-                    borderRadius: "8px",
-                    backgroundColor: "#EEEEEE",
-                    color: "#222222",
-                    fontWeight: 400,
-                    fontSize: "12px",
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-evenly",
                   }}
                 >
-                  July 24, 2024
-                </Box>
-              </Box>
-              <Box>
-                <Typography
-                  sx={{
-                    fontWeight: 200,
-                    fontSize: "12px",
-                    lineHeight: "18px",
-                    color: "#000000",
-                  }}
-                  component={"p"}
-                >
-                  Date of Immunization
-                </Typography>
-                <Box
-                  sx={{
-                    padding: "16px",
-                    borderRadius: "8px",
-                    backgroundColor: "#EEEEEE",
-                    color: "#222222",
-                    fontWeight: 400,
-                    fontSize: "12px",
-                  }}
-                >
-                  July 24, 2024
-                </Box>
-              </Box>
-              <Box>
-                <Typography
-                  sx={{
-                    fontWeight: 200,
-                    fontSize: "12px",
-                    lineHeight: "18px",
-                    color: "#000000",
-                  }}
-                  component={"p"}
-                >
-                  Other Comment
-                </Typography>
-                <Box
-                  sx={{
-                    padding: "16px",
-                    borderRadius: "8px",
-                    backgroundColor: "#EEEEEE",
-                    color: "#222222",
-                    fontWeight: 400,
-                    fontSize: "12px",
-                  }}
-                >
-                  Immunization went as planned
-                </Box>
-              </Box>
-            </Grid>
-          </AccordionDetails>
-        </Accordion>
-        <Accordion
-          elevation={0}
-          sx={{
-            backgroundColor: "#FFFFFF",
-            borderBottom: 1,
-            borderColor: "#0000001A",
-            "&:hover": {
-              backgroundColor: "#1F8E1F0D",
-              borderRadius: "12px",
-              border: 1,
-              borderColor: "#1F8E1F",
-              cursor: "pointer",
-            },
-            "&.Mui-expanded": {
-              backgroundColor: "#1F8E1F0D",
-              borderRadius: "12px",
-              border: 1,
-              borderColor: "#1F8E1F",
-              cursor: "pointer",
-            },
-          }}
-        >
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1-content"
-            id="panel1-header"
-            sx={{ flexDirection: "row-reverse", paddingY: "2%" }}
-          >
-            <Grid
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                width: "100%",
-              }}
-            >
-              <Typography
-                sx={{
-                  fontWeight: 500,
-                  fontSize: "16px",
-                  lineHeight: "24px",
-                  color: "#000000",
-                  paddingLeft: "2%",
-                }}
-              >
-                BCG ( Bacilli Calmette Guerin)
-              </Typography>
-              <Typography
-                sx={{
-                  color: "#C91919",
-                  fontWeight: 400,
-                  fontSize: "12px",
-                  lineHeight: "14px",
-                  backgroundColor: "#C9191926",
-                  borderRadius: "900px",
-                  paddingY: "8px",
-                  paddingX: "16px",
-                }}
-              >
-                Pending 0/3
-              </Typography>
-            </Grid>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography
-              component={"p"}
-              sx={{
-                color: "#000000",
-                fontWeight: 600,
-                fontSize: "16px",
-                lineHeight: "24px",
-                marginBottom: "5px",
-              }}
-            >
-              BCG (Dose 1)
-            </Typography>
-            <Typography
-              component={"p"}
-              sx={{
-                color: "#222222B2",
-                fontWeight: 300,
-                fontSize: "12px",
-                lineHeight: "18px",
-                marginBottom: "20px",
-              }}
-            >
-              This dose is taken at birth or as soon as possible after birth
-            </Typography>
-            <Grid
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-evenly",
-              }}
-            >
-              <Box>
-                <Typography
-                  sx={{
-                    fontWeight: 200,
-                    fontSize: "12px",
-                    lineHeight: "18px",
-                    color: "#000000",
-                  }}
-                  component={"p"}
-                >
-                  Status
-                </Typography>
-                <Box
-                  sx={{
-                    border: 1,
-                    textAlign: "center",
-                    borderColor: "#1F8E1F",
-                    padding: "4px",
-                    borderRadius: "4px",
-                    height: "30px",
-                  }}
-                >
-                  
-                </Box>
-              </Box>
-              <Box>
-                <Typography
-                  sx={{
-                    fontWeight: 200,
-                    fontSize: "12px",
-                    lineHeight: "18px",
-                    color: "#000000",
-                  }}
-                  component={"p"}
-                >
-                  Earliest Date
-                </Typography>
-                <Box
-                  sx={{
-                    padding: "16px",
-                    borderRadius: "8px",
-                    backgroundColor: "#EEEEEE",
-                    color: "#222222",
-                    fontWeight: 400,
-                    fontSize: "12px",
-                  }}
-                >
-                  July 24, 2024
-                </Box>
-              </Box>
-              <Box>
-                <Typography
-                  sx={{
-                    fontWeight: 200,
-                    fontSize: "12px",
-                    lineHeight: "18px",
-                    color: "#000000",
-                  }}
-                  component={"p"}
-                >
-                  Date of Immunization
-                </Typography>
-                <Box
-                  sx={{
-                    padding: "16px",
-                    borderRadius: "8px",
-                    backgroundColor: "#EEEEEE",
-                    color: "#222222",
-                    fontWeight: 400,
-                    fontSize: "12px",
-                  }}
-                >
-                  July 24, 2024
-                </Box>
-              </Box>
-              <Box>
-                <Typography
-                  sx={{
-                    fontWeight: 200,
-                    fontSize: "12px",
-                    lineHeight: "18px",
-                    color: "#000000",
-                  }}
-                  component={"p"}
-                >
-                  Other Comment
-                </Typography>
-                <Box
-                  sx={{
-                    padding: "16px",
-                    borderRadius: "8px",
-                    backgroundColor: "#EEEEEE",
-                    color: "#222222",
-                    fontWeight: 400,
-                    fontSize: "12px",
-                  }}
-                >
-                  Immunization went as planned
-                </Box>
-              </Box>
-            </Grid>
-          </AccordionDetails>
-        </Accordion>
+                  <Box>
+                    <Typography
+                      sx={{
+                        fontWeight: 200,
+                        fontSize: "12px",
+                        lineHeight: "18px",
+                        color: "#000000",
+                      }}
+                      component="p"
+                    >
+                      Status
+                    </Typography>
+                    <Box
+                      sx={{
+                        border: 1,
+                        textAlign: "center",
+                        borderColor: statusColor,
+                        padding: "4px",
+                        borderRadius: "4px",
+                        height: "30px",
+                      }}
+                    />
+                  </Box>
+                  <Box>
+                    <Typography
+                      sx={{
+                        fontWeight: 200,
+                        fontSize: "12px",
+                        lineHeight: "18px",
+                        color: "#000000",
+                      }}
+                      component="p"
+                    >
+                      Earliest Date
+                    </Typography>
+                    <Box
+                      sx={{
+                        padding: "16px",
+                        borderRadius: "8px",
+                        backgroundColor: "#EEEEEE",
+                        color: "#222222",
+                        fontWeight: 400,
+                        fontSize: "12px",
+                      }}
+                    >
+                      {formatDate(schedule.earliestDate)}
+                    </Box>
+                  </Box>
+                  <Box>
+                    <Typography
+                      sx={{
+                        fontWeight: 200,
+                        fontSize: "12px",
+                        lineHeight: "18px",
+                        color: "#000000",
+                      }}
+                      component="p"
+                    >
+                      Date of Immunization
+                    </Typography>
+                    <Box
+                      sx={{
+                        padding: "16px",
+                        borderRadius: "8px",
+                        backgroundColor: "#EEEEEE",
+                        color: "#222222",
+                        fontWeight: 400,
+                        fontSize: "12px",
+                      }}
+                    >
+                      {schedule.dateOfImmunization
+                        ? formatDate(schedule.dateOfImmunization)
+                        : "Not yet administered"}
+                    </Box>
+                  </Box>
+                  <Box>
+                    <Typography
+                      sx={{
+                        fontWeight: 200,
+                        fontSize: "12px",
+                        lineHeight: "18px",
+                        color: "#000000",
+                      }}
+                      component="p"
+                    >
+                      Other Comment
+                    </Typography>
+                    <Box
+                      sx={{
+                        padding: "16px",
+                        borderRadius: "8px",
+                        backgroundColor: "#EEEEEE",
+                        color: "#222222",
+                        fontWeight: 400,
+                        fontSize: "12px",
+                      }}
+                    >
+                      {schedule.comment || "No comment"}
+                    </Box>
+                  </Box>
+                </Grid>
+              </AccordionDetails>
+            </Accordion>
+          );
+        })}
       </Grid>
     </Grid>
   );
 }
+
+ImmunizationPending.propTypes = {
+  schedules: PropTypes.array,
+};

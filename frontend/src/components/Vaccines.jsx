@@ -1,4 +1,6 @@
+/* eslint-disable react/prop-types */
 import React from "react";
+import { Link } from "react-router-dom";
 import Grid from "@mui/material/Grid2";
 import {
   Typography,
@@ -8,6 +10,8 @@ import {
   Box,
   InputAdornment,
 } from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 
 import haceyLogo from "../assets/hacey-svg.svg";
@@ -17,57 +21,145 @@ import SortSharpIcon from "@mui/icons-material/SortSharp";
 import VaccinesRoundedIcon from "@mui/icons-material/VaccinesRounded";
 import ArrowBackSharpIcon from "@mui/icons-material/ArrowBackSharp";
 import ModalWindow from "./Modal";
+import AlertMessage from "./AlertMessage";
+import useAlert from "../hooks/useAlert";
+import { getVaccines, createVaccine } from "../query";
+
+function VaccineCell({ children, color = "#000000", weight = 500 }) {
+  return (
+    <Typography
+      sx={{
+        color,
+        fontWeight: weight,
+        maxWidth: "190px",
+        fontSize: "16px",
+        lineHeight: "24px",
+      }}
+    >
+      {children}
+    </Typography>
+  );
+}
 
 export default function Vaccines() {
+  const alert = useAlert();
+  const queryClient = useQueryClient();
+
   const [openVaccine, setOpenVaccine] = React.useState(false);
+  const [vaccineError, setVaccineError] = React.useState({});
+
+  const getVaccinesQuery = useQuery({
+    queryKey: ["vaccines"],
+    queryFn: getVaccines,
+  });
+
+  const vaccineMutation = useMutation({
+    mutationFn: createVaccine,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["vaccines"] });
+    },
+  });
 
   const handleOpenVaccine = () => setOpenVaccine(true);
   const handleCloseVaccine = () => setOpenVaccine(false);
+
+  const handleSubmitVaccine = (e) => {
+    e.preventDefault();
+    setVaccineError({ error: "", validationError: [] });
+    const formData = new FormData(e.target);
+    const vaccineDetails = {
+      type: formData.get("type").trim(),
+      minimumTargetAge: formData.get("minimumTargetAge").trim(),
+      dosage: formData.get("dosage").trim(),
+      routeOfAdministration: formData.get("routeOfAdministration").trim(),
+      siteOfAdministration: formData.get("siteOfAdministration").trim(),
+    };
+    vaccineMutation.mutate(vaccineDetails, {
+      onSuccess: (data) => {
+        setOpenVaccine(false);
+        alert.showSuccess(data.message);
+        e.target.reset();
+      },
+      onError: (error) => {
+        if (error.message.includes("422")) {
+          setVaccineError((prev) => ({
+            ...prev,
+            validationError: error.response.data.errors,
+          }));
+        }
+        alert.showError(error.response.data.message);
+        setVaccineError((prev) => ({
+          ...prev,
+          error: error.response.data.message,
+        }));
+      },
+    });
+  };
+
+  const vaccines = getVaccinesQuery.data?.data ?? [];
+  const total = getVaccinesQuery.data?.pagination?.total;
+
   return (
     <Grid container spacing={5} sx={{ width: "95%", minHeight: "100vh" }}>
+      {<AlertMessage {...alert.props} />}
+
       <Grid size={8}>
-        {
-          <ModalWindow onClose={handleCloseVaccine} open={openVaccine}>
-            <Grid
+        <ModalWindow onClose={handleCloseVaccine} open={openVaccine}>
+          <Grid
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "flex-start",
+              width: "fit-content",
+            }}
+          >
+            <Button
+              onClick={handleCloseVaccine}
+              variant="text"
               sx={{
+                textTransform: "none",
                 display: "flex",
-                flexDirection: "column",
-                alignItems: "flex-start",
-                width: "fit-content",
+                flexDirection: "row",
+                gap: "5px",
+                marginBottom: "20px",
+              }}
+              disableRipple
+            >
+              <ArrowBackSharpIcon sx={{ color: "#1F8E1F" }} />
+              <Typography
+                sx={{ color: "#000000", fontSize: "16px", fontWeight: 400 }}
+              >
+                Back
+              </Typography>
+            </Button>
+            <Typography
+              sx={{
+                width: "100%",
+                color: "#000000",
+                fontWeight: 600,
+                fontSize: "24px",
+                lineHeight: "36px",
+                marginBottom: "20px",
               }}
             >
-              <Button
-                onClick={handleCloseVaccine}
-                variant="text"
-                sx={{
-                  textTransform: "none",
-                  display: "flex",
-                  flexDirection: "row",
-                  gap: "5px",
-                  marginBottom: "20px",
-                }}
-                disableRipple
-              >
-                <ArrowBackSharpIcon sx={{ color: "#1F8E1F" }} />{" "}
-                <Typography
-                  sx={{ color: "#000000", fontSize: "16px", fontWeight: 400 }}
-                >
-                  Back
-                </Typography>
-              </Button>
-              <Typography
-                sx={{
-                  width: "100%",
-                  color: "#000000",
-                  fontWeight: 600,
-                  fontSize: "24px",
-                  lineHeight: "36px",
-                  marginBottom: "20px",
-                }}
-              >
-                New Vaccine
-              </Typography>
-              <Grid sx={{ width: "100%" }}>
+              New Vaccine
+            </Typography>
+            <Grid sx={{ width: "100%" }}>
+              <form onSubmit={handleSubmitVaccine}>
+                {vaccineMutation.isError && vaccineError.validationError && (
+                  <Box sx={{ marginBottom: "5px" }}>
+                    <ul>
+                      {vaccineError.validationError.map((valErr) => (
+                        <li
+                          style={{ color: "red", fontSize: "15px" }}
+                          key={valErr.msg}
+                        >
+                          {valErr.msg}
+                        </li>
+                      ))}
+                    </ul>
+                  </Box>
+                )}
                 <Box sx={{ marginBottom: "25px" }}>
                   <InputLabel
                     sx={{
@@ -81,7 +173,7 @@ export default function Vaccines() {
                     Type of Vaccine
                   </InputLabel>
                   <TextField
-                    placeholder="johndoe@gmail.com"
+                    placeholder="e.g BCG"
                     sx={{ width: "600px", textTransform: "capitalize" }}
                     name="type"
                     type="text"
@@ -100,8 +192,8 @@ export default function Vaccines() {
                     Minimum Target Age of Child
                   </InputLabel>
                   <TextField
-                    placeholder="johndoe@gmail.com"
-                    sx={{ width: "600px", textTransform: "capitalize" }}
+                    placeholder="e.g At Birth"
+                    sx={{ width: "600px" }}
                     name="minimumTargetAge"
                     type="text"
                   />
@@ -119,7 +211,7 @@ export default function Vaccines() {
                     Dosage
                   </InputLabel>
                   <TextField
-                    placeholder="johndoe@gmail.com"
+                    placeholder="e.g 0.5ml"
                     sx={{ width: "600px" }}
                     name="dosage"
                     type="text"
@@ -138,8 +230,8 @@ export default function Vaccines() {
                     Route of Administration
                   </InputLabel>
                   <TextField
-                    placeholder="johndoe@gmail.com"
-                    sx={{ width: "600px", textTransform: "capitalize" }}
+                    placeholder="e.g Intramuscular"
+                    sx={{ width: "600px" }}
                     name="routeOfAdministration"
                     type="text"
                   />
@@ -157,8 +249,8 @@ export default function Vaccines() {
                     Site of Administration
                   </InputLabel>
                   <TextField
-                    placeholder="johndoe@gmail.com"
-                    sx={{ width: "600px", textTransform: "capitalize" }}
+                    placeholder="e.g Left Thigh"
+                    sx={{ width: "600px" }}
                     name="siteOfAdministration"
                     type="text"
                   />
@@ -173,189 +265,36 @@ export default function Vaccines() {
                     color: "#FFFFFF",
                     textTransform: "none",
                   }}
+                  type="submit"
+                  disabled={vaccineMutation.isPending}
                 >
-                  Create New Vaccine
+                  {vaccineMutation.isPending ? (
+                    <CircularProgress size="24px" sx={{ color: "white" }} />
+                  ) : (
+                    "Create New Vaccine"
+                  )}
                 </Button>
-                <Box
-                  sx={{
-                    margin: "auto",
-                    display: "flex",
-                    flexDirection: "row",
-                    width: "100%",
-                    textAlign: "center",
-                    alignItems: "center",
-                    marginTop: "10px",
-                    justifyContent: "center",
-                    gap: 1,
-                  }}
-                >
-                  <Typography>Powered by</Typography>
-                  <img src={haceyLogo} alt="" />
-                </Box>
-              </Grid>
-            </Grid>
-          </ModalWindow>
-        }
-        {
-          <ModalWindow onClose={handleCloseVaccine} open={openVaccine}>
-            <Grid
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "flex-start",
-                width: "fit-content",
-              }}
-            >
-              <Button
-                onClick={handleCloseVaccine}
-                variant="text"
+              </form>
+              <Box
                 sx={{
-                  textTransform: "none",
+                  margin: "auto",
                   display: "flex",
                   flexDirection: "row",
-                  gap: "5px",
-                  marginBottom: "20px",
-                }}
-                disableRipple
-              >
-                <ArrowBackSharpIcon sx={{ color: "#1F8E1F" }} />{" "}
-                <Typography
-                  sx={{ color: "#000000", fontSize: "16px", fontWeight: 400 }}
-                >
-                  Back
-                </Typography>
-              </Button>
-              <Typography
-                sx={{
                   width: "100%",
-                  color: "#000000",
-                  fontWeight: 600,
-                  fontSize: "24px",
-                  lineHeight: "36px",
-                  marginBottom: "20px",
+                  textAlign: "center",
+                  alignItems: "center",
+                  marginTop: "10px",
+                  justifyContent: "center",
+                  gap: 1,
                 }}
               >
-                New Vaccine
-              </Typography>
-              <Grid sx={{ width: "100%" }}>
-                <Box sx={{ marginBottom: "25px" }}>
-                  <InputLabel
-                    sx={{
-                      color: "#222222",
-                      fontWeight: 500,
-                      fontSize: "16px",
-                      lineHeight: "24px",
-                      marginBottom: "10px",
-                    }}
-                  >
-                    Type of Vaccine
-                  </InputLabel>
-                  <TextField
-                    placeholder="johndoe@gmail.com"
-                    sx={{ width: "600px" }}
-                  />
-                </Box>
-                <Box sx={{ marginBottom: "25px" }}>
-                  <InputLabel
-                    sx={{
-                      color: "#222222",
-                      fontWeight: 500,
-                      fontSize: "16px",
-                      lineHeight: "24px",
-                      marginBottom: "10px",
-                    }}
-                  >
-                    Minimum Target Age of Child
-                  </InputLabel>
-                  <TextField
-                    placeholder="johndoe@gmail.com"
-                    sx={{ width: "600px" }}
-                  />
-                </Box>
-                <Box sx={{ marginBottom: "25px" }}>
-                  <InputLabel
-                    sx={{
-                      color: "#222222",
-                      fontWeight: 500,
-                      fontSize: "16px",
-                      lineHeight: "24px",
-                      marginBottom: "10px",
-                    }}
-                  >
-                    Dosage
-                  </InputLabel>
-                  <TextField
-                    placeholder="johndoe@gmail.com"
-                    sx={{ width: "600px" }}
-                  />
-                </Box>
-                <Box sx={{ marginBottom: "25px" }}>
-                  <InputLabel
-                    sx={{
-                      color: "#222222",
-                      fontWeight: 500,
-                      fontSize: "16px",
-                      lineHeight: "24px",
-                      marginBottom: "10px",
-                    }}
-                  >
-                    Route of Administration
-                  </InputLabel>
-                  <TextField
-                    placeholder="johndoe@gmail.com"
-                    sx={{ width: "600px" }}
-                  />
-                </Box>
-                <Box sx={{ marginBottom: "25px" }}>
-                  <InputLabel
-                    sx={{
-                      color: "#222222",
-                      fontWeight: 500,
-                      fontSize: "16px",
-                      lineHeight: "24px",
-                      marginBottom: "10px",
-                    }}
-                  >
-                    Site of Administration
-                  </InputLabel>
-                  <TextField
-                    placeholder="johndoe@gmail.com"
-                    sx={{ width: "600px" }}
-                  />
-                </Box>
-                <Button
-                  sx={{
-                    width: "100%",
-                    backgroundColor: "#1F8E1F",
-                    paddingY: "12px",
-                    paddingX: "36px",
-                    borderRadius: "80px",
-                    color: "#FFFFFF",
-                    textTransform: "none",
-                  }}
-                >
-                  Create New Vaccine
-                </Button>
-                <Box
-                  sx={{
-                    margin: "auto",
-                    display: "flex",
-                    flexDirection: "row",
-                    width: "100%",
-                    textAlign: "center",
-                    alignItems: "center",
-                    marginTop: "10px",
-                    justifyContent: "center",
-                    gap: 1,
-                  }}
-                >
-                  <Typography>Powered by</Typography>
-                  <img src={haceyLogo} alt="" />
-                </Box>
-              </Grid>
+                <Typography>Powered by</Typography>
+                <img src={haceyLogo} alt="" />
+              </Box>
             </Grid>
-          </ModalWindow>
-        }
+          </Grid>
+        </ModalWindow>
+
         <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
           <Grid
             size={12}
@@ -376,7 +315,6 @@ export default function Vaccines() {
               "&:hover": {
                 border: 1,
                 borderColor: "#1F8E1F",
-
                 cursor: "pointer",
               },
             }}
@@ -403,7 +341,7 @@ export default function Vaccines() {
                   color: "#1F8E1F",
                 }}
               >
-                Add a New Vaccine to be administer to all
+                Add a New Vaccine to be administered to all
               </Typography>
             </Grid>
             <Grid>
@@ -413,6 +351,7 @@ export default function Vaccines() {
             </Grid>
           </Grid>
         </motion.div>
+
         <Grid
           sx={{
             maxHeight: "1011px",
@@ -439,7 +378,7 @@ export default function Vaccines() {
                 color: "#000000",
               }}
             >
-              Existitng Vaccines
+              Existing Vaccines
             </Typography>
             <Box
               sx={{
@@ -467,12 +406,12 @@ export default function Vaccines() {
               />
             </Box>
           </Grid>
+
           <Grid
             sx={{
               display: "flex",
               flexDirection: "row",
               paddingY: "5%",
-              //   paddingX: "1%",
               justifyContent: "space-between",
             }}
           >
@@ -497,6 +436,7 @@ export default function Vaccines() {
               Route of Administration
             </Typography>
           </Grid>
+
           <Grid
             sx={{
               display: "flex",
@@ -505,197 +445,61 @@ export default function Vaccines() {
               overflowY: "auto",
             }}
           >
-            <Grid
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                gap: "23%",
-                alignItems: "flex-start",
-                paddingY: "3%",
-                borderBottom: 1,
-                borderColor: "rgba(0, 0, 0, 0.1)",
-                "&:hover": {
-                  backgroundColor: "#1F8E1F0D",
-                  borderRadius: "15px",
-                  border: 1,
-                  borderColor: "#1F8E1F",
-                  cursor: "default",
-                },
-              }}
-            >
-              <Typography
-                sx={{
-                  color: "#000000",
-                  fontWeight: 500,
-                  maxWidth: "120px",
-                  fontSize: "16px",
-                  lineHeight: "24px",
-                }}
-              >
-                At Birth
+            {getVaccinesQuery.isPending && (
+              <CircularProgress
+                size="30px"
+                sx={{ color: "green", margin: "auto" }}
+              />
+            )}
+            {getVaccinesQuery.isError && (
+              <Typography sx={{ margin: "auto", color: "#C91919" }}>
+                Couldn&apos;t load vaccines. Try refreshing.
               </Typography>
-              <Typography
-                sx={{
-                  color: "#000000",
-                  fontWeight: 500,
-                  maxWidth: "190px",
-                  fontSize: "16px",
-                  lineHeight: "24px",
-                }}
-              >
-                HEP BO
+            )}
+            {getVaccinesQuery.isSuccess && vaccines.length === 0 && (
+              <Typography sx={{ margin: "auto" }}>
+                Vaccines appear here
               </Typography>
-              <Typography
-                sx={{
-                  color: "#000000",
-                  fontWeight: 300,
-                  opacity: 0.8,
-                  fontSize: "16px",
-                  lineHeight: "24px",
-                }}
+            )}
+            {vaccines.map((vaccine) => (
+              <Link
+                key={vaccine._id}
+                to={`/vaccines/${vaccine._id}`}
+                style={{ textDecoration: "none" }}
               >
-                0.5ml
-              </Typography>
-              <Typography
-                sx={{
-                  color: "#1F8E1F",
-                  fontWeight: 300,
-                  fontSize: "16px",
-                  lineHeight: "24px",
-                }}
-              >
-                Intramuscular
-              </Typography>
-            </Grid>
-            <Grid
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                gap: "23%",
-                alignItems: "center",
-                paddingY: "3%",
-
-                borderBottom: 1,
-                borderColor: "rgba(0, 0, 0, 0.1)",
-                "&:hover": {
-                  backgroundColor: "#1F8E1F0D",
-                  borderRadius: "15px",
-                  border: 1,
-                  borderColor: "#1F8E1F",
-                  cursor: "default",
-                },
-              }}
-            >
-              <Typography
-                sx={{
-                  color: "#000000",
-                  fontWeight: 500,
-                  maxWidth: "120px",
-                  fontSize: "16px",
-                  lineHeight: "24px",
-                }}
-              >
-                At Birth
-              </Typography>
-              <Typography
-                sx={{
-                  color: "#000000",
-                  fontWeight: 500,
-                  maxWidth: "190px",
-                  fontSize: "16px",
-                  lineHeight: "24px",
-                }}
-              >
-                OPV0
-              </Typography>
-              <Typography
-                sx={{
-                  color: "#000000",
-                  fontWeight: 300,
-                  opacity: 0.8,
-                  fontSize: "16px",
-                  lineHeight: "24px",
-                }}
-              >
-                2 Drops
-              </Typography>
-              <Typography
-                sx={{
-                  color: "#1F8E1F",
-                  fontWeight: 300,
-                  fontSize: "16px",
-                  lineHeight: "24px",
-                }}
-              >
-                Oral
-              </Typography>
-            </Grid>
-            <Grid
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                gap: "24%",
-                alignItems: "center",
-                paddingY: "3%",
-
-                borderBottom: 1,
-                borderColor: "rgba(0, 0, 0, 0.1)",
-                "&:hover": {
-                  backgroundColor: "#1F8E1F0D",
-                  borderRadius: "15px",
-                  border: 1,
-                  borderColor: "#1F8E1F",
-                  cursor: "default",
-                },
-              }}
-            >
-              <Typography
-                sx={{
-                  color: "#000000",
-                  fontWeight: 500,
-                  maxWidth: "120px",
-                  fontSize: "16px",
-                  lineHeight: "24px",
-                }}
-              >
-                At Birth
-              </Typography>
-              <Typography
-                sx={{
-                  color: "#000000",
-                  fontWeight: 500,
-                  maxWidth: "190px",
-                  fontSize: "16px",
-                  lineHeight: "24px",
-                }}
-              >
-                BCG
-              </Typography>
-              <Typography
-                sx={{
-                  color: "#000000",
-                  fontWeight: 300,
-                  opacity: 0.8,
-                  fontSize: "16px",
-                  lineHeight: "24px",
-                }}
-              >
-                0.05ML
-              </Typography>
-              <Typography
-                sx={{
-                  color: "#1F8E1F",
-                  fontWeight: 300,
-                  fontSize: "16px",
-                  lineHeight: "24px",
-                }}
-              >
-                Intra Dermal
-              </Typography>
-            </Grid>
+                <Grid
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    gap: "23%",
+                    alignItems: "center",
+                    paddingY: "3%",
+                    borderBottom: 1,
+                    borderColor: "rgba(0, 0, 0, 0.1)",
+                    "&:hover": {
+                      backgroundColor: "#1F8E1F0D",
+                      borderRadius: "15px",
+                      border: 1,
+                      borderColor: "#1F8E1F",
+                      cursor: "pointer",
+                    },
+                  }}
+                >
+                  <VaccineCell>{vaccine.minimumTargetAge}</VaccineCell>
+                  <VaccineCell>{vaccine.type}</VaccineCell>
+                  <VaccineCell color="#000000" weight={300}>
+                    {vaccine.dosage}
+                  </VaccineCell>
+                  <VaccineCell color="#1F8E1F" weight={300}>
+                    {vaccine.routeOfAdministration}
+                  </VaccineCell>
+                </Grid>
+              </Link>
+            ))}
           </Grid>
         </Grid>
       </Grid>
+
       <Grid size={3}>
         <Grid
           size={12}
@@ -743,7 +547,11 @@ export default function Vaccines() {
                 textAlign: "center",
               }}
             >
-              25
+              {getVaccinesQuery.isPending ? (
+                <CircularProgress size="24px" sx={{ color: "#1F8E1F" }} />
+              ) : (
+                total
+              )}
             </Typography>
           </Box>
         </Grid>

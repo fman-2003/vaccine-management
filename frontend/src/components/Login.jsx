@@ -2,9 +2,7 @@ import React from "react";
 import { useNavigate, Link, useSearchParams } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
-  Alert,
   Box,
-  Collapse,
   Typography,
   TextField,
   InputLabel,
@@ -13,12 +11,9 @@ import {
   FormControl,
   InputAdornment,
   IconButton,
-  ListItem,
-  List,
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import CircularProgress from "@mui/material/CircularProgress";
-import CloseIcon from "@mui/icons-material/Close";
 import AlertMessage from "./AlertMessage";
 import useAlert from "../hooks/useAlert";
 
@@ -28,16 +23,15 @@ import ArrowBackSharpIcon from "@mui/icons-material/ArrowBackSharp";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { login, signup } from "../query";
-import hasKeyName from "../helper/has-key-name";
 
 export default function Login() {
   const [showPassword, setShowPassword] = React.useState(false);
   const [showPassword2, setShowPassword2] = React.useState(false);
   const [signupErrors, setSignupErrors] = React.useState({});
   const [loginErrors, setLoginErrors] = React.useState({});
- 
+
   const queryClient = useQueryClient();
-  const alert = useAlert()
+  const alert = useAlert();
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   // const handleClickShowPassword1 = () => setShowPassword1((show) => !show);
@@ -61,8 +55,8 @@ export default function Login() {
   const signupMutation = useMutation({
     mutationFn: signup,
     onSuccess: () => {
-      queryClient.invalidateQueries(["users"])
-    }
+      queryClient.invalidateQueries(["users"]);
+    },
   });
 
   const loginMutation = useMutation({
@@ -72,7 +66,6 @@ export default function Login() {
   const navigate = useNavigate();
 
   const isLogin = searchParams.get("mode") === "login";
-
 
   const handleSignUpSubmit = (event) => {
     event.preventDefault();
@@ -85,14 +78,13 @@ export default function Login() {
     };
     signupMutation.mutate(signupDetails, {
       onSuccess: (data) => {
-        console.log(data);
         alert.showSuccess(data.message);
         navigate("?mode=login");
       },
       onError: (error) => {
         setSignupErrors({});
         alert.showError(error.response.data.message);
-        console.log(error);
+
         if (error.message.includes("422")) {
           setSignupErrors((prev) => {
             return {
@@ -110,9 +102,7 @@ export default function Login() {
         navigate("?mode=signup");
       },
     });
-    console.log(signupDetails);
   };
-  console.log(signupErrors);
 
   const handleLoginSubmit = (event) => {
     event.preventDefault();
@@ -124,14 +114,13 @@ export default function Login() {
     };
     loginMutation.mutate(loginDetails, {
       onSuccess: (data) => {
-        console.log(data);
         alert.showSuccess(data.message);
         navigate("/dashboard");
       },
       onError: (error) => {
         setLoginErrors({});
         alert.showError(error.response.data.message);
-        console.log(error);
+
         if (error.message.includes("422")) {
           setLoginErrors((prev) => {
             return {
@@ -149,10 +138,8 @@ export default function Login() {
         navigate("?mode=login");
       },
     });
-    console.log(loginDetails);
   };
-  console.log(loginErrors);
-  
+
   return (
     <>
       {<AlertMessage {...alert.props} />}

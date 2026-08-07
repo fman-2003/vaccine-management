@@ -3,7 +3,7 @@ import DashboardNav from "./DashboardNav";
 
 export default function SchedulesRootLayout() {
   return (
-    <div style={{ width: "100%" }}>
+    <div style={{ width: "100%", minHeight: "100vh" }}>
       <div>
         <DashboardNav />
       </div>

@@ -12,7 +12,6 @@ import {
 } from "@mui/material";
 import {
   getChildren,
-  getChildById,
   updateParent,
   getParentById,
   createChild,
@@ -49,7 +48,6 @@ export default function ParentProfile({ onClose, open, parentId }) {
     },
     enabled: !!parentId,
   });
-  console.log(getParentQuery.data);
 
   const getChildrenQuery = useQuery({
     queryKey: ["children", parentId],
@@ -58,7 +56,6 @@ export default function ParentProfile({ onClose, open, parentId }) {
     },
     enabled: !!parentId,
   });
-  console.log(getChildrenQuery.data);
 
   const updateParentMutation = useMutation({
     mutationFn: ({ parentId, data }) => {
@@ -88,14 +85,13 @@ export default function ParentProfile({ onClose, open, parentId }) {
       weightAtBirth: childFormData.get("weightAtBirth").toString().trim(),
       parentId,
     };
-    console.log(childDetails);
+
     childMutation.mutate(childDetails, {
       onSuccess: (data) => {
         setOpenChild(false);
         alert.showSuccess(data.message);
       },
       onError: (error) => {
-        console.log(error);
         if (error.message.includes("422")) {
           setChildError((prev) => {
             return {
@@ -138,7 +134,6 @@ export default function ParentProfile({ onClose, open, parentId }) {
           alert.showSuccess(data.message);
         },
         onError: (error) => {
-          console.log(error);
           if (error.message.includes("422")) {
             setParentError((prev) => {
               return {
@@ -157,7 +152,6 @@ export default function ParentProfile({ onClose, open, parentId }) {
         },
       },
     );
-    console.log(data);
   };
 
   const handleCloseParent = () => setOpenParent(false);
@@ -621,7 +615,10 @@ export default function ParentProfile({ onClose, open, parentId }) {
                   type="submit"
                 >
                   {childMutation.isPending ? (
-                    <CircularProgress size={"20px"} sx={{margin: "auto", color: "green"}} />
+                    <CircularProgress
+                      size={"20px"}
+                      sx={{ margin: "auto", color: "green" }}
+                    />
                   ) : (
                     "Onboard"
                   )}

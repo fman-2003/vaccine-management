@@ -55,27 +55,21 @@ export default function Dashboard() {
     queryKey: ["schedules"],
     queryFn: getSchedules,
   });
-  console.log(getSchedulesQuery.data);
 
   const getParentsQuery = useQuery({
     queryKey: ["parents"],
     queryFn: getParents,
   });
-  console.log(getParentsQuery.data);
 
   const getChildrenQuery = useQuery({
     queryKey: ["children"],
     queryFn: getChildren,
   });
 
-  console.log(getChildrenQuery.data);
-
   const getDailyScheduleQuery = useQuery({
     queryKey: ["dailySchedules"],
     queryFn: getDailySummary,
   });
-
-  console.log(getDailyScheduleQuery.data);
 
   const parentMutation = useMutation({
     mutationFn: createParent,
@@ -131,7 +125,6 @@ export default function Dashboard() {
         alert.showSuccess(data.message);
       },
       onError: (error) => {
-        console.log(error);
         if (error.message.includes("422")) {
           setParentError((prev) => {
             return {
@@ -149,7 +142,6 @@ export default function Dashboard() {
         });
       },
     });
-    console.log(parentDetails);
   };
 
   const handleSubmitChild = (e) => {
@@ -164,7 +156,7 @@ export default function Dashboard() {
       weightAtBirth: childFormData.get("weightAtBirth").toString().trim(),
       parentId,
     };
-    console.log(childDetails);
+
     childMutation.mutate(childDetails, {
       onSuccess: (data) => {
         setParentId("");
@@ -173,7 +165,7 @@ export default function Dashboard() {
       },
       onError: (error) => {
         // setChildError({});
-        console.log(error);
+
         if (error.message.includes("422")) {
           setChildError((prev) => {
             return {
@@ -208,12 +200,10 @@ export default function Dashboard() {
     };
     vaccineMutation.mutate(vaccineDetails, {
       onSuccess: (data) => {
-        console.log(data);
         setOpenVaccine(false);
         alert.showSuccess(data.message);
       },
       onError: (error) => {
-        console.log(error);
         if (error.message.includes("422")) {
           setVaccineError((prev) => {
             return {

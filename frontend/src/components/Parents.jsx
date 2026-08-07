@@ -97,7 +97,6 @@ export default function Parents() {
         alert.showSuccess(data.message);
       },
       onError: (error) => {
-        console.log(error);
         if (error.message.includes("422")) {
           setParentError((prev) => {
             return {
@@ -115,7 +114,6 @@ export default function Parents() {
         });
       },
     });
-    console.log(parentDetails);
   };
 
   const handleSubmitChild = (e) => {
@@ -130,7 +128,7 @@ export default function Parents() {
       weightAtBirth: childFormData.get("weightAtBirth").toString().trim(),
       parentId,
     };
-    console.log(childDetails);
+
     childMutation.mutate(childDetails, {
       onSuccess: (data) => {
         setParentId("");
@@ -139,7 +137,7 @@ export default function Parents() {
       },
       onError: (error) => {
         // setChildError({});
-        console.log(error);
+
         if (error.message.includes("422")) {
           setChildError((prev) => {
             return {
