@@ -1,5 +1,5 @@
 const User = require("../models/User");
-const { generateToken } = require("../jwt/token");
+const { generateToken, setTokenCookie } = require("../jwt/token");
 const {
   isDuplicateKeyError,
   getDuplicateKeyField,
@@ -38,13 +38,7 @@ const login = async (req, res, next) => {
     }
 
     const token = generateToken(user._id);
-
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
-      maxAge: 120 * 60 * 1000,
-    });
+    setTokenCookie(res, token);
 
     res
       .status(200)

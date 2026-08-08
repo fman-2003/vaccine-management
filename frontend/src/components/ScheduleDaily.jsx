@@ -1,30 +1,26 @@
 import { Box, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
+import EditRoundedIcon from "@mui/icons-material/EditRounded";
+import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
+import PropTypes from "prop-types";
 
-import SearchSharpIcon from "@mui/icons-material/SearchSharp";
-import SortSharpIcon from "@mui/icons-material/SortSharp";
-
-export default function ScheduleDaily() {
+export default function ScheduleDaily({
+  dateLabel,
+  schedules = [],
+  onEdit,
+  onDelete,
+}) {
   return (
     <Grid
-      size={8}
       sx={{
         display: "flex",
-        marginBottom: "30px",
         flexDirection: "column",
+        marginBottom: "20px",
         backgroundColor: "#FFFFFF",
-        maxHeight: "577px",
         borderRadius: "20px",
         paddingX: "2%",
-        paddingY: "1%",
-
-        width: "500px",
-        marginRight: "30px",
-        "&:hover": {
-          border: 1,
-          borderColor: "#1F8E1F",
-          cursor: "default",
-        },
+        paddingY: "1.5%",
+        width: "100%",
       }}
     >
       <Grid
@@ -43,19 +39,21 @@ export default function ScheduleDaily() {
             lineHeight: "36px",
           }}
         >
-          Today
+          {dateLabel}
         </Typography>
-        <Box sx={{ display: "flex", flexDirection: "row", gap: "20px" }}>
-          <SortSharpIcon />
-          <SearchSharpIcon />
-        </Box>
+        <Typography
+          sx={{ color: "#00000099", fontWeight: 400, fontSize: "14px" }}
+        >
+          {schedules.length} {schedules.length === 1 ? "entry" : "entries"}
+        </Typography>
       </Grid>
+
       <Grid
         sx={{
           display: "flex",
           flexDirection: "row",
           justifyContent: "space-between",
-          paddingY: "4%",
+          paddingY: "2%",
         }}
       >
         <Typography
@@ -65,6 +63,7 @@ export default function ScheduleDaily() {
             fontWeight: 400,
             fontSize: "16px",
             lineHeight: "18px",
+            width: "40%",
           }}
         >
           Name
@@ -76,145 +75,39 @@ export default function ScheduleDaily() {
             fontWeight: 400,
             fontSize: "16px",
             lineHeight: "18px",
+            width: "40%",
           }}
         >
           Vaccine
         </Typography>
+        <Typography
+          sx={{
+            color: "#000000",
+            opacity: 0.6,
+            fontWeight: 400,
+            fontSize: "16px",
+            lineHeight: "18px",
+            width: "20%",
+            textAlign: "right",
+          }}
+        >
+          Actions
+        </Typography>
       </Grid>
 
-      <Grid
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          overflowY: "auto",
-          width: "110%",
-        }}
-      >
-        <Box
-          sx={{
-            borderBottom: 1,
-            borderColor: "rgba(0, 0, 0, 0.1)",
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            paddingY: "5%",
-
-            "&:hover": {
-              backgroundColor: "#1F8E1F0D",
-              cursor: "default",
-            },
-          }}
-        >
-          <Typography
-            sx={{
-              color: "#000000",
-              fontWeight: 500,
-              fontSize: "16px",
-              lineHeight: "24px",
-              maxWidth: "145px",
-            }}
-          >
-            Taiwo Awoniyi
-          </Typography>
-          <Typography
-            sx={{
-              color: "#1F8E1F",
-              fontWeight: 300,
-              fontSize: "16px",
-              lineHeight: "24px",
-            }}
-          >
-            OPV 0 (Oral Polio Vaccine)
-          </Typography>
-        </Box>
-
-        <Box
-          sx={{
-            borderBottom: 1,
-            borderColor: "rgba(0, 0, 0, 0.1)",
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            paddingY: "5%",
-
-            "&:hover": {
-              backgroundColor: "#1F8E1F0D",
-              cursor: "default",
-            },
-          }}
-        >
-          <Typography
-            sx={{
-              color: "#000000",
-              fontWeight: 500,
-              fontSize: "16px",
-              lineHeight: "24px",
-            }}
-          >
-            Taiwo Awoniyi
-          </Typography>
-          <Typography
-            sx={{
-              color: "#1F8E1F",
-              fontWeight: 300,
-              fontSize: "16px",
-              lineHeight: "24px",
-            }}
-          >
-            OPV 0 (Oral Polio Vaccine)
-          </Typography>
-        </Box>
-
-        <Box
-          sx={{
-            borderBottom: 1,
-            borderColor: "rgba(0, 0, 0, 0.1)",
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            paddingY: "5%",
-
-            "&:hover": {
-              backgroundColor: "#1F8E1F0D",
-              cursor: "default",
-            },
-          }}
-        >
-          <Typography
-            sx={{
-              color: "#000000",
-              fontWeight: 500,
-              fontSize: "16px",
-              lineHeight: "24px",
-            }}
-          >
-            Taiwo Awoniyi
-          </Typography>
-          <Typography
-            sx={{
-              color: "#1F8E1F",
-              fontWeight: 300,
-              fontSize: "16px",
-              lineHeight: "24px",
-            }}
-          >
-            OPV 0 (Oral Polio Vaccine)
-          </Typography>
-        </Box>
-        <Box>
+      <Grid sx={{ display: "flex", flexDirection: "column" }}>
+        {schedules.map((schedule) => (
           <Box
+            key={schedule._id}
             sx={{
               borderBottom: 1,
               borderColor: "rgba(0, 0, 0, 0.1)",
               display: "flex",
               flexDirection: "row",
               justifyContent: "space-between",
-              paddingY: "5%",
-
-              "&:hover": {
-                backgroundColor: "#1F8E1F0D",
-                cursor: "default",
-              },
+              alignItems: "center",
+              paddingY: "1.5%",
+              "&:hover": { backgroundColor: "#1F8E1F0D" },
             }}
           >
             <Typography
@@ -223,9 +116,10 @@ export default function ScheduleDaily() {
                 fontWeight: 500,
                 fontSize: "16px",
                 lineHeight: "24px",
+                width: "40%",
               }}
             >
-              Taiwo Awoniyi
+              {schedule.child?.firstName} {schedule.child?.lastName}
             </Typography>
             <Typography
               sx={{
@@ -233,51 +127,50 @@ export default function ScheduleDaily() {
                 fontWeight: 300,
                 fontSize: "16px",
                 lineHeight: "24px",
+                width: "40%",
               }}
             >
-              OPV 0 (Oral Polio Vaccine)
+              {schedule.vaccine?.type}
             </Typography>
-          </Box>
-          <Box>
             <Box
               sx={{
-                borderBottom: 1,
-                borderColor: "rgba(0, 0, 0, 0.1)",
                 display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                paddingY: "5%",
-                "&:hover": {
-                  backgroundColor: "#1F8E1F0D",
-                  cursor: "default",
-                },
+                gap: 2,
+                width: "20%",
+                justifyContent: "flex-end",
               }}
             >
-              <Typography
-                sx={{
-                  color: "#000000",
-                  fontWeight: 500,
-                  fontSize: "16px",
-                  lineHeight: "24px",
-                }}
-              >
-                Taiwo Awoniyi
-              </Typography>
-
-              <Typography
+              <EditRoundedIcon
+                onClick={() => onEdit(schedule)}
                 sx={{
                   color: "#1F8E1F",
-                  fontWeight: 300,
-                  fontSize: "16px",
-                  lineHeight: "24px",
+                  width: "22px",
+                  height: "22px",
+                  cursor: "pointer",
+                  "&:hover": { transform: "scale(1.15)" },
                 }}
-              >
-                OPV 0 (Oral Polio Vaccine)
-              </Typography>
+              />
+              <DeleteRoundedIcon
+                onClick={() => onDelete(schedule)}
+                sx={{
+                  color: "#C91919",
+                  width: "22px",
+                  height: "22px",
+                  cursor: "pointer",
+                  "&:hover": { transform: "scale(1.15)" },
+                }}
+              />
             </Box>
           </Box>
-        </Box>
+        ))}
       </Grid>
     </Grid>
   );
 }
+
+ScheduleDaily.propTypes = {
+  dateLabel: PropTypes.string.isRequired,
+  schedules: PropTypes.array,
+  onEdit: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
+};

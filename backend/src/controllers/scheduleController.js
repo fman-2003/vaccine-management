@@ -8,7 +8,8 @@ const {
 
 const createSchedule = async (req, res, next) => {
   try {
-    const { child, vaccine, earliestDate } = req.body;
+    const { child, vaccine, earliestDate, dateOfImmunization, comment } =
+      req.body;
 
     const [childExists, vaccineExists] = await Promise.all([
       Child.findById(child),
@@ -22,9 +23,17 @@ const createSchedule = async (req, res, next) => {
       return res.status(404).json({ message: "Vaccine not found" });
     }
 
-    const schedule = await Schedule.create({ child, vaccine, earliestDate });
+    const schedule = await Schedule.create({
+      child,
+      vaccine,
+      earliestDate,
+      dateOfImmunization,
+      comment,
+    });
 
-    res.status(201).json({data: schedule, message: "New schedule created"});
+    return res
+      .status(201)
+      .json({ data: schedule, message: "New schedule created" });
   } catch (error) {
     next(error);
   }
@@ -57,7 +66,9 @@ const getSchedules = async (req, res, next) => {
       Schedule.countDocuments(filter),
     ]);
 
-    res.status(200).json(buildPaginatedResponse(schedules, total, page, limit));
+    return res
+      .status(200)
+      .json(buildPaginatedResponse(schedules, total, page, limit));
   } catch (error) {
     next(error);
   }
@@ -75,7 +86,7 @@ const getSchedulesByChild = async (req, res, next) => {
       .populate("vaccine")
       .sort({ earliestDate: 1 });
 
-    res.status(200).json({data: schedules});
+    return res.status(200).json({ data: schedules });
   } catch (error) {
     next(error);
   }
@@ -94,7 +105,9 @@ const updateSchedule = async (req, res, next) => {
       return res.status(404).json({ message: "Schedule not found" });
     }
 
-    res.status(200).json({data: schedule, message: "Schedule updated"});
+    return res
+      .status(200)
+      .json({ data: schedule, message: "Schedule updated" });
   } catch (error) {
     next(error);
   }
@@ -109,7 +122,7 @@ const deleteSchedule = async (req, res, next) => {
       return res.status(404).json({ message: "Schedule not found" });
     }
 
-    res.status(200).json({ message: "Schedule deleted successfully" });
+    return res.status(200).json({ message: "Schedule deleted successfully" });
   } catch (error) {
     next(error);
   }
@@ -128,16 +141,13 @@ const getDailySummary = async (req, res, next) => {
 
     const missedCount = await Schedule.countDocuments({ status: "missed" });
 
-    // Grouped by vaccine type rather than hardcoding specific vaccine
-    // names (e.g. "OPV", "PCV") into the backend — the frontend can pick
-    // out whatever labels it wants from this breakdown
     const breakdownByVaccineType = todaysSchedules.reduce((acc, schedule) => {
       const vaccineType = schedule.vaccine?.type || "Unknown";
       acc[vaccineType] = (acc[vaccineType] || 0) + 1;
       return acc;
     }, {});
 
-    res.status(200).json({
+    return res.status(200).json({
       totalScheduledToday: todaysSchedules.length || 0,
       missedCount,
       breakdownByVaccineType,

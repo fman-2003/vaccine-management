@@ -15,9 +15,27 @@ const createScheduleValidator = [
     .isISO8601()
     .withMessage("A valid earliest date is required")
     .toDate(),
+  // required at creation now — this is what a new entry gets grouped
+  // into a "daily" schedule tab by
+  body("dateOfImmunization")
+    .isISO8601()
+    .withMessage("A valid date of immunization is required")
+    .toDate(),
+  body("comment").optional().trim(),
 ];
 
 const updateScheduleValidator = [
+  // child/vaccine can be reassigned on an existing entry via the edit
+  // form; dateOfImmunization deliberately has no such allowance below —
+  // it's immutable once the entry is created
+  body("child")
+    .optional()
+    .isMongoId()
+    .withMessage("child must be a valid Mongo ID"),
+  body("vaccine")
+    .optional()
+    .isMongoId()
+    .withMessage("vaccine must be a valid Mongo ID"),
   body("status")
     .optional()
     .isIn(["pending", "completed", "missed"])
