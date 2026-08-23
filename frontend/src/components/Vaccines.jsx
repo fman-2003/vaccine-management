@@ -8,7 +8,7 @@ import {
   TextField,
   InputLabel,
   Box,
-  InputAdornment,
+  // InputAdornment,
 } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -16,8 +16,8 @@ import { motion } from "framer-motion";
 
 import haceyLogo from "../assets/hacey-svg.svg";
 import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
-import SearchSharpIcon from "@mui/icons-material/SearchSharp";
-import SortSharpIcon from "@mui/icons-material/SortSharp";
+// import SearchSharpIcon from "@mui/icons-material/SearchSharp";
+// import SortSharpIcon from "@mui/icons-material/SortSharp";
 import VaccinesRoundedIcon from "@mui/icons-material/VaccinesRounded";
 import ArrowBackSharpIcon from "@mui/icons-material/ArrowBackSharp";
 import ModalWindow from "./Modal";
@@ -380,7 +380,7 @@ export default function Vaccines() {
             >
               Existing Vaccines
             </Typography>
-            <Box
+            {/* <Box
               sx={{
                 display: "flex",
                 flexDirection: "row",
@@ -404,7 +404,7 @@ export default function Vaccines() {
                 variant="standard"
                 sx={{ width: "400px" }}
               />
-            </Box>
+            </Box> */}
           </Grid>
 
           <Grid

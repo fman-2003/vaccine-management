@@ -4,7 +4,7 @@ import {
   Typography,
   Box,
   TextField,
-  InputAdornment,
+  // InputAdornment,
   Button,
   InputLabel,
 } from "@mui/material";
@@ -18,7 +18,7 @@ import { motion } from "framer-motion";
 import "@fontsource/roboto";
 import splash from "../assets/splash.svg";
 import haceyLogo from "../assets/hacey-svg.svg";
-import SearchSharpIcon from "@mui/icons-material/SearchSharp";
+// import SearchSharpIcon from "@mui/icons-material/SearchSharp";
 import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
 import ArrowBackSharpIcon from "@mui/icons-material/ArrowBackSharp";
 import WcIcon from "@mui/icons-material/Wc";
@@ -289,7 +289,7 @@ export default function Parents() {
             >
               Parents
             </Typography>
-            <Box
+            {/* <Box
               sx={{
                 display: "flex",
                 flexDirection: "row",
@@ -297,7 +297,7 @@ export default function Parents() {
                 alignItems: "center",
               }}
             >
-              {/* <SortSharpIcon /> */}
+              <SortSharpIcon />
               <TextField
                 id="input-with-icon-textfield"
                 placeholder="Search"
@@ -313,7 +313,7 @@ export default function Parents() {
                 variant="standard"
                 sx={{ width: "400px" }}
               />
-            </Box>
+            </Box> */}
           </Grid>
           <Grid sx={{ display: "flex", flexDirection: "column" }}>
             {getParentsQuery.isPending && (

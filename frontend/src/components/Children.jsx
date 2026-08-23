@@ -4,7 +4,7 @@ import {
   Typography,
   Box,
   TextField,
-  InputAdornment,
+  // InputAdornment,
   Button,
   InputLabel,
 } from "@mui/material";
@@ -19,7 +19,7 @@ import AlertMessage from "./AlertMessage";
 import "@fontsource/roboto";
 import splash from "../assets/splash.svg";
 import haceyLogo from "../assets/hacey-svg.svg";
-import SearchSharpIcon from "@mui/icons-material/SearchSharp";
+// import SearchSharpIcon from "@mui/icons-material/SearchSharp";
 // import SortSharpIcon from "@mui/icons-material/SortSharp";
 import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
 import ArrowBackSharpIcon from "@mui/icons-material/ArrowBackSharp";
@@ -179,7 +179,7 @@ export default function Children() {
             >
               Children
             </Typography>
-            <Box
+            {/* <Box
               sx={{
                 display: "flex",
                 flexDirection: "row",
@@ -187,7 +187,7 @@ export default function Children() {
                 alignItems: "center",
               }}
             >
-              {/* <SortSharpIcon /> */}
+              <SortSharpIcon />
               <TextField
                 id="input-with-icon-textfield"
                 placeholder="Search"
@@ -203,7 +203,7 @@ export default function Children() {
                 variant="standard"
                 sx={{ width: "400px" }}
               />
-            </Box>
+            </Box> */}
           </Grid>
           <Grid
             sx={{

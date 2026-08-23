@@ -866,7 +866,7 @@ export default function Schedules() {
               >
                 {dailySummaryQuery.isPending
                   ? "Loading…"
-                  : `${dailySummaryQuery.data.missedCount} missed immunization (awaiting)`}
+                  : `${dailySummaryQuery.data.missedCount} missed immunization`}
               </Typography>
             </Box>
           </Grid>
