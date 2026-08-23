@@ -9,7 +9,8 @@ export const signup = async ({ username, email, password }) => {
   const res = await axios.post(
     `${API_BASE_URL}/auth/signup`,
     { username, email, password },
-    {withCredentials: true,
+    {
+      withCredentials: true,
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
@@ -34,7 +35,8 @@ export const login = async ({ username, password }) => {
   const res = await axios.post(
     `${API_BASE_URL}/auth/login`,
     { username, password },
-    {withCredentials: true,
+    {
+      withCredentials: true,
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
@@ -69,10 +71,10 @@ export const checkAuth = async () => {
   });
 
   if (res.status !== 200) {
-    throw new Error("Auth Check failed")
+    throw new Error("Auth Check failed");
   }
 
-  return res.data
+  return res.data;
 };
 
 export const getParents = async ({ page, limit } = {}) => {
