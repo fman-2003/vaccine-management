@@ -25,7 +25,8 @@ app.use(
     credentials: true,
   }),
 );
-app.use(morgan("dev"));
+const logFormat = process.env.NODE_ENV === "production" ? "combined" : "dev";
+app.use(morgan(logFormat));
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);
