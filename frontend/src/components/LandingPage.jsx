@@ -61,7 +61,7 @@ export default function LandingPage() {
             </Stack>
             <Button
               variant="contained"
-              onClick={() => navigate("/auth")}
+              onClick={() => navigate("/auth?mode=login")}
               sx={{
                 textTransform: "none",
                 backgroundColor: "#1F8E1F",
@@ -145,7 +145,7 @@ export default function LandingPage() {
             </Box>
             <Button
               variant="contained"
-              onClick={() => navigate("/auth")}
+              onClick={() => navigate("/auth?mode=login")}
               sx={{
                 textTransform: "none",
                 backgroundColor: "#1F8E1F",
@@ -672,6 +672,7 @@ export default function LandingPage() {
           }}
         >
           <Button
+            onClick={() => navigate("/auth?mode=signup")}
             variant="contained"
             sx={{
               textTransform: "none",
@@ -736,6 +737,7 @@ export default function LandingPage() {
               account today and experience the difference.
             </Typography>
             <Button
+              onClick={() => navigate("/auth?mode=signup")}
               variant="contained"
               sx={{
                 textTransform: "none",
