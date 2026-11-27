@@ -5,17 +5,17 @@ const generateToken = (userId) => {
     expiresIn: process.env.JWT_EXPIRES_IN,
   });
 };
-
+const isProd = process.env.NODE_ENV === "production";
 const setTokenCookie = (res, token) => {
   res.cookie("token", token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "none",
+    secure: isProd,
+    sameSite: isProd ? "none" : "lax",
     maxAge: 120 * 60 * 1000,
   });
 };
 
-const verifyToken = (req, res, next) => {
+const verifyToken = async (req, res, next) => {
   const token = req.cookies.token;
 
   if (!token) {

@@ -4,7 +4,7 @@ const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
 const morgan = require("morgan");
-const cookieParser = require("cookie-parser")
+const cookieParser = require("cookie-parser");
 
 const connectDB = require("./src/config/db");
 
@@ -17,7 +17,7 @@ const scheduleRoutes = require("./src/routes/scheduleRoutes");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(cookieParser())
+app.use(cookieParser());
 app.use(helmet());
 app.use(
   cors({
@@ -53,7 +53,7 @@ app.use((err, req, res, next) => {
   try {
     await connectDB();
     app.listen(PORT, () => {
-      // console.log(`Server running on port ${PORT}`);
+      console.log(`Server running on port ${PORT}`);
     });
   } catch (error) {
     console.error("Failed to start server:", error.message);
