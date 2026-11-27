@@ -23,7 +23,18 @@ const userSchema = new mongoose.Schema(
       select: false,
     },
   },
-  { timestamps: true },
+  {
+    timestamps: true,
+    // `select: false` only keeps the password out of queries that don't ask for it.
+    // Login has to load it with .select("+password") to compare, so strip it here
+    // whenever a user document is serialised (res.json, JSON.stringify) as well.
+    toJSON: {
+      transform: (doc, ret) => {
+        delete ret.password;
+        return ret;
+      },
+    },
+  },
 );
 
 // deafault salt - 10
