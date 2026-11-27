@@ -42,6 +42,7 @@ import {
   getChildren,
   getVaccines,
 } from "../query";
+import { getErrorMessage, getValidationErrors } from "../helper/get-error-message";
 
 const TABS_PER_PAGE = 15;
 
@@ -152,13 +153,13 @@ export default function Schedules() {
         alert.showSuccess(data.message);
       },
       onError: (error) => {
-        if (error.message.includes("422")) {
+        if (getValidationErrors(error)) {
           setScheduleError((prev) => ({
             ...prev,
-            validationError: error.response.data.errors,
+            validationError: getValidationErrors(error),
           }));
         }
-        alert.showError(error.response.data.message);
+        alert.showError(getErrorMessage(error));
       },
     });
   };
@@ -203,13 +204,13 @@ export default function Schedules() {
           alert.showSuccess(data.message);
         },
         onError: (error) => {
-          if (error.message.includes("422")) {
+          if (getValidationErrors(error)) {
             setEditError((prev) => ({
               ...prev,
-              validationError: error.response.data.errors,
+              validationError: getValidationErrors(error),
             }));
           }
-          alert.showError(error.response.data.message);
+          alert.showError(getErrorMessage(error));
         },
       },
     );
@@ -223,7 +224,7 @@ export default function Schedules() {
 
     deleteMutation.mutate(schedule._id, {
       onSuccess: (data) => alert.showSuccess(data.message),
-      onError: (error) => alert.showError(error.response.data.message),
+      onError: (error) => alert.showError(getErrorMessage(error)),
     });
   };
 
@@ -297,14 +298,14 @@ export default function Schedules() {
               textTransform: "none",
               display: "flex",
               flexDirection: "row",
-              gap: "5px",
-              marginBottom: "5px",
+              gap: "0.3125rem",
+              marginBottom: "0.3125rem",
             }}
             disableRipple
           >
             <ArrowBackSharpIcon sx={{ color: "#1F8E1F" }} />
             <Typography
-              sx={{ color: "#000000", fontSize: "16px", fontWeight: 400 }}
+              sx={{ color: "#000000", fontSize: "1rem", fontWeight: 400 }}
             >
               Back
             </Typography>
@@ -314,9 +315,9 @@ export default function Schedules() {
               width: "100%",
               color: "#000000",
               fontWeight: 600,
-              fontSize: "24px",
-              lineHeight: "36px",
-              marginBottom: "5px",
+              fontSize: "1.5rem",
+              lineHeight: "2.25rem",
+              marginBottom: "0.3125rem",
             }}
           >
             New Schedule Entry
@@ -324,11 +325,11 @@ export default function Schedules() {
           <Grid sx={{ width: "100%" }}>
             <form onSubmit={handleSubmitSchedule}>
               {createMutation.isError && scheduleError.validationError && (
-                <Box sx={{ marginBottom: "5px" }}>
+                <Box sx={{ marginBottom: "0.3125rem" }}>
                   <ul>
                     {scheduleError.validationError.map((valErr) => (
                       <li
-                        style={{ color: "red", fontSize: "15px" }}
+                        style={{ color: "red", fontSize: "0.9375rem" }}
                         key={valErr.msg}
                       >
                         {valErr.msg}
@@ -338,14 +339,14 @@ export default function Schedules() {
                 </Box>
               )}
 
-              <Box sx={{ marginBottom: "25px" }}>
+              <Box sx={{ marginBottom: "1.5625rem" }}>
                 <InputLabel
                   sx={{
                     color: "#222222",
                     fontWeight: 500,
-                    fontSize: "16px",
-                    lineHeight: "24px",
-                    marginBottom: "10px",
+                    fontSize: "1rem",
+                    lineHeight: "1.5rem",
+                    marginBottom: "0.625rem",
                   }}
                 >
                   Child
@@ -365,20 +366,20 @@ export default function Schedules() {
                     <TextField
                       {...params}
                       placeholder="Start typing a child's name"
-                      sx={{ width: "600px" }}
+                      sx={{ width: "37.5rem" }}
                     />
                   )}
                 />
               </Box>
 
-              <Box sx={{ marginBottom: "25px" }}>
+              <Box sx={{ marginBottom: "1.5625rem" }}>
                 <InputLabel
                   sx={{
                     color: "#222222",
                     fontWeight: 500,
-                    fontSize: "16px",
-                    lineHeight: "24px",
-                    marginBottom: "10px",
+                    fontSize: "1rem",
+                    lineHeight: "1.5rem",
+                    marginBottom: "0.625rem",
                   }}
                 >
                   Vaccine
@@ -396,52 +397,52 @@ export default function Schedules() {
                     <TextField
                       {...params}
                       placeholder="Start typing a vaccine type"
-                      sx={{ width: "600px" }}
+                      sx={{ width: "37.5rem" }}
                     />
                   )}
                 />
               </Box>
 
-              <Box sx={{ marginBottom: "25px" }}>
+              <Box sx={{ marginBottom: "1.5625rem" }}>
                 <InputLabel
                   sx={{
                     color: "#222222",
                     fontWeight: 500,
-                    fontSize: "16px",
-                    lineHeight: "24px",
-                    marginBottom: "10px",
+                    fontSize: "1rem",
+                    lineHeight: "1.5rem",
+                    marginBottom: "0.625rem",
                   }}
                 >
                   Date of Immunization
                 </InputLabel>
                 <TextField
-                  sx={{ width: "600px" }}
+                  sx={{ width: "37.5rem" }}
                   name="dateOfImmunization"
                   type="date"
                   required
                 />
               </Box>
 
-              <Box sx={{ marginBottom: "25px" }}>
+              <Box sx={{ marginBottom: "1.5625rem" }}>
                 <InputLabel
                   sx={{
                     color: "#222222",
                     fontWeight: 500,
-                    fontSize: "16px",
-                    lineHeight: "24px",
-                    marginBottom: "10px",
+                    fontSize: "1rem",
+                    lineHeight: "1.5rem",
+                    marginBottom: "0.625rem",
                   }}
                 >
                   Comment{" "}
                   <Typography
                     component="span"
-                    sx={{ color: "#222222", fontWeight: 300, fontSize: "12px" }}
+                    sx={{ color: "#222222", fontWeight: 300, fontSize: "0.75rem" }}
                   >
                     (optional)
                   </Typography>
                 </InputLabel>
                 <TextField
-                  sx={{ width: "600px" }}
+                  sx={{ width: "37.5rem" }}
                   name="comment"
                   type="text"
                   multiline
@@ -453,9 +454,9 @@ export default function Schedules() {
                 sx={{
                   width: "100%",
                   backgroundColor: "#1F8E1F",
-                  paddingY: "12px",
-                  paddingX: "36px",
-                  borderRadius: "80px",
+                  paddingY: "0.75rem",
+                  paddingX: "2.25rem",
+                  borderRadius: "5rem",
                   color: "#FFFFFF",
                   textTransform: "none",
                 }}
@@ -463,7 +464,7 @@ export default function Schedules() {
                 disabled={createMutation.isPending}
               >
                 {createMutation.isPending ? (
-                  <CircularProgress size="24px" sx={{ color: "white" }} />
+                  <CircularProgress size="1.5rem" sx={{ color: "white" }} />
                 ) : (
                   "Create Schedule Entry"
                 )}
@@ -477,7 +478,7 @@ export default function Schedules() {
                 width: "100%",
                 textAlign: "center",
                 alignItems: "center",
-                marginTop: "10px",
+                marginTop: "0.625rem",
                 justifyContent: "center",
                 gap: 1,
               }}
@@ -504,14 +505,14 @@ export default function Schedules() {
               textTransform: "none",
               display: "flex",
               flexDirection: "row",
-              gap: "5px",
-              marginBottom: "5px",
+              gap: "0.3125rem",
+              marginBottom: "0.3125rem",
             }}
             disableRipple
           >
             <ArrowBackSharpIcon sx={{ color: "#1F8E1F" }} />
             <Typography
-              sx={{ color: "#000000", fontSize: "16px", fontWeight: 400 }}
+              sx={{ color: "#000000", fontSize: "1rem", fontWeight: 400 }}
             >
               Back
             </Typography>
@@ -521,9 +522,9 @@ export default function Schedules() {
               width: "100%",
               color: "#000000",
               fontWeight: 600,
-              fontSize: "24px",
-              lineHeight: "36px",
-              marginBottom: "5px",
+              fontSize: "1.5rem",
+              lineHeight: "2.25rem",
+              marginBottom: "0.3125rem",
             }}
           >
             Edit Schedule Entry
@@ -534,16 +535,16 @@ export default function Schedules() {
               sx={{
                 width: "100%",
                 backgroundColor: "#EEEEEE",
-                borderRadius: "8px",
-                padding: "12px 16px",
-                marginBottom: "15px",
+                borderRadius: "0.5rem",
+                padding: "0.75rem 1rem",
+                marginBottom: "0.9375rem",
               }}
             >
-              <Typography sx={{ fontSize: "12px", color: "#00000099" }}>
+              <Typography sx={{ fontSize: "0.75rem", color: "#00000099" }}>
                 Date of Immunization (fixed at creation)
               </Typography>
               <Typography
-                sx={{ fontSize: "14px", fontWeight: 500, color: "#222222" }}
+                sx={{ fontSize: "0.875rem", fontWeight: 500, color: "#222222" }}
               >
                 {formatDate(
                   editingSchedule.dateOfImmunization ||
@@ -556,11 +557,11 @@ export default function Schedules() {
           <Grid sx={{ width: "100%" }}>
             <form onSubmit={handleSubmitEditSchedule}>
               {updateMutation.isError && editError.validationError && (
-                <Box sx={{ marginBottom: "5px" }}>
+                <Box sx={{ marginBottom: "0.3125rem" }}>
                   <ul>
                     {editError.validationError.map((valErr) => (
                       <li
-                        style={{ color: "red", fontSize: "15px" }}
+                        style={{ color: "red", fontSize: "0.9375rem" }}
                         key={valErr.msg}
                       >
                         {valErr.msg}
@@ -570,14 +571,14 @@ export default function Schedules() {
                 </Box>
               )}
 
-              <Box sx={{ marginBottom: "25px" }}>
+              <Box sx={{ marginBottom: "1.5625rem" }}>
                 <InputLabel
                   sx={{
                     color: "#222222",
                     fontWeight: 500,
-                    fontSize: "16px",
-                    lineHeight: "24px",
-                    marginBottom: "10px",
+                    fontSize: "1rem",
+                    lineHeight: "1.5rem",
+                    marginBottom: "0.625rem",
                   }}
                 >
                   Child
@@ -594,19 +595,19 @@ export default function Schedules() {
                   value={editChild}
                   onChange={(event, newValue) => setEditChild(newValue)}
                   renderInput={(params) => (
-                    <TextField {...params} sx={{ width: "600px" }} />
+                    <TextField {...params} sx={{ width: "37.5rem" }} />
                   )}
                 />
               </Box>
 
-              <Box sx={{ marginBottom: "25px" }}>
+              <Box sx={{ marginBottom: "1.5625rem" }}>
                 <InputLabel
                   sx={{
                     color: "#222222",
                     fontWeight: 500,
-                    fontSize: "16px",
-                    lineHeight: "24px",
-                    marginBottom: "10px",
+                    fontSize: "1rem",
+                    lineHeight: "1.5rem",
+                    marginBottom: "0.625rem",
                   }}
                 >
                   Vaccine
@@ -621,24 +622,24 @@ export default function Schedules() {
                   value={editVaccine}
                   onChange={(event, newValue) => setEditVaccine(newValue)}
                   renderInput={(params) => (
-                    <TextField {...params} sx={{ width: "600px" }} />
+                    <TextField {...params} sx={{ width: "37.5rem" }} />
                   )}
                 />
               </Box>
 
-              <Box sx={{ marginBottom: "25px" }}>
+              <Box sx={{ marginBottom: "1.5625rem" }}>
                 <InputLabel
                   sx={{
                     color: "#222222",
                     fontWeight: 500,
-                    fontSize: "16px",
-                    lineHeight: "24px",
-                    marginBottom: "10px",
+                    fontSize: "1rem",
+                    lineHeight: "1.5rem",
+                    marginBottom: "0.625rem",
                   }}
                 >
                   Status
                 </InputLabel>
-                <FormControl sx={{ width: "600px" }}>
+                <FormControl sx={{ width: "37.5rem" }}>
                   <Select
                     value={editStatus}
                     onChange={(e) => setEditStatus(e.target.value)}
@@ -650,20 +651,20 @@ export default function Schedules() {
                 </FormControl>
               </Box>
 
-              <Box sx={{ marginBottom: "25px" }}>
+              <Box sx={{ marginBottom: "1.5625rem" }}>
                 <InputLabel
                   sx={{
                     color: "#222222",
                     fontWeight: 500,
-                    fontSize: "16px",
-                    lineHeight: "24px",
-                    marginBottom: "10px",
+                    fontSize: "1rem",
+                    lineHeight: "1.5rem",
+                    marginBottom: "0.625rem",
                   }}
                 >
                   Comment
                 </InputLabel>
                 <TextField
-                  sx={{ width: "600px" }}
+                  sx={{ width: "37.5rem" }}
                   name="comment"
                   type="text"
                   multiline
@@ -676,9 +677,9 @@ export default function Schedules() {
                 sx={{
                   width: "100%",
                   backgroundColor: "#1F8E1F",
-                  paddingY: "12px",
-                  paddingX: "36px",
-                  borderRadius: "80px",
+                  paddingY: "0.75rem",
+                  paddingX: "2.25rem",
+                  borderRadius: "5rem",
                   color: "#FFFFFF",
                   textTransform: "none",
                 }}
@@ -686,7 +687,7 @@ export default function Schedules() {
                 disabled={updateMutation.isPending}
               >
                 {updateMutation.isPending ? (
-                  <CircularProgress size="24px" sx={{ color: "white" }} />
+                  <CircularProgress size="1.5rem" sx={{ color: "white" }} />
                 ) : (
                   "Save Changes"
                 )}
@@ -700,7 +701,7 @@ export default function Schedules() {
                 width: "100%",
                 textAlign: "center",
                 alignItems: "center",
-                marginTop: "10px",
+                marginTop: "0.625rem",
                 justifyContent: "center",
                 gap: 1,
               }}
@@ -717,13 +718,13 @@ export default function Schedules() {
           paddingY: "3%",
           paddingX: "4%",
           backgroundColor: "#FFFFFF",
-          borderRadius: "20px",
+          borderRadius: "1.25rem",
           display: "flex",
           flexDirection: "row",
           justifyContent: "space-between",
         }}
       >
-        <Grid sx={{ display: "flex", flexDirection: "column", width: "600px" }}>
+        <Grid sx={{ display: "flex", flexDirection: "column", width: "37.5rem" }}>
           <Grid
             sx={{
               display: "flex",
@@ -731,7 +732,7 @@ export default function Schedules() {
               gap: 1,
               borderBottom: 1,
               borderColor: "#1F8E1F66",
-              paddingBottom: "30px",
+              paddingBottom: "1.875rem",
             }}
           >
             <Typography
@@ -739,8 +740,8 @@ export default function Schedules() {
               sx={{
                 color: "#1F8E1F",
                 fontWeight: 700,
-                fontSize: "24px",
-                lineHeight: "36px",
+                fontSize: "1.5rem",
+                lineHeight: "2.25rem",
               }}
             >
               Schedules Today
@@ -751,9 +752,9 @@ export default function Schedules() {
                 color: "#000000",
                 opacity: 0.7,
                 fontWeight: 400,
-                fontSize: "16px",
-                lineHeight: "24px",
-                marginTop: "10px",
+                fontSize: "1rem",
+                lineHeight: "1.5rem",
+                marginTop: "0.625rem",
               }}
             >
               {new Intl.DateTimeFormat("en-UK", {
@@ -765,10 +766,10 @@ export default function Schedules() {
           </Grid>
 
           <Grid
-            sx={{ display: "flex", flexDirection: "row", paddingTop: "30px" }}
+            sx={{ display: "flex", flexDirection: "row", paddingTop: "1.875rem" }}
           >
             <Grid
-              sx={{ width: "325px", borderRight: 1, borderColor: "#1F8E1F66" }}
+              sx={{ width: "20.3125rem", borderRight: 1, borderColor: "#1F8E1F66" }}
             >
               <Box
                 sx={{
@@ -776,18 +777,18 @@ export default function Schedules() {
                   flexDirection: "row",
                   gap: 2,
                   alignItems: "center",
-                  paddingBottom: "10px",
+                  paddingBottom: "0.625rem",
                 }}
               >
                 <EventAvailableRoundedIcon
-                  sx={{ color: "#1F8E1F", width: "24px", height: "24px" }}
+                  sx={{ color: "#1F8E1F", width: "1.5rem", height: "1.5rem" }}
                 />
                 <Typography
                   sx={{
                     color: "#000000",
                     fontWeight: 300,
-                    fontSize: "16px",
-                    lineHeight: "24px",
+                    fontSize: "1rem",
+                    lineHeight: "1.5rem",
                   }}
                 >
                   {dailySummaryQuery.isPending
@@ -798,7 +799,7 @@ export default function Schedules() {
 
               <Box
                 sx={{
-                  maxHeight: "150px",
+                  maxHeight: "9.375rem",
                   overflowY: "auto",
                   display: "flex",
                   flexDirection: "column",
@@ -808,7 +809,7 @@ export default function Schedules() {
                 {dailySummaryQuery.isSuccess &&
                   Object.entries(dailySummaryQuery.data.breakdownByVaccineType)
                     .length === 0 && (
-                    <Typography sx={{ color: "#00000066", fontSize: "14px" }}>
+                    <Typography sx={{ color: "#00000066", fontSize: "0.875rem" }}>
                       No vaccine types scheduled today
                     </Typography>
                   )}
@@ -826,14 +827,14 @@ export default function Schedules() {
                       }}
                     >
                       <VaccinesRoundedIcon
-                        sx={{ color: "#1F8E1F", width: "20px", height: "20px" }}
+                        sx={{ color: "#1F8E1F", width: "1.25rem", height: "1.25rem" }}
                       />
                       <Typography
                         sx={{
                           color: "#000000",
                           fontWeight: 300,
-                          fontSize: "16px",
-                          lineHeight: "24px",
+                          fontSize: "1rem",
+                          lineHeight: "1.5rem",
                         }}
                       >
                         {count} {type} scheduled
@@ -845,7 +846,7 @@ export default function Schedules() {
 
             <Box
               sx={{
-                marginLeft: "30px",
+                marginLeft: "1.875rem",
                 display: "flex",
                 flexDirection: "row",
                 alignItems: "center",
@@ -853,15 +854,15 @@ export default function Schedules() {
               }}
             >
               <CallMissedSharpIcon
-                sx={{ color: "#C91919", width: "25px", height: "25px" }}
+                sx={{ color: "#C91919", width: "1.5625rem", height: "1.5625rem" }}
               />
               <Typography
                 sx={{
                   color: "#C91919",
                   fontWeight: 300,
-                  fontSize: "16px",
-                  lineHeight: "24px",
-                  width: "250px",
+                  fontSize: "1rem",
+                  lineHeight: "1.5rem",
+                  width: "15.625rem",
                 }}
               >
                 {dailySummaryQuery.isPending
@@ -881,19 +882,19 @@ export default function Schedules() {
           onClick={handleOpenCreateSchedule}
           size={12}
           sx={{
-            borderRadius: "20px",
+            borderRadius: "1.25rem",
             zIndex: 5,
-            marginBottom: "30px",
-            minHeight: "400px",
+            marginBottom: "1.875rem",
+            minHeight: "25rem",
           }}
         >
           <Grid
             sx={{
-              minHeight: "400px",
+              minHeight: "25rem",
               backgroundImage: `url(${splash})`,
               backgroundSize: "cover",
               backgroundPosition: "center",
-              borderRadius: "20px",
+              borderRadius: "1.25rem",
               paddingX: "6%",
               paddingY: "12%",
               backgroundRepeat: "no-repeat",
@@ -904,7 +905,7 @@ export default function Schedules() {
                 position: "absolute",
                 top: 0,
                 left: 0,
-                borderRadius: "20px",
+                borderRadius: "1.25rem",
                 right: 0,
                 bottom: 0,
                 backgroundColor: "#1F8E1FE5",
@@ -930,18 +931,18 @@ export default function Schedules() {
                 sx={{
                   display: "flex",
                   flexDirection: "column",
-                  gap: "24px",
-                  maxWidth: "460px",
+                  gap: "1.5rem",
+                  maxWidth: "28.75rem",
                 }}
               >
                 <Typography
                   sx={{
                     color: "#FFFFFF",
                     fontWeight: 600,
-                    fontSize: "24px",
-                    lineHeight: "36px",
+                    fontSize: "1.5rem",
+                    lineHeight: "2.25rem",
                     zIndex: 10,
-                    width: "220px",
+                    width: "13.75rem",
                     margin: "auto",
                     textAlign: "center",
                   }}
@@ -952,10 +953,10 @@ export default function Schedules() {
                   sx={{
                     color: "#FFFFFF",
                     fontWeight: 400,
-                    fontSize: "16px",
-                    lineHeight: "24px",
+                    fontSize: "1rem",
+                    lineHeight: "1.5rem",
                     zIndex: 10,
-                    width: "260px",
+                    width: "16.25rem",
                     textAlign: "center",
                     margin: "auto",
                   }}
@@ -967,8 +968,8 @@ export default function Schedules() {
                 <AddCircleRoundedIcon
                   sx={{
                     color: "#FFFFFF",
-                    width: "80px",
-                    height: "80px",
+                    width: "5rem",
+                    height: "5rem",
                     zIndex: 17,
                   }}
                 />
@@ -983,8 +984,8 @@ export default function Schedules() {
           paddingY: "3%",
           paddingX: "3%",
           backgroundColor: "#FFFFFF",
-          borderRadius: "20px",
-          marginBottom: "30px",
+          borderRadius: "1.25rem",
+          marginBottom: "1.875rem",
           display: "flex",
           flexDirection: "row",
           justifyContent: "space-between",
@@ -995,8 +996,8 @@ export default function Schedules() {
           sx={{
             color: "#000000",
             fontWeight: 600,
-            fontSize: "24px",
-            lineHeight: "36px",
+            fontSize: "1.5rem",
+            lineHeight: "2.25rem",
           }}
         >
           Daily Immunization Schedules
@@ -1019,7 +1020,7 @@ export default function Schedules() {
               }}
               variant="text"
               size="small"
-              sx={{ textTransform: "none", color: "#1F8E1F", fontSize: "14px" }}
+              sx={{ textTransform: "none", color: "#1F8E1F", fontSize: "0.875rem" }}
             >
               Clear filters
             </Button>
@@ -1030,13 +1031,13 @@ export default function Schedules() {
             size="small"
             value={dateSearch}
             onChange={(e) => setDateSearch(e.target.value)}
-            sx={{ width: "180px" }}
+            sx={{ width: "11.25rem" }}
             slotProps={{
               input: {
                 startAdornment: (
                   <InputAdornment position="start">
                     <EventAvailableRoundedIcon
-                      sx={{ color: "#1F8E1F", fontSize: "20px" }}
+                      sx={{ color: "#1F8E1F", fontSize: "1.25rem" }}
                     />
                   </InputAdornment>
                 ),
@@ -1051,7 +1052,7 @@ export default function Schedules() {
               placeholder="Search child or vaccine"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              sx={{ width: "220px" }}
+              sx={{ width: "13.75rem" }}
               slotProps={{
                 input: {
                   endAdornment: searchTerm && (

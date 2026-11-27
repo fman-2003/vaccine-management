@@ -15,17 +15,18 @@ import ModalWindow from "./Modal";
 import AlertMessage from "./AlertMessage";
 import useAlert from "../hooks/useAlert";
 import { getVaccineById, updateVaccine, deleteVaccine } from "../query";
+import { getErrorMessage, getValidationErrors } from "../helper/get-error-message";
 
 function DetailRow({ label, value }) {
   return (
-    <Box sx={{ marginBottom: "20px" }}>
+    <Box sx={{ marginBottom: "1.25rem" }}>
       <Typography
         sx={{
           color: "#000000",
           opacity: 0.4,
           fontWeight: 400,
-          fontSize: "14px",
-          lineHeight: "20px",
+          fontSize: "0.875rem",
+          lineHeight: "1.25rem",
         }}
       >
         {label}
@@ -34,8 +35,8 @@ function DetailRow({ label, value }) {
         sx={{
           color: "#000000",
           fontWeight: 600,
-          fontSize: "18px",
-          lineHeight: "27px",
+          fontSize: "1.125rem",
+          lineHeight: "1.6875rem",
         }}
       >
         {value || "—"}
@@ -96,16 +97,16 @@ export default function VaccineProfile() {
         alert.showSuccess(data.message);
       },
       onError: (error) => {
-        if (error.message.includes("422")) {
+        if (getValidationErrors(error)) {
           setEditError((prev) => ({
             ...prev,
-            validationError: error.response.data.errors,
+            validationError: getValidationErrors(error),
           }));
         }
-        alert.showError(error.response.data.message);
+        alert.showError(getErrorMessage(error));
         setEditError((prev) => ({
           ...prev,
-          error: error.response.data.message,
+          error: getErrorMessage(error),
         }));
       },
     });
@@ -119,7 +120,7 @@ export default function VaccineProfile() {
 
     deleteMutation.mutate(undefined, {
       onSuccess: (data) => alert.showSuccess(data.message),
-      onError: (error) => alert.showError(error.response.data.message),
+      onError: (error) => alert.showError(getErrorMessage(error)),
     });
   };
 
@@ -136,7 +137,7 @@ export default function VaccineProfile() {
     return (
       <Grid sx={{ width: "90%", paddingTop: "5%" }}>
         <Typography
-          sx={{ fontWeight: 600, fontSize: "20px", marginBottom: "10px" }}
+          sx={{ fontWeight: 600, fontSize: "1.25rem", marginBottom: "0.625rem" }}
         >
           {notFound
             ? "We couldn't find that vaccine."
@@ -160,8 +161,8 @@ export default function VaccineProfile() {
             paddingY: "3%",
             paddingX: "4%",
             backgroundColor: "#FFFFFF",
-            borderRadius: "20px",
-            marginBottom: "30px",
+            borderRadius: "1.25rem",
+            marginBottom: "1.875rem",
             display: "flex",
             flexDirection: "row",
             justifyContent: "space-between",
@@ -180,18 +181,18 @@ export default function VaccineProfile() {
               sx={{
                 color: "#1F8E1F",
                 backgroundColor: "#1F8E1F1A",
-                padding: "10px",
-                borderRadius: "900px",
-                width: "44px",
-                height: "44px",
+                padding: "0.625rem",
+                borderRadius: "56.25rem",
+                width: "2.75rem",
+                height: "2.75rem",
               }}
             />
             <Typography
               sx={{
                 color: "#000000",
                 fontWeight: 600,
-                fontSize: "24px",
-                lineHeight: "36px",
+                fontSize: "1.5rem",
+                lineHeight: "2.25rem",
               }}
             >
               {vaccine.type}
@@ -202,8 +203,8 @@ export default function VaccineProfile() {
               onClick={handleOpenEdit}
               sx={{
                 color: "#1F8E1F",
-                width: "28px",
-                height: "28px",
+                width: "1.75rem",
+                height: "1.75rem",
                 cursor: "pointer",
                 "&:hover": { transform: "scale(1.15)" },
               }}
@@ -212,8 +213,8 @@ export default function VaccineProfile() {
               onClick={handleDelete}
               sx={{
                 color: "#C91919",
-                width: "28px",
-                height: "28px",
+                width: "1.75rem",
+                height: "1.75rem",
                 cursor: "pointer",
                 "&:hover": { transform: "scale(1.15)" },
               }}
@@ -227,8 +228,8 @@ export default function VaccineProfile() {
             paddingY: "3%",
             paddingX: "4%",
             backgroundColor: "#FFFFFF",
-            borderRadius: "20px",
-            marginBottom: "30px",
+            borderRadius: "1.25rem",
+            marginBottom: "1.875rem",
           }}
         >
           <DetailRow label="Type of Vaccine" value={vaccine.type} />
@@ -264,14 +265,14 @@ export default function VaccineProfile() {
               textTransform: "none",
               display: "flex",
               flexDirection: "row",
-              gap: "5px",
-              marginBottom: "20px",
+              gap: "0.3125rem",
+              marginBottom: "1.25rem",
             }}
             disableRipple
           >
             <ArrowBackSharpIcon sx={{ color: "#1F8E1F" }} />
             <Typography
-              sx={{ color: "#000000", fontSize: "16px", fontWeight: 400 }}
+              sx={{ color: "#000000", fontSize: "1rem", fontWeight: 400 }}
             >
               Back
             </Typography>
@@ -281,9 +282,9 @@ export default function VaccineProfile() {
               width: "100%",
               color: "#000000",
               fontWeight: 600,
-              fontSize: "24px",
-              lineHeight: "36px",
-              marginBottom: "20px",
+              fontSize: "1.5rem",
+              lineHeight: "2.25rem",
+              marginBottom: "1.25rem",
             }}
           >
             Edit Vaccine
@@ -291,11 +292,11 @@ export default function VaccineProfile() {
           <Grid sx={{ width: "100%" }}>
             <form onSubmit={handleSubmitEdit}>
               {updateMutation.isError && editError.validationError && (
-                <Box sx={{ marginBottom: "5px" }}>
+                <Box sx={{ marginBottom: "0.3125rem" }}>
                   <ul>
                     {editError.validationError.map((valErr) => (
                       <li
-                        style={{ color: "red", fontSize: "15px" }}
+                        style={{ color: "red", fontSize: "0.9375rem" }}
                         key={valErr.msg}
                       >
                         {valErr.msg}
@@ -304,96 +305,96 @@ export default function VaccineProfile() {
                   </ul>
                 </Box>
               )}
-              <Box sx={{ marginBottom: "25px" }}>
+              <Box sx={{ marginBottom: "1.5625rem" }}>
                 <InputLabel
                   sx={{
                     color: "#222222",
                     fontWeight: 500,
-                    fontSize: "16px",
-                    lineHeight: "24px",
-                    marginBottom: "10px",
+                    fontSize: "1rem",
+                    lineHeight: "1.5rem",
+                    marginBottom: "0.625rem",
                   }}
                 >
                   Type of Vaccine
                 </InputLabel>
                 <TextField
-                  sx={{ width: "600px" }}
+                  sx={{ width: "37.5rem" }}
                   name="type"
                   type="text"
                   defaultValue={vaccine.type}
                 />
               </Box>
-              <Box sx={{ marginBottom: "25px" }}>
+              <Box sx={{ marginBottom: "1.5625rem" }}>
                 <InputLabel
                   sx={{
                     color: "#222222",
                     fontWeight: 500,
-                    fontSize: "16px",
-                    lineHeight: "24px",
-                    marginBottom: "10px",
+                    fontSize: "1rem",
+                    lineHeight: "1.5rem",
+                    marginBottom: "0.625rem",
                   }}
                 >
                   Minimum Target Age of Child
                 </InputLabel>
                 <TextField
-                  sx={{ width: "600px" }}
+                  sx={{ width: "37.5rem" }}
                   name="minimumTargetAge"
                   type="text"
                   defaultValue={vaccine.minimumTargetAge}
                 />
               </Box>
-              <Box sx={{ marginBottom: "25px" }}>
+              <Box sx={{ marginBottom: "1.5625rem" }}>
                 <InputLabel
                   sx={{
                     color: "#222222",
                     fontWeight: 500,
-                    fontSize: "16px",
-                    lineHeight: "24px",
-                    marginBottom: "10px",
+                    fontSize: "1rem",
+                    lineHeight: "1.5rem",
+                    marginBottom: "0.625rem",
                   }}
                 >
                   Dosage
                 </InputLabel>
                 <TextField
-                  sx={{ width: "600px" }}
+                  sx={{ width: "37.5rem" }}
                   name="dosage"
                   type="text"
                   defaultValue={vaccine.dosage}
                 />
               </Box>
-              <Box sx={{ marginBottom: "25px" }}>
+              <Box sx={{ marginBottom: "1.5625rem" }}>
                 <InputLabel
                   sx={{
                     color: "#222222",
                     fontWeight: 500,
-                    fontSize: "16px",
-                    lineHeight: "24px",
-                    marginBottom: "10px",
+                    fontSize: "1rem",
+                    lineHeight: "1.5rem",
+                    marginBottom: "0.625rem",
                   }}
                 >
                   Route of Administration
                 </InputLabel>
                 <TextField
-                  sx={{ width: "600px" }}
+                  sx={{ width: "37.5rem" }}
                   name="routeOfAdministration"
                   type="text"
                   defaultValue={vaccine.routeOfAdministration}
                 />
               </Box>
-              <Box sx={{ marginBottom: "25px" }}>
+              <Box sx={{ marginBottom: "1.5625rem" }}>
                 <InputLabel
                   sx={{
                     color: "#222222",
                     fontWeight: 500,
-                    fontSize: "16px",
-                    lineHeight: "24px",
-                    marginBottom: "10px",
+                    fontSize: "1rem",
+                    lineHeight: "1.5rem",
+                    marginBottom: "0.625rem",
                   }}
                 >
                   Site of Administration
                 </InputLabel>
                 <TextField
-                  sx={{ width: "600px" }}
+                  sx={{ width: "37.5rem" }}
                   name="siteOfAdministration"
                   type="text"
                   defaultValue={vaccine.siteOfAdministration}
@@ -403,9 +404,9 @@ export default function VaccineProfile() {
                 sx={{
                   width: "100%",
                   backgroundColor: "#1F8E1F",
-                  paddingY: "12px",
-                  paddingX: "36px",
-                  borderRadius: "80px",
+                  paddingY: "0.75rem",
+                  paddingX: "2.25rem",
+                  borderRadius: "5rem",
                   color: "#FFFFFF",
                   textTransform: "none",
                 }}
@@ -413,7 +414,7 @@ export default function VaccineProfile() {
                 disabled={updateMutation.isPending}
               >
                 {updateMutation.isPending ? (
-                  <CircularProgress size="24px" sx={{ color: "white" }} />
+                  <CircularProgress size="1.5rem" sx={{ color: "white" }} />
                 ) : (
                   "Save Changes"
                 )}
@@ -427,7 +428,7 @@ export default function VaccineProfile() {
                 width: "100%",
                 textAlign: "center",
                 alignItems: "center",
-                marginTop: "10px",
+                marginTop: "0.625rem",
                 justifyContent: "center",
                 gap: 1,
               }}

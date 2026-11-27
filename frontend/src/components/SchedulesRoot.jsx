@@ -11,9 +11,9 @@ export default function SchedulesRootLayout() {
         style={{
           width: "100%",
           backgroundColor: "#E1F0E1",
-          minHeight: "250px",
-          paddingLeft: "180px",
-          paddingTop: "120px",
+          minHeight: "15.625rem",
+          paddingLeft: "11.25rem",
+          paddingTop: "7.5rem",
         }}
       >
         <Outlet />

@@ -39,7 +39,7 @@ export default function LandingPage() {
         <Box
           sx={{
             width: "75%",
-            paddingTop: "73px",
+            paddingTop: "4.5625rem",
             marginX: "auto",
             display: "flex",
             flexDirection: "row",
@@ -65,13 +65,13 @@ export default function LandingPage() {
               sx={{
                 textTransform: "none",
                 backgroundColor: "#1F8E1F",
-                paddingY: "12px",
-                paddingX: "36px",
-                height: "48px",
-                width: "280px",
-                borderRadius: "80px",
+                paddingY: "0.75rem",
+                paddingX: "2.25rem",
+                height: "3rem",
+                width: "17.5rem",
+                borderRadius: "5rem",
                 fontWeight: 400,
-                fontSize: 16,
+                fontSize: "1rem",
               }}
             >
               Login
@@ -82,7 +82,7 @@ export default function LandingPage() {
           sx={{
             width: "100%",
             paddingLeft: "12%",
-            paddingTop: "60px",
+            paddingTop: "3.75rem",
             // position: "relative",
             display: "flex",
             flexDirection: "row",
@@ -91,7 +91,7 @@ export default function LandingPage() {
         >
           <Grid
             sx={{
-              gap: "40px",
+              gap: "2.5rem",
               display: "flex",
               flexDirection: "column",
               justifyContent: "flex-start",
@@ -103,11 +103,11 @@ export default function LandingPage() {
                 flexDirection: "row",
                 backgroundColor: "#D9ECD9",
                 padding: "1.5px",
-                borderRadius: "5px",
+                borderRadius: "0.3125rem",
                 width: "fit-content",
               }}
             >
-              <img src={pinLanding} alt="Pin" style={{ marginRight: "3px" }} />
+              <img src={pinLanding} alt="Pin" style={{ marginRight: "0.1875rem" }} />
               <Typography sx={{ textWrap: "nowrap" }}>
                 Simplify the process of immunisation management .
               </Typography>
@@ -116,11 +116,11 @@ export default function LandingPage() {
               <Typography
                 sx={{
                   width: "70%",
-                  minWidth: "490px",
+                  minWidth: "30.625rem",
                   color: "#000000",
                   fontWeight: 700,
-                  fontSize: "56px",
-                  lineHeight: "80px",
+                  fontSize: "3.5rem",
+                  lineHeight: "5rem",
                 }}
               >
                 Manage Children’s{" "}
@@ -131,11 +131,11 @@ export default function LandingPage() {
               <Typography
                 sx={{
                   width: "65%",
-                  minWidth: "500px",
+                  minWidth: "31.25rem",
                   color: "#888888",
                   fontWeight: 400,
-                  fontSize: "24px",
-                  lineHeight: "40px",
+                  fontSize: "1.5rem",
+                  lineHeight: "2.5rem",
                 }}
               >
                 Add details of received vaccinations, including vaccine type,
@@ -149,14 +149,14 @@ export default function LandingPage() {
               sx={{
                 textTransform: "none",
                 backgroundColor: "#1F8E1F",
-                paddingY: "12px",
-                paddingX: "36px",
-                height: "48px",
-                width: "280px",
-                borderRadius: "80px",
-                gap: "8px",
+                paddingY: "0.75rem",
+                paddingX: "2.25rem",
+                height: "3rem",
+                width: "17.5rem",
+                borderRadius: "5rem",
+                gap: "0.5rem",
                 fontWeight: 400,
-                fontSize: 16,
+                fontSize: "1rem",
               }}
             >
               Login
@@ -167,8 +167,8 @@ export default function LandingPage() {
             alt=""
             style={{
               //   position: "absolute",
-              height: "634px",
-              width: "978px",
+              height: "39.625rem",
+              width: "61.125rem",
             }}
           />
         </Grid>
@@ -176,10 +176,10 @@ export default function LandingPage() {
       <Box sx={{ width: "75%", margin: "auto" }}>
         <Typography
           sx={{
-            marginTop: "150px",
+            marginTop: "9.375rem",
             textAlign: "center",
             fontWeight: 700,
-            fontSize: "48px",
+            fontSize: "3rem",
             background: "linear-gradient(to right, #1F8E1F, #092809)",
             backgroundClip: "text",
             WebkitBackgroundClip: "text",
@@ -193,10 +193,10 @@ export default function LandingPage() {
           direction={"row"}
           sx={{
             width: "75%",
-            gap: "24px",
+            gap: "1.5rem",
             margin: "auto",
-            paddingTop: "60px",
-            paddingBottom: "150px",
+            paddingTop: "3.75rem",
+            paddingBottom: "9.375rem",
           }}
         >
           <Stack
@@ -206,18 +206,18 @@ export default function LandingPage() {
               backgroundColor: "#1F8E1F1A",
               borderWidth: "2px",
               borderStyle: "solid",
-              borderRadius: "30px",
+              borderRadius: "1.875rem",
               borderColor: "#1F8E1F",
-              padding: "24px",
-              gap: "16px",
+              padding: "1.5rem",
+              gap: "1rem",
             }}
           >
-            <img src={peaceFillOne} style={{ width: "56px" }} alt="" />
+            <img src={peaceFillOne} style={{ width: "3.5rem" }} alt="" />
             <Typography
               sx={{
                 fontWeight: 700,
-                fontSize: "16px",
-                lineHeight: "24px",
+                fontSize: "1rem",
+                lineHeight: "1.5rem",
                 color: "#1F8E1F",
               }}
             >
@@ -226,8 +226,8 @@ export default function LandingPage() {
             <Typography
               sx={{
                 fontWeight: 300,
-                fontSize: "16px",
-                lineHeight: "35px",
+                fontSize: "1rem",
+                lineHeight: "2.1875rem",
                 color: "#222222",
               }}
             >
@@ -243,18 +243,18 @@ export default function LandingPage() {
               borderWidth: "2px",
               borderColor: "#DF2935",
               borderStyle: "solid",
-              borderRadius: "30px",
-              gap: "16px",
-              padding: "24px",
+              borderRadius: "1.875rem",
+              gap: "1rem",
+              padding: "1.5rem",
             }}
           >
-            <img src={peaceFillTwo} style={{ width: "56px" }} alt="" />
+            <img src={peaceFillTwo} style={{ width: "3.5rem" }} alt="" />
 
             <Typography
               sx={{
                 fontWeight: 700,
-                fontSize: "16px",
-                lineHeight: "24px",
+                fontSize: "1rem",
+                lineHeight: "1.5rem",
                 color: "#DF2935",
               }}
             >
@@ -263,8 +263,8 @@ export default function LandingPage() {
             <Typography
               sx={{
                 fontWeight: 300,
-                fontSize: "16px",
-                lineHeight: "35px",
+                fontSize: "1rem",
+                lineHeight: "2.1875rem",
                 color: "#222222",
               }}
             >
@@ -280,17 +280,17 @@ export default function LandingPage() {
               borderWidth: "2px",
               borderColor: "#FF9900",
               borderStyle: "solid",
-              borderRadius: "30px",
-              gap: "16px",
-              padding: "24px",
+              borderRadius: "1.875rem",
+              gap: "1rem",
+              padding: "1.5rem",
             }}
           >
-            <img src={peaceFillThree} style={{ width: "56px" }} alt="" />
+            <img src={peaceFillThree} style={{ width: "3.5rem" }} alt="" />
             <Typography
               sx={{
                 fontWeight: 700,
-                fontSize: "16px",
-                lineHeight: "24px",
+                fontSize: "1rem",
+                lineHeight: "1.5rem",
                 color: "#FF9900",
               }}
             >
@@ -299,8 +299,8 @@ export default function LandingPage() {
             <Typography
               sx={{
                 fontWeight: 300,
-                fontSize: "16px",
-                lineHeight: "35px",
+                fontSize: "1rem",
+                lineHeight: "2.1875rem",
                 color: "#222222",
               }}
             >
@@ -316,17 +316,17 @@ export default function LandingPage() {
               borderWidth: "2px",
               borderColor: "#3772FF",
               borderStyle: "solid",
-              borderRadius: "30px",
-              gap: "16px",
-              padding: "24px",
+              borderRadius: "1.875rem",
+              gap: "1rem",
+              padding: "1.5rem",
             }}
           >
-            <img src={peaceFillFour} style={{ width: "56px" }} alt="" />
+            <img src={peaceFillFour} style={{ width: "3.5rem" }} alt="" />
             <Typography
               sx={{
                 fontWeight: 700,
-                fontSize: "16px",
-                lineHeight: "24px",
+                fontSize: "1rem",
+                lineHeight: "1.5rem",
                 color: "#3772FF",
               }}
             >
@@ -335,8 +335,8 @@ export default function LandingPage() {
             <Typography
               sx={{
                 fontWeight: 300,
-                fontSize: "16px",
-                lineHeight: "35px",
+                fontSize: "1rem",
+                lineHeight: "2.1875rem",
                 color: "#222222",
               }}
             >
@@ -356,18 +356,18 @@ export default function LandingPage() {
           sx={{
             textAlign: "center",
             fontWeight: 700,
-            fontSize: "48px",
+            fontSize: "3rem",
             background: "linear-gradient(to right, #1F8E1F, #092809)",
             backgroundClip: "text",
             WebkitBackgroundClip: "text",
             color: "transparent",
             WebkitTextFillColor: "transparent",
-            paddingTop: "150px",
+            paddingTop: "9.375rem",
           }}
         >
           Get Started
         </Typography>
-        <Grid sx={{ width: "100%", paddingTop: "80px" }}>
+        <Grid sx={{ width: "100%", paddingTop: "5rem" }}>
           <Grid
             sx={{
               display: "flex",
@@ -375,14 +375,14 @@ export default function LandingPage() {
               justifyContent: "flex-end",
               width: "100%",
               margin: "auto",
-              marginBottom: "100px",
+              marginBottom: "6.25rem",
             }}
           >
             <Grid
               sx={{
                 display: "flex",
                 flexDirection: "row",
-                gap: "40px",
+                gap: "2.5rem",
                 width: "70%",
                 margin: "auto",
               }}
@@ -396,16 +396,16 @@ export default function LandingPage() {
                 sx={{
                   display: "flex",
                   flexDirection: "column",
-                  gap: "16px",
+                  gap: "1rem",
                   alignSelf: "center",
-                  maxWidth: "524px",
+                  maxWidth: "32.75rem",
                 }}
               >
                 <Typography
                   sx={{
                     fontWeight: 700,
-                    fontSize: "24px",
-                    lineHeight: "34px",
+                    fontSize: "1.5rem",
+                    lineHeight: "2.125rem",
                     color: "#000000",
                     textAlign: "start",
                   }}
@@ -415,8 +415,8 @@ export default function LandingPage() {
                 <Typography
                   sx={{
                     fontWeight: 400,
-                    fontSize: "16px",
-                    lineHeight: "35px",
+                    fontSize: "1rem",
+                    lineHeight: "2.1875rem",
                     textAlign: "justify",
                     color: "#00000099",
                   }}
@@ -430,8 +430,8 @@ export default function LandingPage() {
             <Typography
               sx={{
                 fontWeight: 700,
-                fontSize: "250px",
-                lineHeight: "48px",
+                fontSize: "15.625rem",
+                lineHeight: "3rem",
                 textAlign: "center",
                 alignSelf: "center",
                 color: "#1F8E1F",
@@ -445,7 +445,7 @@ export default function LandingPage() {
             sx={{
               display: "flex",
               flexDirection: "row",
-              marginBottom: "100px",
+              marginBottom: "6.25rem",
               justifyContent: "flex-start",
               width: "100%",
             }}
@@ -453,8 +453,8 @@ export default function LandingPage() {
             <Typography
               sx={{
                 fontWeight: 700,
-                fontSize: "250px",
-                lineHeight: "48px",
+                fontSize: "15.625rem",
+                lineHeight: "3rem",
                 textAlign: "center",
                 alignSelf: "center",
                 color: "#1F8E1F",
@@ -467,7 +467,7 @@ export default function LandingPage() {
               sx={{
                 display: "flex",
                 flexDirection: "row",
-                gap: "40px",
+                gap: "2.5rem",
                 width: "70%",
                 margin: "auto",
               }}
@@ -476,16 +476,16 @@ export default function LandingPage() {
                 sx={{
                   display: "flex",
                   flexDirection: "column",
-                  gap: "16px",
+                  gap: "1rem",
                   alignSelf: "center",
-                  maxWidth: "524px",
+                  maxWidth: "32.75rem",
                 }}
               >
                 <Typography
                   sx={{
                     fontWeight: 700,
-                    fontSize: "24px",
-                    lineHeight: "34px",
+                    fontSize: "1.5rem",
+                    lineHeight: "2.125rem",
                     color: "#000000",
                     textAlign: "start",
                   }}
@@ -496,8 +496,8 @@ export default function LandingPage() {
                 <Typography
                   sx={{
                     fontWeight: 400,
-                    fontSize: "16px",
-                    lineHeight: "35px",
+                    fontSize: "1rem",
+                    lineHeight: "2.1875rem",
                     textAlign: "justify",
                     color: "#00000099",
                   }}
@@ -518,7 +518,7 @@ export default function LandingPage() {
             sx={{
               display: "flex",
               flexDirection: "row",
-              marginBottom: "100px",
+              marginBottom: "6.25rem",
               justifyContent: "flex-end",
               width: "100%",
             }}
@@ -527,7 +527,7 @@ export default function LandingPage() {
               sx={{
                 display: "flex",
                 flexDirection: "row",
-                gap: "40px",
+                gap: "2.5rem",
                 width: "70%",
                 margin: "auto",
               }}
@@ -541,16 +541,16 @@ export default function LandingPage() {
                 sx={{
                   display: "flex",
                   flexDirection: "column",
-                  gap: "16px",
+                  gap: "1rem",
                   alignSelf: "center",
-                  maxWidth: "524px",
+                  maxWidth: "32.75rem",
                 }}
               >
                 <Typography
                   sx={{
                     fontWeight: 700,
-                    fontSize: "24px",
-                    lineHeight: "34px",
+                    fontSize: "1.5rem",
+                    lineHeight: "2.125rem",
                     color: "#000000",
                     textAlign: "start",
                   }}
@@ -561,8 +561,8 @@ export default function LandingPage() {
                 <Typography
                   sx={{
                     fontWeight: 400,
-                    fontSize: "16px",
-                    lineHeight: "35px",
+                    fontSize: "1rem",
+                    lineHeight: "2.1875rem",
                     textAlign: "justify",
                     color: "#00000099",
                   }}
@@ -576,8 +576,8 @@ export default function LandingPage() {
             <Typography
               sx={{
                 fontWeight: 700,
-                fontSize: "250px",
-                lineHeight: "48px",
+                fontSize: "15.625rem",
+                lineHeight: "3rem",
                 textAlign: "center",
                 alignSelf: "center",
                 color: "#1F8E1F",
@@ -593,7 +593,7 @@ export default function LandingPage() {
               flexDirection: "row",
               textAlign: "center",
               margin: "auto",
-              marginBottom: "100px",
+              marginBottom: "6.25rem",
               justifyContent: "flex-start",
               width: "100%",
             }}
@@ -601,8 +601,8 @@ export default function LandingPage() {
             <Typography
               sx={{
                 fontWeight: 700,
-                fontSize: "250px",
-                lineHeight: "48px",
+                fontSize: "15.625rem",
+                lineHeight: "3rem",
                 textAlign: "center",
                 alignSelf: "center",
                 color: "#1F8E1F",
@@ -615,7 +615,7 @@ export default function LandingPage() {
               sx={{
                 display: "flex",
                 flexDirection: "row",
-                gap: "40px",
+                gap: "2.5rem",
                 width: "70%",
                 margin: "auto",
               }}
@@ -624,16 +624,16 @@ export default function LandingPage() {
                 sx={{
                   display: "flex",
                   flexDirection: "column",
-                  gap: "16px",
+                  gap: "1rem",
                   alignSelf: "center",
-                  maxWidth: "524px",
+                  maxWidth: "32.75rem",
                 }}
               >
                 <Typography
                   sx={{
                     fontWeight: 700,
-                    fontSize: "24px",
-                    lineHeight: "34px",
+                    fontSize: "1.5rem",
+                    lineHeight: "2.125rem",
                     color: "#000000",
                     textAlign: "start",
                   }}
@@ -644,8 +644,8 @@ export default function LandingPage() {
                 <Typography
                   sx={{
                     fontWeight: 400,
-                    fontSize: "16px",
-                    lineHeight: "35px",
+                    fontSize: "1rem",
+                    lineHeight: "2.1875rem",
                     textAlign: "justify",
                     color: "#00000099",
                   }}
@@ -666,7 +666,7 @@ export default function LandingPage() {
         <Box
           sx={{
             margin: "auto",
-            paddingY: "100px",
+            paddingY: "6.25rem",
             textAlign: "center",
             minWidth: "100%",
           }}
@@ -677,14 +677,14 @@ export default function LandingPage() {
             sx={{
               textTransform: "none",
               backgroundColor: "#1F8E1F",
-              paddingY: "12px",
-              paddingX: "36px",
-              height: "62px",
-              width: "409px",
-              borderRadius: "80px",
+              paddingY: "0.75rem",
+              paddingX: "2.25rem",
+              height: "3.875rem",
+              width: "25.5625rem",
+              borderRadius: "5rem",
               fontWeight: 500,
-              fontSize: 20,
-              lineHeight: "30px",
+              fontSize: "1.25rem",
+              lineHeight: "1.875rem",
             }}
           >
             Register Now
@@ -693,7 +693,7 @@ export default function LandingPage() {
         <Box
           sx={{
             minWidth: "100%",
-            height: "809px",
+            height: "50.5625rem",
             backgroundImage: `url(${smileyNurse})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
@@ -717,18 +717,18 @@ export default function LandingPage() {
               position: "absolute",
               display: "flex",
               flexDirection: "column",
-              gap: "24px",
+              gap: "1.5rem",
               top: "50%",
               right: "10%",
-              maxWidth: "460px",
+              maxWidth: "28.75rem",
             }}
           >
             <Typography
               sx={{
                 color: "#FFFFFF",
                 fontWeight: 500,
-                fontSize: "24px",
-                lineHeight: "48px",
+                fontSize: "1.5rem",
+                lineHeight: "3rem",
                 zIndex: 10,
               }}
             >
@@ -742,14 +742,14 @@ export default function LandingPage() {
               sx={{
                 textTransform: "none",
                 backgroundColor: "#1F8E1F",
-                paddingY: "12px",
-                paddingX: "36px",
-                height: "62px",
-                width: "409px",
-                borderRadius: "80px",
+                paddingY: "0.75rem",
+                paddingX: "2.25rem",
+                height: "3.875rem",
+                width: "25.5625rem",
+                borderRadius: "5rem",
                 fontWeight: 500,
-                fontSize: "20px",
-                lineHeight: "30px",
+                fontSize: "1.25rem",
+                lineHeight: "1.875rem",
                 zIndex: 10,
               }}
             >
@@ -760,7 +760,7 @@ export default function LandingPage() {
         <Divider
           sx={{
             minWidth: "100%",
-            marginTop: "150px",
+            marginTop: "9.375rem",
 
             color: "#003466",
             backgroundColor: "#003466",
@@ -770,11 +770,11 @@ export default function LandingPage() {
         <Stack
           direction={"row"}
           sx={{
-            paddingY: "50px",
+            paddingY: "3.125rem",
             width: "70%",
             margin: "auto",
             justifyContent: "flex-end",
-            gap: "16px",
+            gap: "1rem",
           }}
         >
           <Box sx={{ cursor: "pointer" }}>

@@ -33,7 +33,7 @@ export default function Pagination({ page, totalPages, onPageChange }) {
         alignItems: "center",
         justifyContent: "center",
         gap: 1,
-        marginTop: "20px",
+        marginTop: "1.25rem",
       }}
     >
       <IconButton
@@ -50,7 +50,7 @@ export default function Pagination({ page, totalPages, onPageChange }) {
         num === "..." ? (
           <Typography
             key={`ellipsis-${idx}`}
-            sx={{ color: "#00000066", paddingX: "4px" }}
+            sx={{ color: "#00000066", paddingX: "0.25rem" }}
           >
             …
           </Typography>
@@ -60,9 +60,9 @@ export default function Pagination({ page, totalPages, onPageChange }) {
             onClick={() => goTo(num)}
             disableRipple
             sx={{
-              minWidth: "36px",
-              height: "36px",
-              borderRadius: "900px",
+              minWidth: "2.25rem",
+              height: "2.25rem",
+              borderRadius: "56.25rem",
               padding: 0,
               color: num === page ? "#FFFFFF" : "#1F8E1F",
               backgroundColor: num === page ? "#1F8E1F" : "transparent",

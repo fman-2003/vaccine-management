@@ -23,6 +23,7 @@ import ArrowBackSharpIcon from "@mui/icons-material/ArrowBackSharp";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { login, signup } from "../query";
+import { getErrorMessage, getValidationErrors } from "../helper/get-error-message";
 
 export default function Login() {
   const [showPassword, setShowPassword] = React.useState(false);
@@ -82,17 +83,8 @@ export default function Login() {
         navigate("?mode=login");
       },
       onError: (error) => {
-        setSignupErrors({});
-        alert.showError(error.response.data.message);
-
-        if (error.message.includes("422")) {
-          setSignupErrors((prev) => {
-            return {
-              ...prev,
-              validationError: error.response.data.errors,
-            };
-          });
-        }
+        setSignupErrors({ validationError: getValidationErrors(error) });
+        alert.showError(getErrorMessage(error));
         // setSignupErrors((prev) => {
         //   return {
         //     ...prev,
@@ -118,17 +110,8 @@ export default function Login() {
         navigate("/dashboard");
       },
       onError: (error) => {
-        setLoginErrors({});
-        alert.showError(error.response.data.message);
-
-        if (error.message.includes("422")) {
-          setLoginErrors((prev) => {
-            return {
-              ...prev,
-              validationError: error.response.data.errors,
-            };
-          });
-        }
+        setLoginErrors({ validationError: getValidationErrors(error) });
+        alert.showError(getErrorMessage(error));
         // setLoginErrors((prev) => {
         //   return {
         //     ...prev,
@@ -170,7 +153,7 @@ export default function Login() {
             position: "absolute",
             display: "flex",
             flexDirection: "column",
-            gap: "24px",
+            gap: "1.5rem",
             left: "0",
             opacity: 1,
             zIndex: 1000,
@@ -209,14 +192,14 @@ export default function Login() {
                 textTransform: "none",
                 display: "flex",
                 flexDirection: "row",
-                gap: "5px",
-                marginBottom: "5px",
+                gap: "0.3125rem",
+                marginBottom: "0.3125rem",
               }}
               disableRipple
             >
               <ArrowBackSharpIcon sx={{ color: "#1F8E1F" }} />{" "}
               <Typography
-                sx={{ color: "#000000", fontSize: "16px", fontWeight: 400 }}
+                sx={{ color: "#000000", fontSize: "1rem", fontWeight: 400 }}
               >
                 Back
               </Typography>
@@ -226,9 +209,9 @@ export default function Login() {
                 width: "100%",
                 color: "#000000",
                 fontWeight: 600,
-                fontSize: "24px",
-                lineHeight: "36px",
-                marginBottom: "5px",
+                fontSize: "1.5rem",
+                lineHeight: "2.25rem",
+                marginBottom: "0.3125rem",
               }}
             >
               {isLogin ? "Login" : "Sign Up"}
@@ -258,12 +241,12 @@ export default function Login() {
               </Collapse>
             )} */}
               {signupMutation.isError && signupErrors.validationError && (
-                <Box sx={{ marginBottom: "5px" }}>
+                <Box sx={{ marginBottom: "0.3125rem" }}>
                   <ul>
                     {signupErrors.validationError.map((valErr) => {
                       return (
                         <li
-                          style={{ color: "red", fontSize: "15px" }}
+                          style={{ color: "red", fontSize: "0.9375rem" }}
                           key={valErr.msg}
                         >
                           {valErr.msg}
@@ -274,21 +257,21 @@ export default function Login() {
                 </Box>
               )}
               {signupMutation.isError && signupErrors.error && (
-                <Box sx={{ marginBottom: "5px" }}>
+                <Box sx={{ marginBottom: "0.3125rem" }}>
                   <ul>
-                    <li style={{ color: "red", fontSize: "15px" }}>
+                    <li style={{ color: "red", fontSize: "0.9375rem" }}>
                       {signupErrors.error}
                     </li>
                   </ul>
                 </Box>
               )}
               {loginMutation.isError && loginErrors.validationError && (
-                <Box sx={{ marginBottom: "5px" }}>
+                <Box sx={{ marginBottom: "0.3125rem" }}>
                   <ul>
                     {loginErrors.validationError.map((valErr) => {
                       return (
                         <li
-                          style={{ color: "red", fontSize: "15px" }}
+                          style={{ color: "red", fontSize: "0.9375rem" }}
                           key={valErr.path}
                         >
                           {valErr.msg}
@@ -299,9 +282,9 @@ export default function Login() {
                 </Box>
               )}
               {loginMutation.isError && loginErrors.error && (
-                <Box sx={{ marginBottom: "5px" }}>
+                <Box sx={{ marginBottom: "0.3125rem" }}>
                   <ul>
-                    <li style={{ color: "red", fontSize: "15px" }}>
+                    <li style={{ color: "red", fontSize: "0.9375rem" }}>
                       {loginErrors.error}
                     </li>
                   </ul>
@@ -310,12 +293,12 @@ export default function Login() {
               <form onSubmit={isLogin ? handleLoginSubmit : handleSignUpSubmit}>
                 {isLogin ? (
                   <>
-                    <Box sx={{ marginBottom: "45px" }}>
+                    <Box sx={{ marginBottom: "2.8125rem" }}>
                       <TextField
                         name="loginUsername"
                         label="Username"
                         type="text"
-                        sx={{ width: "400px" }}
+                        sx={{ width: "25rem" }}
                         variant="standard"
                         // error={
                         //   Object.keys(loginErrors).length !== 0 &&
@@ -331,8 +314,8 @@ export default function Login() {
                         required
                       />
                     </Box>
-                    <Box sx={{ marginBottom: "45px" }}>
-                      <FormControl sx={{ width: "400px" }} variant="standard">
+                    <Box sx={{ marginBottom: "2.8125rem" }}>
+                      <FormControl sx={{ width: "25rem" }} variant="standard">
                         <InputLabel htmlFor="standard-adornment-password">
                           Password
                         </InputLabel>
@@ -376,7 +359,7 @@ export default function Login() {
                         {/* <Typography
                         sx={{
                           fontWeight: 300,
-                          fontSize: "12px",
+                          fontSize: "0.75rem",
                           color: "#FF3B3B",
                         }}
                       >
@@ -387,12 +370,12 @@ export default function Login() {
                   </>
                 ) : (
                   <>
-                    <Box sx={{ marginBottom: "25px" }}>
+                    <Box sx={{ marginBottom: "1.5625rem" }}>
                       <TextField
                         name="username"
                         label="Username"
                         type="text"
-                        sx={{ width: "400px" }}
+                        sx={{ width: "25rem" }}
                         variant="standard"
                         // error={
                         //   Object.keys(signupErrors).length !== 0 &&
@@ -409,12 +392,12 @@ export default function Login() {
                         required
                       />
                     </Box>
-                    <Box sx={{ marginBottom: "25px" }}>
+                    <Box sx={{ marginBottom: "1.5625rem" }}>
                       <TextField
                         name="email"
                         label="Email Address"
                         type="text"
-                        sx={{ width: "400px" }}
+                        sx={{ width: "25rem" }}
                         variant="standard"
                         required
                         // error={
@@ -434,8 +417,8 @@ export default function Login() {
                         // }
                       />
                     </Box>
-                    <Box sx={{ marginBottom: "25px" }}>
-                      <FormControl sx={{ width: "400px" }} variant="standard">
+                    <Box sx={{ marginBottom: "1.5625rem" }}>
+                      <FormControl sx={{ width: "25rem" }} variant="standard">
                         <InputLabel htmlFor="standard-adornment-password">
                           Password
                         </InputLabel>
@@ -475,7 +458,7 @@ export default function Login() {
                         {/* <Typography
                         sx={{
                           fontWeight: 300,
-                          fontSize: "12px",
+                          fontSize: "0.75rem",
                           color: "#FF3B3B",
                         }}
                       >
@@ -494,10 +477,10 @@ export default function Login() {
                     backgroundColor: "#1F8E1F",
                     color: "#FFFFFF",
                     fontWeight: 400,
-                    fontSize: "16px",
-                    paddingY: "12px",
-                    paddingX: "36px",
-                    borderRadius: "400px",
+                    fontSize: "1rem",
+                    paddingY: "0.75rem",
+                    paddingX: "2.25rem",
+                    borderRadius: "25rem",
                     marginTop: "4%",
                     marginBottom: "4%",
                   }}
@@ -520,10 +503,10 @@ export default function Login() {
                 <Typography
                   sx={{
                     color: "#000000",
-                    fontSize: "16px",
+                    fontSize: "1rem",
                     fontWeight: 400,
                     textAlign: "center",
-                    marginBottom: "20px",
+                    marginBottom: "1.25rem",
                   }}
                 >
                   Create an account if you do not have one{" "}
@@ -538,10 +521,10 @@ export default function Login() {
                 <Typography
                   sx={{
                     color: "#000000",
-                    fontSize: "16px",
+                    fontSize: "1rem",
                     fontWeight: 400,
                     textAlign: "center",
-                    marginBottom: "20px",
+                    marginBottom: "1.25rem",
                   }}
                 >
                   Already a user?{" "}
@@ -562,7 +545,7 @@ export default function Login() {
                   width: "100%",
                   textAlign: "center",
                   alignItems: "center",
-                  marginTop: "10px",
+                  marginTop: "0.625rem",
                   justifyContent: "center",
                   gap: 1,
                 }}

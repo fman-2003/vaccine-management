@@ -35,8 +35,8 @@ export default function ImmunizationCompleted({ schedules = [] }) {
         <Typography
           sx={{
             fontWeight: 400,
-            fontSize: "16px",
-            lineHeight: "18px",
+            fontSize: "1rem",
+            lineHeight: "1.125rem",
             color: "#000000",
             opacity: 0.7,
           }}
@@ -46,8 +46,8 @@ export default function ImmunizationCompleted({ schedules = [] }) {
         <Typography
           sx={{
             fontWeight: 400,
-            fontSize: "16px",
-            lineHeight: "18px",
+            fontSize: "1rem",
+            lineHeight: "1.125rem",
             color: "#000000",
             opacity: 0.7,
           }}
@@ -67,14 +67,14 @@ export default function ImmunizationCompleted({ schedules = [] }) {
               borderColor: "#0000001A",
               "&:hover": {
                 backgroundColor: "#1F8E1F0D",
-                borderRadius: "12px",
+                borderRadius: "0.75rem",
                 border: 1,
                 borderColor: "#1F8E1F",
                 cursor: "pointer",
               },
               "&.Mui-expanded": {
                 backgroundColor: "#1F8E1F0D",
-                borderRadius: "12px",
+                borderRadius: "0.75rem",
                 border: 1,
                 borderColor: "#1F8E1F",
                 cursor: "pointer",
@@ -96,8 +96,8 @@ export default function ImmunizationCompleted({ schedules = [] }) {
                 <Typography
                   sx={{
                     fontWeight: 500,
-                    fontSize: "16px",
-                    lineHeight: "24px",
+                    fontSize: "1rem",
+                    lineHeight: "1.5rem",
                     color: "#000000",
                     paddingLeft: "2%",
                   }}
@@ -108,12 +108,12 @@ export default function ImmunizationCompleted({ schedules = [] }) {
                   sx={{
                     color: "#0066FF",
                     fontWeight: 400,
-                    fontSize: "12px",
-                    lineHeight: "14px",
+                    fontSize: "0.75rem",
+                    lineHeight: "0.875rem",
                     backgroundColor: "#0066FF26",
-                    borderRadius: "900px",
-                    paddingY: "8px",
-                    paddingX: "16px",
+                    borderRadius: "56.25rem",
+                    paddingY: "0.5rem",
+                    paddingX: "1rem",
                   }}
                 >
                   Completed
@@ -127,9 +127,9 @@ export default function ImmunizationCompleted({ schedules = [] }) {
                 sx={{
                   color: "#000000",
                   fontWeight: 600,
-                  fontSize: "16px",
-                  lineHeight: "24px",
-                  marginBottom: "5px",
+                  fontSize: "1rem",
+                  lineHeight: "1.5rem",
+                  marginBottom: "0.3125rem",
                 }}
               >
                 {schedule.vaccine?.type}
@@ -139,9 +139,9 @@ export default function ImmunizationCompleted({ schedules = [] }) {
                 sx={{
                   color: "#222222B2",
                   fontWeight: 300,
-                  fontSize: "12px",
-                  lineHeight: "18px",
-                  marginBottom: "20px",
+                  fontSize: "0.75rem",
+                  lineHeight: "1.125rem",
+                  marginBottom: "1.25rem",
                 }}
               >
                 Dosage: {schedule.vaccine?.dosage || "—"} • Route:{" "}
@@ -160,8 +160,8 @@ export default function ImmunizationCompleted({ schedules = [] }) {
                   <Typography
                     sx={{
                       fontWeight: 200,
-                      fontSize: "12px",
-                      lineHeight: "18px",
+                      fontSize: "0.75rem",
+                      lineHeight: "1.125rem",
                       color: "#000000",
                     }}
                     component="p"
@@ -174,7 +174,7 @@ export default function ImmunizationCompleted({ schedules = [] }) {
                       textAlign: "center",
                       borderColor: "#1F8E1F",
                       padding: "1px",
-                      borderRadius: "4px",
+                      borderRadius: "0.25rem",
                     }}
                   >
                     <img
@@ -188,8 +188,8 @@ export default function ImmunizationCompleted({ schedules = [] }) {
                   <Typography
                     sx={{
                       fontWeight: 200,
-                      fontSize: "12px",
-                      lineHeight: "18px",
+                      fontSize: "0.75rem",
+                      lineHeight: "1.125rem",
                       color: "#000000",
                     }}
                     component="p"
@@ -198,12 +198,12 @@ export default function ImmunizationCompleted({ schedules = [] }) {
                   </Typography>
                   <Box
                     sx={{
-                      padding: "16px",
-                      borderRadius: "8px",
+                      padding: "1rem",
+                      borderRadius: "0.5rem",
                       backgroundColor: "#EEEEEE",
                       color: "#222222",
                       fontWeight: 400,
-                      fontSize: "12px",
+                      fontSize: "0.75rem",
                     }}
                   >
                     {formatDate(schedule.earliestDate)}
@@ -213,8 +213,8 @@ export default function ImmunizationCompleted({ schedules = [] }) {
                   <Typography
                     sx={{
                       fontWeight: 200,
-                      fontSize: "12px",
-                      lineHeight: "18px",
+                      fontSize: "0.75rem",
+                      lineHeight: "1.125rem",
                       color: "#000000",
                     }}
                     component="p"
@@ -223,12 +223,12 @@ export default function ImmunizationCompleted({ schedules = [] }) {
                   </Typography>
                   <Box
                     sx={{
-                      padding: "16px",
-                      borderRadius: "8px",
+                      padding: "1rem",
+                      borderRadius: "0.5rem",
                       backgroundColor: "#EEEEEE",
                       color: "#222222",
                       fontWeight: 400,
-                      fontSize: "12px",
+                      fontSize: "0.75rem",
                     }}
                   >
                     {formatDate(schedule.dateOfImmunization)}
@@ -238,8 +238,8 @@ export default function ImmunizationCompleted({ schedules = [] }) {
                   <Typography
                     sx={{
                       fontWeight: 200,
-                      fontSize: "12px",
-                      lineHeight: "18px",
+                      fontSize: "0.75rem",
+                      lineHeight: "1.125rem",
                       color: "#000000",
                     }}
                     component="p"
@@ -248,12 +248,12 @@ export default function ImmunizationCompleted({ schedules = [] }) {
                   </Typography>
                   <Box
                     sx={{
-                      padding: "16px",
-                      borderRadius: "8px",
+                      padding: "1rem",
+                      borderRadius: "0.5rem",
                       backgroundColor: "#EEEEEE",
                       color: "#222222",
                       fontWeight: 400,
-                      fontSize: "12px",
+                      fontSize: "0.75rem",
                     }}
                   >
                     {schedule.comment || "No comment"}

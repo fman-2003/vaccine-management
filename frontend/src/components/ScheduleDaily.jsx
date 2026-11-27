@@ -15,9 +15,9 @@ export default function ScheduleDaily({
       sx={{
         display: "flex",
         flexDirection: "column",
-        marginBottom: "20px",
+        marginBottom: "1.25rem",
         backgroundColor: "#FFFFFF",
-        borderRadius: "20px",
+        borderRadius: "1.25rem",
         paddingX: "2%",
         paddingY: "1.5%",
         width: "100%",
@@ -35,14 +35,14 @@ export default function ScheduleDaily({
           sx={{
             color: "#000000",
             fontWeight: 600,
-            fontSize: "24px",
-            lineHeight: "36px",
+            fontSize: "1.5rem",
+            lineHeight: "2.25rem",
           }}
         >
           {dateLabel}
         </Typography>
         <Typography
-          sx={{ color: "#00000099", fontWeight: 400, fontSize: "14px" }}
+          sx={{ color: "#00000099", fontWeight: 400, fontSize: "0.875rem" }}
         >
           {schedules.length} {schedules.length === 1 ? "entry" : "entries"}
         </Typography>
@@ -61,8 +61,8 @@ export default function ScheduleDaily({
             color: "#000000",
             opacity: 0.6,
             fontWeight: 400,
-            fontSize: "16px",
-            lineHeight: "18px",
+            fontSize: "1rem",
+            lineHeight: "1.125rem",
             width: "40%",
           }}
         >
@@ -73,8 +73,8 @@ export default function ScheduleDaily({
             color: "#000000",
             opacity: 0.6,
             fontWeight: 400,
-            fontSize: "16px",
-            lineHeight: "18px",
+            fontSize: "1rem",
+            lineHeight: "1.125rem",
             width: "40%",
           }}
         >
@@ -85,8 +85,8 @@ export default function ScheduleDaily({
             color: "#000000",
             opacity: 0.6,
             fontWeight: 400,
-            fontSize: "16px",
-            lineHeight: "18px",
+            fontSize: "1rem",
+            lineHeight: "1.125rem",
             width: "20%",
             textAlign: "right",
           }}
@@ -114,8 +114,8 @@ export default function ScheduleDaily({
               sx={{
                 color: "#000000",
                 fontWeight: 500,
-                fontSize: "16px",
-                lineHeight: "24px",
+                fontSize: "1rem",
+                lineHeight: "1.5rem",
                 width: "40%",
               }}
             >
@@ -125,8 +125,8 @@ export default function ScheduleDaily({
               sx={{
                 color: "#1F8E1F",
                 fontWeight: 300,
-                fontSize: "16px",
-                lineHeight: "24px",
+                fontSize: "1rem",
+                lineHeight: "1.5rem",
                 width: "40%",
               }}
             >
@@ -144,8 +144,8 @@ export default function ScheduleDaily({
                 onClick={() => onEdit(schedule)}
                 sx={{
                   color: "#1F8E1F",
-                  width: "22px",
-                  height: "22px",
+                  width: "1.375rem",
+                  height: "1.375rem",
                   cursor: "pointer",
                   "&:hover": { transform: "scale(1.15)" },
                 }}
@@ -154,8 +154,8 @@ export default function ScheduleDaily({
                 onClick={() => onDelete(schedule)}
                 sx={{
                   color: "#C91919",
-                  width: "22px",
-                  height: "22px",
+                  width: "1.375rem",
+                  height: "1.375rem",
                   cursor: "pointer",
                   "&:hover": { transform: "scale(1.15)" },
                 }}

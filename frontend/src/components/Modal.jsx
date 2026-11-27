@@ -10,10 +10,15 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: "fit-content",
+  // Long forms (e.g. Onboard Parent) are taller than short laptop screens
+  // such as 1366x768: keep the whole dialog on screen and scroll inside it.
+  maxWidth: "95vw",
+  maxHeight: "92vh",
+  overflowY: "auto",
   paddingX: "4%",
   paddingY: "2%",
   bgcolor: "background.paper",
-  borderRadius: "20px",
+  borderRadius: "1.25rem",
   boxShadow: 24,
   //   p: 4,
 };
@@ -32,7 +37,7 @@ export default function ModalWindow({ children, open, onClose }) {
         sx={{
           width: "100%",
           margin: "auto",
-          borderRadius: "20px",
+          borderRadius: "1.25rem",
         }}
         slotProps={{
           backdrop: {

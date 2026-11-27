@@ -2,6 +2,22 @@
 
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+
+  /*
+   * Fluid sizing. Every dimension in the app is written in rem, and 1rem is
+   * tied to the viewport width here, so layouts keep the same proportions on
+   * every laptop/desktop instead of crowding on small screens and spreading
+   * out on large ones.
+   *
+   * The designs are drawn on a 1440px-wide canvas, where 1rem = 16px (the
+   * px values in the original designs divide by 16). Scale linearly from
+   * there, within limits so text never gets too small to read or too large:
+   *   1024px wide -> 13px   1280px -> 14.2px   1440px -> 16px
+   *   1536px      -> 17.1px 1800px+ -> 20px
+   * The limits are in rem so they follow the user's browser font-size setting.
+   */
+  --design-width: 1440;
+  font-size: clamp(0.8125rem, calc(100vw * 16 / var(--design-width)), 1.25rem);
 }
 
 * {

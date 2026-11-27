@@ -37,6 +37,7 @@ import {
   getParents,
   getSchedules,
 } from "../query";
+import { getErrorMessage, getValidationErrors } from "../helper/get-error-message";
 
 export default function Dashboard() {
   const alert = useAlert();
@@ -125,19 +126,19 @@ export default function Dashboard() {
         alert.showSuccess(data.message);
       },
       onError: (error) => {
-        if (error.message.includes("422")) {
+        if (getValidationErrors(error)) {
           setParentError((prev) => {
             return {
               ...prev,
-              validationError: error.response.data.errors,
+              validationError: getValidationErrors(error),
             };
           });
         }
-        alert.showError(error.response.data.message);
+        alert.showError(getErrorMessage(error));
         setParentError((prev) => {
           return {
             ...prev,
-            error: error.response.data.message,
+            error: getErrorMessage(error),
           };
         });
       },
@@ -166,19 +167,19 @@ export default function Dashboard() {
       onError: (error) => {
         // setChildError({});
 
-        if (error.message.includes("422")) {
+        if (getValidationErrors(error)) {
           setChildError((prev) => {
             return {
               ...prev,
-              validationError: error.response.data.errors,
+              validationError: getValidationErrors(error),
             };
           });
         }
-        alert.showError(error.response.data.message);
+        alert.showError(getErrorMessage(error));
         setChildError((prev) => {
           return {
             ...prev,
-            error: error.response.data.message,
+            error: getErrorMessage(error),
           };
         });
       },
@@ -204,19 +205,19 @@ export default function Dashboard() {
         alert.showSuccess(data.message);
       },
       onError: (error) => {
-        if (error.message.includes("422")) {
+        if (getValidationErrors(error)) {
           setVaccineError((prev) => {
             return {
               ...prev,
-              validationError: error.response.data.errors,
+              validationError: getValidationErrors(error),
             };
           });
         }
-        alert.showError(error.response.data.message);
+        alert.showError(getErrorMessage(error));
         setVaccineError((prev) => {
           return {
             ...prev,
-            error: error.response.data.message,
+            error: getErrorMessage(error),
           };
         });
       },
@@ -243,14 +244,14 @@ export default function Dashboard() {
                   textTransform: "none",
                   display: "flex",
                   flexDirection: "row",
-                  gap: "5px",
-                  marginBottom: "20px",
+                  gap: "0.3125rem",
+                  marginBottom: "1.25rem",
                 }}
                 disableRipple
               >
                 <ArrowBackSharpIcon sx={{ color: "#1F8E1F" }} />{" "}
                 <Typography
-                  sx={{ color: "#000000", fontSize: "16px", fontWeight: 400 }}
+                  sx={{ color: "#000000", fontSize: "1rem", fontWeight: 400 }}
                 >
                   Back
                 </Typography>
@@ -260,9 +261,9 @@ export default function Dashboard() {
                   width: "100%",
                   color: "#000000",
                   fontWeight: 600,
-                  fontSize: "24px",
-                  lineHeight: "36px",
-                  marginBottom: "20px",
+                  fontSize: "1.5rem",
+                  lineHeight: "2.25rem",
+                  marginBottom: "1.25rem",
                 }}
               >
                 New Vaccine
@@ -270,12 +271,12 @@ export default function Dashboard() {
               <Grid sx={{ width: "100%" }}>
                 <form onSubmit={handleSubmitVaccine}>
                   {vaccineMutation.isError && vaccineError.validationError && (
-                    <Box sx={{ marginBottom: "5px" }}>
+                    <Box sx={{ marginBottom: "0.3125rem" }}>
                       <ul>
                         {vaccineError.validationError.map((valErr) => {
                           return (
                             <li
-                              style={{ color: "red", fontSize: "15px" }}
+                              style={{ color: "red", fontSize: "0.9375rem" }}
                               key={valErr.msg}
                             >
                               {valErr.msg}
@@ -285,97 +286,97 @@ export default function Dashboard() {
                       </ul>
                     </Box>
                   )}
-                  <Box sx={{ marginBottom: "25px" }}>
+                  <Box sx={{ marginBottom: "1.5625rem" }}>
                     <InputLabel
                       sx={{
                         color: "#222222",
                         fontWeight: 500,
-                        fontSize: "16px",
-                        lineHeight: "24px",
-                        marginBottom: "10px",
+                        fontSize: "1rem",
+                        lineHeight: "1.5rem",
+                        marginBottom: "0.625rem",
                       }}
                     >
                       Type of Vaccine
                     </InputLabel>
                     <TextField
                       placeholder="johndoe@gmail.com"
-                      sx={{ width: "600px", textTransform: "capitalize" }}
+                      sx={{ width: "37.5rem", textTransform: "capitalize" }}
                       name="typeOfVaccine"
                       type="text"
                     />
                   </Box>
-                  <Box sx={{ marginBottom: "25px" }}>
+                  <Box sx={{ marginBottom: "1.5625rem" }}>
                     <InputLabel
                       sx={{
                         color: "#222222",
                         fontWeight: 500,
-                        fontSize: "16px",
-                        lineHeight: "24px",
-                        marginBottom: "10px",
+                        fontSize: "1rem",
+                        lineHeight: "1.5rem",
+                        marginBottom: "0.625rem",
                       }}
                     >
                       Minimum Target Age of Child
                     </InputLabel>
                     <TextField
                       placeholder="johndoe@gmail.com"
-                      sx={{ width: "600px", textTransform: "capitalize" }}
+                      sx={{ width: "37.5rem", textTransform: "capitalize" }}
                       name="minimumTargetAge"
                       type="text"
                     />
                   </Box>
-                  <Box sx={{ marginBottom: "25px" }}>
+                  <Box sx={{ marginBottom: "1.5625rem" }}>
                     <InputLabel
                       sx={{
                         color: "#222222",
                         fontWeight: 500,
-                        fontSize: "16px",
-                        lineHeight: "24px",
-                        marginBottom: "10px",
+                        fontSize: "1rem",
+                        lineHeight: "1.5rem",
+                        marginBottom: "0.625rem",
                       }}
                     >
                       Dosage
                     </InputLabel>
                     <TextField
                       placeholder="johndoe@gmail.com"
-                      sx={{ width: "600px" }}
+                      sx={{ width: "37.5rem" }}
                       name="dosage"
                       type="text"
                     />
                   </Box>
-                  <Box sx={{ marginBottom: "25px" }}>
+                  <Box sx={{ marginBottom: "1.5625rem" }}>
                     <InputLabel
                       sx={{
                         color: "#222222",
                         fontWeight: 500,
-                        fontSize: "16px",
-                        lineHeight: "24px",
-                        marginBottom: "10px",
+                        fontSize: "1rem",
+                        lineHeight: "1.5rem",
+                        marginBottom: "0.625rem",
                       }}
                     >
                       Route of Administration
                     </InputLabel>
                     <TextField
                       placeholder="johndoe@gmail.com"
-                      sx={{ width: "600px", textTransform: "capitalize" }}
+                      sx={{ width: "37.5rem", textTransform: "capitalize" }}
                       name="routeOfAdministration"
                       type="text"
                     />
                   </Box>
-                  <Box sx={{ marginBottom: "25px" }}>
+                  <Box sx={{ marginBottom: "1.5625rem" }}>
                     <InputLabel
                       sx={{
                         color: "#222222",
                         fontWeight: 500,
-                        fontSize: "16px",
-                        lineHeight: "24px",
-                        marginBottom: "10px",
+                        fontSize: "1rem",
+                        lineHeight: "1.5rem",
+                        marginBottom: "0.625rem",
                       }}
                     >
                       Site of Administration
                     </InputLabel>
                     <TextField
                       placeholder="johndoe@gmail.com"
-                      sx={{ width: "600px", textTransform: "capitalize" }}
+                      sx={{ width: "37.5rem", textTransform: "capitalize" }}
                       name="siteOfAdministration"
                       type="text"
                     />
@@ -384,9 +385,9 @@ export default function Dashboard() {
                     sx={{
                       width: "100%",
                       backgroundColor: "#1F8E1F",
-                      paddingY: "12px",
-                      paddingX: "36px",
-                      borderRadius: "80px",
+                      paddingY: "0.75rem",
+                      paddingX: "2.25rem",
+                      borderRadius: "5rem",
                       color: "#FFFFFF",
                       textTransform: "none",
                     }}
@@ -408,7 +409,7 @@ export default function Dashboard() {
                     width: "100%",
                     textAlign: "center",
                     alignItems: "center",
-                    marginTop: "10px",
+                    marginTop: "0.625rem",
                     justifyContent: "center",
                     gap: 1,
                   }}
@@ -436,14 +437,14 @@ export default function Dashboard() {
                   textTransform: "none",
                   display: "flex",
                   flexDirection: "row",
-                  gap: "5px",
-                  marginBottom: "5px",
+                  gap: "0.3125rem",
+                  marginBottom: "0.3125rem",
                 }}
                 disableRipple
               >
                 <ArrowBackSharpIcon sx={{ color: "#1F8E1F" }} />{" "}
                 <Typography
-                  sx={{ color: "#000000", fontSize: "16px", fontWeight: 400 }}
+                  sx={{ color: "#000000", fontSize: "1rem", fontWeight: 400 }}
                 >
                   Back
                 </Typography>
@@ -453,9 +454,9 @@ export default function Dashboard() {
                   width: "100%",
                   color: "#000000",
                   fontWeight: 600,
-                  fontSize: "24px",
-                  lineHeight: "36px",
-                  marginBottom: "5px",
+                  fontSize: "1.5rem",
+                  lineHeight: "2.25rem",
+                  marginBottom: "0.3125rem",
                 }}
               >
                 Onboard Parent
@@ -463,12 +464,12 @@ export default function Dashboard() {
               <Grid sx={{ width: "100%" }}>
                 <form onSubmit={handleSubmitParent}>
                   {parentMutation.isError && parentError.validationError && (
-                    <Box sx={{ marginBottom: "5px" }}>
+                    <Box sx={{ marginBottom: "0.3125rem" }}>
                       <ul>
                         {parentError.validationError.map((valErr) => {
                           return (
                             <li
-                              style={{ color: "red", fontSize: "15px" }}
+                              style={{ color: "red", fontSize: "0.9375rem" }}
                               key={valErr.msg}
                             >
                               {valErr.msg}
@@ -478,154 +479,154 @@ export default function Dashboard() {
                       </ul>
                     </Box>
                   )}
-                  <Box sx={{ marginBottom: "5px" }}>
+                  <Box sx={{ marginBottom: "0.3125rem" }}>
                     <InputLabel
                       sx={{
                         color: "#222222",
                         fontWeight: 500,
-                        fontSize: "16px",
-                        lineHeight: "24px",
-                        marginBottom: "5px",
+                        fontSize: "1rem",
+                        lineHeight: "1.5rem",
+                        marginBottom: "0.3125rem",
                       }}
                     >
                       First Name
                     </InputLabel>
                     <TextField
                       placeholder="e.g Abubakar"
-                      sx={{ width: "600px", textTransform: "capitalize" }}
+                      sx={{ width: "37.5rem", textTransform: "capitalize" }}
                       name="firstName"
                       type="text"
                     />
                   </Box>
-                  <Box sx={{ marginBottom: "5px" }}>
+                  <Box sx={{ marginBottom: "0.3125rem" }}>
                     <InputLabel
                       sx={{
                         color: "#222222",
                         fontWeight: 500,
-                        fontSize: "16px",
-                        lineHeight: "24px",
-                        marginBottom: "5px",
+                        fontSize: "1rem",
+                        lineHeight: "1.5rem",
+                        marginBottom: "0.3125rem",
                       }}
                     >
                       Last Name
                     </InputLabel>
                     <TextField
                       placeholder="e.g Olatunji"
-                      sx={{ width: "600px", textTransform: "capitalize" }}
+                      sx={{ width: "37.5rem", textTransform: "capitalize" }}
                       name="lastName"
                       type="text"
                     />
                   </Box>
-                  <Box sx={{ marginBottom: "5px" }}>
+                  <Box sx={{ marginBottom: "0.3125rem" }}>
                     <InputLabel
                       sx={{
                         color: "#222222",
                         fontWeight: 500,
-                        fontSize: "16px",
-                        lineHeight: "24px",
-                        marginBottom: "5px",
+                        fontSize: "1rem",
+                        lineHeight: "1.5rem",
+                        marginBottom: "0.3125rem",
                       }}
                     >
                       Parental Role
                     </InputLabel>
                     <TextField
                       placeholder="e.g Mom"
-                      sx={{ width: "600px", textTransform: "capitalize" }}
+                      sx={{ width: "37.5rem", textTransform: "capitalize" }}
                       name="title"
                       type="text"
                     />
                   </Box>
 
-                  <Box sx={{ marginBottom: "5px" }}>
+                  <Box sx={{ marginBottom: "0.3125rem" }}>
                     <InputLabel
                       sx={{
                         color: "#222222",
                         fontWeight: 500,
-                        fontSize: "16px",
-                        lineHeight: "24px",
-                        marginBottom: "5px",
+                        fontSize: "1rem",
+                        lineHeight: "1.5rem",
+                        marginBottom: "0.3125rem",
                       }}
                     >
                       Date of Birth
                     </InputLabel>
                     <TextField
-                      sx={{ width: "600px" }}
+                      sx={{ width: "37.5rem" }}
                       name="dateOfBirth"
                       type="date"
                     />
                   </Box>
-                  <Box sx={{ marginBottom: "5px" }}>
+                  <Box sx={{ marginBottom: "0.3125rem" }}>
                     <InputLabel
                       sx={{
                         color: "#222222",
                         fontWeight: 500,
-                        fontSize: "16px",
-                        lineHeight: "24px",
-                        marginBottom: "5px",
+                        fontSize: "1rem",
+                        lineHeight: "1.5rem",
+                        marginBottom: "0.3125rem",
                       }}
                     >
                       Hospital Number
                     </InputLabel>
                     <TextField
                       placeholder="e.g JUN00222"
-                      sx={{ width: "600px", textTransform: "uppercase" }}
+                      sx={{ width: "37.5rem", textTransform: "uppercase" }}
                       name="hospitalNumber"
                       type="text"
                     />
                   </Box>
-                  <Box sx={{ marginBottom: "5px" }}>
+                  <Box sx={{ marginBottom: "0.3125rem" }}>
                     <InputLabel
                       sx={{
                         color: "#222222",
                         fontWeight: 500,
-                        fontSize: "16px",
-                        lineHeight: "24px",
-                        marginBottom: "5px",
+                        fontSize: "1rem",
+                        lineHeight: "1.5rem",
+                        marginBottom: "0.3125rem",
                       }}
                     >
                       NHIS
                     </InputLabel>
                     <TextField
                       placeholder="e.g 4567585"
-                      sx={{ width: "600px" }}
+                      sx={{ width: "37.5rem" }}
                       name="nhis"
                       type="text"
                     />
                   </Box>
-                  <Box sx={{ marginBottom: "5px" }}>
+                  <Box sx={{ marginBottom: "0.3125rem" }}>
                     <InputLabel
                       sx={{
                         color: "#222222",
                         fontWeight: 500,
-                        fontSize: "16px",
-                        lineHeight: "24px",
-                        marginBottom: "5px",
+                        fontSize: "1rem",
+                        lineHeight: "1.5rem",
+                        marginBottom: "0.3125rem",
                       }}
                     >
                       Email Address
                     </InputLabel>
                     <TextField
                       placeholder="e.g johndoe@gmail.com"
-                      sx={{ width: "600px" }}
+                      sx={{ width: "37.5rem" }}
                       type="email"
                       name="email"
                     />
                   </Box>
-                  <Box sx={{ marginBottom: "5px" }}>
+                  <Box sx={{ marginBottom: "0.3125rem" }}>
                     <InputLabel
                       sx={{
                         color: "#222222",
                         fontWeight: 500,
-                        fontSize: "16px",
-                        lineHeight: "24px",
-                        marginBottom: "5px",
+                        fontSize: "1rem",
+                        lineHeight: "1.5rem",
+                        marginBottom: "0.3125rem",
                       }}
                     >
                       Phone Number
                     </InputLabel>
                     <TextField
                       placeholder="e.g 08084972144"
-                      sx={{ width: "600px" }}
+                      sx={{ width: "37.5rem" }}
                       name="phoneNumber"
                       type="tel"
                     />
@@ -634,9 +635,9 @@ export default function Dashboard() {
                     sx={{
                       width: "100%",
                       backgroundColor: "#1F8E1F",
-                      paddingY: "12px",
-                      paddingX: "36px",
-                      borderRadius: "80px",
+                      paddingY: "0.75rem",
+                      paddingX: "2.25rem",
+                      borderRadius: "5rem",
                       color: "#FFFFFF",
                       textTransform: "none",
                     }}
@@ -649,7 +650,7 @@ export default function Dashboard() {
                         sx={{
                           color: "#FFFFFF",
                         }}
-                        size={"30px"}
+                        size={"1.875rem"}
                       />
                     ) : (
                       "Add New Parent"
@@ -664,7 +665,7 @@ export default function Dashboard() {
                     width: "100%",
                     textAlign: "center",
                     alignItems: "center",
-                    marginTop: "10px",
+                    marginTop: "0.625rem",
                     justifyContent: "center",
                     gap: 1,
                   }}
@@ -692,14 +693,14 @@ export default function Dashboard() {
                   textTransform: "none",
                   display: "flex",
                   flexDirection: "row",
-                  gap: "5px",
-                  marginBottom: "5px",
+                  gap: "0.3125rem",
+                  marginBottom: "0.3125rem",
                 }}
                 disableRipple
               >
                 <ArrowBackSharpIcon sx={{ color: "#1F8E1F" }} />{" "}
                 <Typography
-                  sx={{ color: "#000000", fontSize: "16px", fontWeight: 400 }}
+                  sx={{ color: "#000000", fontSize: "1rem", fontWeight: 400 }}
                 >
                   Back
                 </Typography>
@@ -709,9 +710,9 @@ export default function Dashboard() {
                   width: "100%",
                   color: "#000000",
                   fontWeight: 600,
-                  fontSize: "24px",
-                  lineHeight: "36px",
-                  marginBottom: "5px",
+                  fontSize: "1.5rem",
+                  lineHeight: "2.25rem",
+                  marginBottom: "0.3125rem",
                 }}
               >
                 Onboard a Child
@@ -719,12 +720,12 @@ export default function Dashboard() {
               <Grid sx={{ width: "100%" }}>
                 <form onSubmit={handleSubmitChild}>
                   {childMutation.isError && childError.validationError && (
-                    <Box sx={{ marginBottom: "5px" }}>
+                    <Box sx={{ marginBottom: "0.3125rem" }}>
                       <ul>
                         {childError.validationError.map((valErr) => {
                           return (
                             <li
-                              style={{ color: "red", fontSize: "15px" }}
+                              style={{ color: "red", fontSize: "0.9375rem" }}
                               key={valErr.msg}
                             >
                               {valErr.msg}
@@ -734,92 +735,92 @@ export default function Dashboard() {
                       </ul>
                     </Box>
                   )}
-                  <Box sx={{ marginBottom: "5px" }}>
+                  <Box sx={{ marginBottom: "0.3125rem" }}>
                     <InputLabel
                       sx={{
                         color: "#222222",
                         fontWeight: 500,
-                        fontSize: "16px",
-                        lineHeight: "24px",
-                        marginBottom: "5px",
+                        fontSize: "1rem",
+                        lineHeight: "1.5rem",
+                        marginBottom: "0.3125rem",
                       }}
                     >
                       First Name
                     </InputLabel>
                     <TextField
                       placeholder="e.g Oreoluwa"
-                      sx={{ width: "600px", textTransform: "capitalize" }}
+                      sx={{ width: "37.5rem", textTransform: "capitalize" }}
                       name="firstname"
                       type="text"
                     />
                   </Box>
-                  <Box sx={{ marginBottom: "5px" }}>
+                  <Box sx={{ marginBottom: "0.3125rem" }}>
                     <InputLabel
                       sx={{
                         color: "#222222",
                         fontWeight: 500,
-                        fontSize: "16px",
-                        lineHeight: "24px",
-                        marginBottom: "5px",
+                        fontSize: "1rem",
+                        lineHeight: "1.5rem",
+                        marginBottom: "0.3125rem",
                       }}
                     >
                       Last Name
                     </InputLabel>
                     <TextField
                       placeholder="e.g Adepoju"
-                      sx={{ width: "600px", textTransform: "capitalize" }}
+                      sx={{ width: "37.5rem", textTransform: "capitalize" }}
                       name="lastname"
                       type="text"
                     />
                   </Box>
-                  <Box sx={{ marginBottom: "5px" }}>
+                  <Box sx={{ marginBottom: "0.3125rem" }}>
                     <InputLabel
                       sx={{
                         color: "#222222",
                         fontWeight: 500,
-                        fontSize: "16px",
-                        lineHeight: "24px",
-                        marginBottom: "5px",
+                        fontSize: "1rem",
+                        lineHeight: "1.5rem",
+                        marginBottom: "0.3125rem",
                       }}
                     >
                       Sex
                     </InputLabel>
                     <TextField
                       placeholder="e.g FEMALE"
-                      sx={{ width: "600px", textTransform: "uppercase" }}
+                      sx={{ width: "37.5rem", textTransform: "uppercase" }}
                       name="sex"
                       type="text"
                     />
                   </Box>
 
-                  <Box sx={{ marginBottom: "5px" }}>
+                  <Box sx={{ marginBottom: "0.3125rem" }}>
                     <InputLabel
                       sx={{
                         color: "#222222",
                         fontWeight: 500,
-                        fontSize: "16px",
-                        lineHeight: "24px",
-                        marginBottom: "5px",
+                        fontSize: "1rem",
+                        lineHeight: "1.5rem",
+                        marginBottom: "0.3125rem",
                       }}
                     >
                       Date of Birth
                     </InputLabel>
                     <TextField
                       //   placeholder=""
-                      sx={{ width: "600px" }}
+                      sx={{ width: "37.5rem" }}
                       name="dob"
                       type="date"
                     />
                   </Box>
 
-                  <Box sx={{ marginBottom: "5px" }}>
+                  <Box sx={{ marginBottom: "0.3125rem" }}>
                     <InputLabel
                       sx={{
                         color: "#222222",
                         fontWeight: 500,
-                        fontSize: "16px",
-                        lineHeight: "24px",
-                        marginBottom: "5px",
+                        fontSize: "1rem",
+                        lineHeight: "1.5rem",
+                        marginBottom: "0.3125rem",
                       }}
                     >
                       Weight at Birth{" "}
@@ -828,9 +829,9 @@ export default function Dashboard() {
                         sx={{
                           color: "#222222",
                           fontWeight: 300,
-                          fontSize: "12px",
+                          fontSize: "0.75rem",
 
-                          //   lineHeight: "24px",
+                          //   lineHeight: "1.5rem",
                         }}
                       >
                         (write in kilograms)
@@ -838,7 +839,7 @@ export default function Dashboard() {
                     </InputLabel>
                     <TextField
                       placeholder="e.g 3.5"
-                      sx={{ width: "600px" }}
+                      sx={{ width: "37.5rem" }}
                       name="weightAtBirth"
                       type="text"
                     />
@@ -847,16 +848,16 @@ export default function Dashboard() {
                     sx={{
                       width: "100%",
                       backgroundColor: "#1F8E1F",
-                      paddingY: "12px",
-                      paddingX: "36px",
-                      borderRadius: "80px",
+                      paddingY: "0.75rem",
+                      paddingX: "2.25rem",
+                      borderRadius: "5rem",
                       color: "#FFFFFF",
                       textTransform: "none",
                     }}
                     type="submit"
                   >
                     {childMutation.isPending ? (
-                      <CircularProgress size={"20px"} />
+                      <CircularProgress size={"1.25rem"} />
                     ) : (
                       "Onboard"
                     )}
@@ -870,7 +871,7 @@ export default function Dashboard() {
                     width: "100%",
                     textAlign: "center",
                     alignItems: "center",
-                    marginTop: "10px",
+                    marginTop: "0.625rem",
                     justifyContent: "center",
                     gap: 1,
                   }}
@@ -886,29 +887,29 @@ export default function Dashboard() {
             size={12}
             sx={{
               backgroundColor: "#FFFFFF",
-              borderRadius: "20px",
-              padding: "40px",
+              borderRadius: "1.25rem",
+              padding: "2.5rem",
               paddingX: "5%",
-              minHeight: "200px",
-              marginBottom: "30px",
+              minHeight: "12.5rem",
+              marginBottom: "1.875rem",
             }}
           >
             <Grid
               sx={{
                 borderBottom: 1,
                 borderColor: "#1F8E1F",
-                paddingBottom: "20px",
+                paddingBottom: "1.25rem",
               }}
             >
               <Typography
-                sx={{ fontWeight: 600, fontSize: "24px", lineHeight: "36px" }}
+                sx={{ fontWeight: 600, fontSize: "1.5rem", lineHeight: "2.25rem" }}
               >
                 Welcome Back
               </Typography>
             </Grid>
             <Grid
               sx={{
-                paddingTop: "35px",
+                paddingTop: "2.1875rem",
                 justifyContent: "space-between",
                 display: "flex",
                 flexDirection: "row",
@@ -927,7 +928,7 @@ export default function Dashboard() {
               >
                 <EventAvailableRoundedIcon sx={{ color: "#1F8E1F" }} />
                 <Typography
-                  sx={{ color: "#000000", fontSize: "16px", fontWeight: 300 }}
+                  sx={{ color: "#000000", fontSize: "1rem", fontWeight: 300 }}
                 >
                   {getDailyScheduleQuery.isSuccess &&
                     `${getDailyScheduleQuery.data.totalScheduledToday} 
@@ -945,7 +946,7 @@ export default function Dashboard() {
               >
                 <CallMissedSharpIcon sx={{ color: "#C91919" }} />
                 <Typography
-                  sx={{ color: "#C91919", fontSize: "16px", fontWeight: 300 }}
+                  sx={{ color: "#C91919", fontSize: "1rem", fontWeight: 300 }}
                 >
                   {getDailyScheduleQuery.isSuccess &&
                     `${getDailyScheduleQuery.data.missedCount}
@@ -959,20 +960,20 @@ export default function Dashboard() {
               onClick={handleOpenParent}
               size={12}
               sx={{
-                minHeight: "200px",
-                borderRadius: "20px",
+                minHeight: "12.5rem",
+                borderRadius: "1.25rem",
                 zIndex: 5,
-                marginBottom: "30px",
+                marginBottom: "1.875rem",
               }}
             >
               <Grid
                 sx={{
                   minWidth: "100%",
-                  minHeight: "200px",
+                  minHeight: "12.5rem",
                   backgroundImage: `url(${splash})`,
                   backgroundSize: "cover",
                   backgroundPosition: "center",
-                  borderRadius: "20px",
+                  borderRadius: "1.25rem",
                   paddingX: "6%",
                   paddingY: "3%",
 
@@ -984,7 +985,7 @@ export default function Dashboard() {
                     position: "absolute",
                     top: 0,
                     left: 0,
-                    borderRadius: "20px",
+                    borderRadius: "1.25rem",
                     right: 0,
                     bottom: 0,
                     backgroundColor: "#1F8E1FE5",
@@ -1011,18 +1012,18 @@ export default function Dashboard() {
                     sx={{
                       display: "flex",
                       flexDirection: "column",
-                      gap: "24px",
-                      maxWidth: "460px",
+                      gap: "1.5rem",
+                      maxWidth: "28.75rem",
                     }}
                   >
                     <Typography
                       sx={{
                         color: "#FFFFFF",
                         fontWeight: 600,
-                        fontSize: "24px",
-                        lineHeight: "36px",
+                        fontSize: "1.5rem",
+                        lineHeight: "2.25rem",
                         zIndex: 10,
-                        width: "150px",
+                        width: "9.375rem",
                       }}
                     >
                       Onboard New Parent
@@ -1031,10 +1032,10 @@ export default function Dashboard() {
                       sx={{
                         color: "#FFFFFF",
                         fontWeight: 400,
-                        fontSize: "16px",
-                        lineHeight: "24px",
+                        fontSize: "1rem",
+                        lineHeight: "1.5rem",
                         zIndex: 10,
-                        width: "200px",
+                        width: "12.5rem",
                       }}
                     >
                       Add a New Parent and then a new child
@@ -1044,8 +1045,8 @@ export default function Dashboard() {
                     <AddCircleRoundedIcon
                       sx={{
                         color: "#FFFFFF",
-                        width: "60px",
-                        height: "60px",
+                        width: "3.75rem",
+                        height: "3.75rem",
                         zIndex: 17,
                       }}
                     />
@@ -1060,17 +1061,17 @@ export default function Dashboard() {
               paddingX: "3%",
               paddingY: "2%",
               backgroundColor: "#FFFFFF",
-              borderRadius: "20px",
-              maxHeight: "90px",
-              marginBottom: "30px",
+              borderRadius: "1.25rem",
+              maxHeight: "5.625rem",
+              marginBottom: "1.875rem",
             }}
           >
             <Typography
               sx={{
                 fontWeight: 600,
                 color: "#000000",
-                fontSize: "24px",
-                lineHeight: "36px",
+                fontSize: "1.5rem",
+                lineHeight: "2.25rem",
               }}
             >
               {new Intl.DateTimeFormat("en-UK", {
@@ -1085,13 +1086,13 @@ export default function Dashboard() {
             size={12}
             sx={{
               backgroundColor: "#FFFFFF",
-              marginBottom: "30px",
-              maxHeight: "777px",
+              marginBottom: "1.875rem",
+              maxHeight: "48.5625rem",
               display: "flex",
               flexDirection: "column",
               paddingY: "4%",
               paddingX: "3%",
-              borderRadius: "20px",
+              borderRadius: "1.25rem",
             }}
           >
             <Grid
@@ -1108,8 +1109,8 @@ export default function Dashboard() {
                   fontFamily: "Roboto",
                   color: "#000000",
                   fontWeight: 400,
-                  fontSize: "16px",
-                  lineHeight: "18px",
+                  fontSize: "1rem",
+                  lineHeight: "1.125rem",
                 }}
               >
                 Name
@@ -1119,8 +1120,8 @@ export default function Dashboard() {
                   fontFamily: "Roboto",
                   color: "#000000",
                   fontWeight: 400,
-                  fontSize: "16px",
-                  lineHeight: "18px",
+                  fontSize: "1rem",
+                  lineHeight: "1.125rem",
                 }}
               >
                 Vaccine
@@ -1130,8 +1131,8 @@ export default function Dashboard() {
                   fontFamily: "Roboto",
                   color: "#000000",
                   fontWeight: 400,
-                  fontSize: "16px",
-                  lineHeight: "18px",
+                  fontSize: "1rem",
+                  lineHeight: "1.125rem",
                 }}
               >
                 Status
@@ -1140,7 +1141,7 @@ export default function Dashboard() {
             <List sx={{ display: "flex", flexDirection: "column" }}>
               {getSchedulesQuery.isError && (
                 <Typography sx={{ color: "red" }}>
-                  {getSchedulesQuery.error.message}
+                  {getErrorMessage(getSchedulesQuery.error)}
                 </Typography>
               )}
               {getSchedulesQuery.isPending && (
@@ -1167,7 +1168,7 @@ export default function Dashboard() {
                       borderColor: "rgba(0, 0, 0, 0.1)",
                       "&:hover": {
                         backgroundColor: "#1F8E1F0D",
-                        borderRadius: "15px",
+                        borderRadius: "0.9375rem",
                         border: 1,
                         borderColor: "#1F8E1F",
                         cursor: "pointer",
@@ -1178,9 +1179,9 @@ export default function Dashboard() {
                       sx={{
                         color: "#000000",
                         fontWeight: 500,
-                        maxWidth: "120px",
-                        fontSize: "16px",
-                        lineHeight: "24px",
+                        maxWidth: "7.5rem",
+                        fontSize: "1rem",
+                        lineHeight: "1.5rem",
                       }}
                     >
                       {schedule.child.firstName} {schedule.child.lastName}
@@ -1189,10 +1190,10 @@ export default function Dashboard() {
                       sx={{
                         color: "#000000",
                         fontWeight: 300,
-                        maxWidth: "190px",
+                        maxWidth: "11.875rem",
 
-                        fontSize: "16px",
-                        lineHeight: "24px",
+                        fontSize: "1rem",
+                        lineHeight: "1.5rem",
                       }}
                     >
                       {schedule.vaccine.type}
@@ -1200,17 +1201,17 @@ export default function Dashboard() {
                     <Box
                       sx={{
                         backgroundColor: "#C9191926",
-                        paddingY: "8px",
-                        paddingX: "16px",
-                        borderRadius: "800px",
+                        paddingY: "0.5rem",
+                        paddingX: "1rem",
+                        borderRadius: "50rem",
                       }}
                     >
                       <Typography
                         sx={{
                           color: "#C91919",
                           fontWeight: 400,
-                          fontSize: "12px",
-                          lineHeight: "14px",
+                          fontSize: "0.75rem",
+                          lineHeight: "0.875rem",
                         }}
                       >
                         {schedule.status}
@@ -1228,10 +1229,10 @@ export default function Dashboard() {
               onClick={handleOpenVaccine}
               sx={{
                 backgroundColor: "#D9ECD9",
-                borderRadius: "20px",
-                marginBottom: "30px",
+                borderRadius: "1.25rem",
+                marginBottom: "1.875rem",
                 paddingX: "7%",
-                minHeight: "200px",
+                minHeight: "12.5rem",
                 paddingY: "7%",
                 height: "fit-content",
                 display: "flex",
@@ -1240,7 +1241,7 @@ export default function Dashboard() {
                 alignItems: "center",
                 "&:hover": {
                   //   backgroundColor: "#1F8E1F0D",
-                  //   borderRadius: "15px",
+                  //   borderRadius: "0.9375rem",
                   border: 1,
                   borderColor: "#1F8E1F",
 
@@ -1252,8 +1253,8 @@ export default function Dashboard() {
                 <Typography
                   sx={{
                     fontWeight: 600,
-                    fontSize: "24px",
-                    lineHeight: "36px",
+                    fontSize: "1.5rem",
+                    lineHeight: "2.25rem",
                     color: "#1F8E1F",
                   }}
                 >
@@ -1262,8 +1263,8 @@ export default function Dashboard() {
                 <Typography
                   sx={{
                     fontWeight: 400,
-                    fontSize: "16px",
-                    lineHeight: "24px",
+                    fontSize: "1rem",
+                    lineHeight: "1.5rem",
 
                     color: "#1F8E1F",
                   }}
@@ -1273,7 +1274,7 @@ export default function Dashboard() {
               </Grid>
               <Grid>
                 <AddCircleRoundedIcon
-                  sx={{ color: "#1F8E1F", height: "50px", width: "50px" }}
+                  sx={{ color: "#1F8E1F", height: "3.125rem", width: "3.125rem" }}
                 />
               </Grid>
             </Grid>
@@ -1283,12 +1284,12 @@ export default function Dashboard() {
             size={12}
             sx={{
               backgroundColor: "#FFFFFF",
-              marginBottom: "30px",
-              borderRadius: "20px",
+              marginBottom: "1.875rem",
+              borderRadius: "1.25rem",
               paddingX: "7%",
               paddingY: "7%",
               display: "flex",
-              minHeight: "200px",
+              minHeight: "12.5rem",
               flexDirection: "column",
               justifyContent: "space-between",
             }}
@@ -1303,9 +1304,9 @@ export default function Dashboard() {
               <Typography
                 sx={{
                   color: "#000000",
-                  fontSize: "16px",
+                  fontSize: "1rem",
                   fontWeight: 600,
-                  lineHeight: "24px",
+                  lineHeight: "1.5rem",
                 }}
               >
                 No. of Children
@@ -1313,9 +1314,9 @@ export default function Dashboard() {
               <Link to={"/children"} style={{ textDecoration: "none" }}>
                 <Typography
                   sx={{
-                    fontWeight: "300px",
-                    fontSize: "16px",
-                    lineHeight: "24px",
+                    fontWeight: 300,
+                    fontSize: "1rem",
+                    lineHeight: "1.5rem",
                     textDecoration: "none",
                     color: "#1F8E1F",
                   }}
@@ -1328,7 +1329,7 @@ export default function Dashboard() {
               sx={{
                 display: "flex",
                 flexDirection: "row",
-                gap: "16px",
+                gap: "1rem",
                 justifyContent: "center",
                 alignItems: "center",
               }}
@@ -1336,19 +1337,19 @@ export default function Dashboard() {
               <WcIcon
                 sx={{
                   color: "#1F8E1F",
-                  paddingY: "18px",
-                  paddingX: "14px",
+                  paddingY: "1.125rem",
+                  paddingX: "0.875rem",
                   backgroundColor: "#1F8E1F1A",
-                  borderRadius: "3000px",
-                  height: "64px",
-                  width: "64px",
+                  borderRadius: "187.5rem",
+                  height: "4rem",
+                  width: "4rem",
                 }}
               />
               <Typography
                 sx={{
                   fontWeight: 900,
-                  fontSize: "28px",
-                  lineHeight: "42px",
+                  fontSize: "1.75rem",
+                  lineHeight: "2.625rem",
                   color: "#1F8E1F",
                 }}
               >
@@ -1361,11 +1362,11 @@ export default function Dashboard() {
             size={12}
             sx={{
               display: "flex",
-              marginBottom: "30px",
+              marginBottom: "1.875rem",
               flexDirection: "column",
               backgroundColor: "#FFFFFF",
-              maxHeight: "777px",
-              borderRadius: "20px",
+              maxHeight: "48.5625rem",
+              borderRadius: "1.25rem",
               paddingX: "7%",
               paddingY: "7%",
             }}
@@ -1382,13 +1383,13 @@ export default function Dashboard() {
                 sx={{
                   color: "#000000",
                   fontWeight: 600,
-                  fontSize: "24px",
-                  lineHeight: "36px",
+                  fontSize: "1.5rem",
+                  lineHeight: "2.25rem",
                 }}
               >
                 Parents
               </Typography>
-              {/* <Grid sx={{ display: "flex", flexDirection: "row", gap: "20px" }}>
+              {/* <Grid sx={{ display: "flex", flexDirection: "row", gap: "1.25rem" }}>
               <SortSharpIcon />
               <SearchSharpIcon />
             </Grid> */}
@@ -1425,7 +1426,7 @@ export default function Dashboard() {
                         paddingY: "10%",
                         "&:hover": {
                           backgroundColor: "#1F8E1F0D",
-                          borderRadius: "15px",
+                          borderRadius: "0.9375rem",
                           border: 1,
                           borderColor: "#1F8E1F",
                           cursor: "pointer",
@@ -1436,9 +1437,9 @@ export default function Dashboard() {
                         sx={{
                           color: "#000000",
                           fontWeight: 500,
-                          fontSize: "16px",
-                          lineHeight: "24px",
-                          maxWidth: "145px",
+                          fontSize: "1rem",
+                          lineHeight: "1.5rem",
+                          maxWidth: "9.0625rem",
                         }}
                       >
                         {parent.firstName} {parent.lastName}
@@ -1447,9 +1448,9 @@ export default function Dashboard() {
                         sx={{
                           color: "#1F8E1F",
                           fontWeight: 300,
-                          fontSize: "16px",
-                          lineHeight: "24px",
-                          maxWidth: "145px",
+                          fontSize: "1rem",
+                          lineHeight: "1.5rem",
+                          maxWidth: "9.0625rem",
                         }}
                       >
                         {parent.childrenCount}{" "}

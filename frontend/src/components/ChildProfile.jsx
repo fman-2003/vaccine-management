@@ -32,6 +32,7 @@ import {
   getChildren,
   createChild,
 } from "../query";
+import { getErrorMessage, getValidationErrors } from "../helper/get-error-message";
 
 
 function CustomTabPanel({ children, value, index, ...other }) {
@@ -67,14 +68,14 @@ function ContactRow({ icon: Icon, text, href }) {
         sx={{
           color: "#1F8E1F",
           backgroundColor: "#FFFFFF80",
-          padding: "8px",
-          borderRadius: "900px",
-          height: "40px",
-          width: "40px",
+          padding: "0.5rem",
+          borderRadius: "56.25rem",
+          height: "2.5rem",
+          width: "2.5rem",
         }}
       />
       <Typography
-        sx={{ fontWeight: 400, fontSize: "16px", color: "#222222CC" }}
+        sx={{ fontWeight: 400, fontSize: "1rem", color: "#222222CC" }}
       >
         {text}
       </Typography>
@@ -175,16 +176,16 @@ export default function ChildProfile() {
         alert.showSuccess(data.message);
       },
       onError: (error) => {
-        if (error.message.includes("422")) {
+        if (getValidationErrors(error)) {
           setChildFormError((prev) => ({
             ...prev,
-            validationError: error.response.data.errors,
+            validationError: getValidationErrors(error),
           }));
         }
-        alert.showError(error.response.data.message);
+        alert.showError(getErrorMessage(error));
         setChildFormError((prev) => ({
           ...prev,
-          error: error.response.data.message,
+          error: getErrorMessage(error),
         }));
       },
     });
@@ -204,7 +205,7 @@ export default function ChildProfile() {
     return (
       <Grid sx={{ width: "90%", paddingTop: "5%" }}>
         <Typography
-          sx={{ fontWeight: 600, fontSize: "20px", marginBottom: "10px" }}
+          sx={{ fontWeight: 600, fontSize: "1.25rem", marginBottom: "0.625rem" }}
         >
           {notFound
             ? "We couldn't find that child."
@@ -233,16 +234,16 @@ export default function ChildProfile() {
             paddingY: "3%",
             paddingX: "4%",
             backgroundColor: "#FFFFFF",
-            borderRadius: "20px",
-            marginBottom: "30px",
+            borderRadius: "1.25rem",
+            marginBottom: "1.875rem",
           }}
         >
           <Typography
             sx={{
               color: "#000000",
               fontWeight: 600,
-              fontSize: "24px",
-              lineHeight: "36px",
+              fontSize: "1.5rem",
+              lineHeight: "2.25rem",
             }}
           >
             Child’s Profile
@@ -255,15 +256,15 @@ export default function ChildProfile() {
             paddingY: "3%",
             paddingX: "4%",
             backgroundColor: "#FFFFFF",
-            borderRadius: "20px",
+            borderRadius: "1.25rem",
             display: "flex",
             flexDirection: "row",
             justifyContent: "space-between",
-            marginBottom: "30px",
+            marginBottom: "1.875rem",
           }}
         >
           <Grid
-            sx={{ display: "flex", flexDirection: "column", width: "500px" }}
+            sx={{ display: "flex", flexDirection: "column", width: "31.25rem" }}
           >
             <Grid
               sx={{
@@ -272,18 +273,18 @@ export default function ChildProfile() {
                 gap: 3,
                 borderBottom: 1,
                 borderColor: "#1F8E1F66",
-                paddingBottom: "30px",
+                paddingBottom: "1.875rem",
               }}
             >
-              <Avatar src={avatar} sx={{ height: "60px", width: "60px" }} />
+              <Avatar src={avatar} sx={{ height: "3.75rem", width: "3.75rem" }} />
               <Grid>
                 <Typography
                   component="p"
                   sx={{
                     color: "#1F8E1F",
                     fontWeight: 700,
-                    fontSize: "24px",
-                    lineHeight: "36px",
+                    fontSize: "1.5rem",
+                    lineHeight: "2.25rem",
                   }}
                 >
                   {child.firstName} {child.lastName}
@@ -294,9 +295,9 @@ export default function ChildProfile() {
                     color: "#000000",
                     opacity: 0.4,
                     fontWeight: 400,
-                    fontSize: "16px",
-                    lineHeight: "24px",
-                    marginTop: "10px",
+                    fontSize: "1rem",
+                    lineHeight: "1.5rem",
+                    marginTop: "0.625rem",
                   }}
                 >
                   {child.gender === "MALE" ? "Male" : "Female"} | DOB:{" "}
@@ -309,11 +310,11 @@ export default function ChildProfile() {
             </Grid>
 
             <Grid
-              sx={{ display: "flex", flexDirection: "row", paddingTop: "30px" }}
+              sx={{ display: "flex", flexDirection: "row", paddingTop: "1.875rem" }}
             >
               <Grid
                 sx={{
-                  width: "140px",
+                  width: "8.75rem",
                   borderRight: 1,
                   borderColor: "#1F8E1F66",
                 }}
@@ -324,9 +325,9 @@ export default function ChildProfile() {
                     color: "#000000",
                     opacity: 0.4,
                     fontWeight: 400,
-                    fontSize: "16px",
-                    lineHeight: "24px",
-                    marginTop: "10px",
+                    fontSize: "1rem",
+                    lineHeight: "1.5rem",
+                    marginTop: "0.625rem",
                   }}
                 >
                   Last Visit
@@ -336,9 +337,9 @@ export default function ChildProfile() {
                   sx={{
                     color: "#1F8E1F",
                     fontWeight: 600,
-                    fontSize: "16px",
-                    lineHeight: "24px",
-                    marginTop: "10px",
+                    fontSize: "1rem",
+                    lineHeight: "1.5rem",
+                    marginTop: "0.625rem",
                   }}
                 >
                   {schedulesQuery.isPending
@@ -348,16 +349,16 @@ export default function ChildProfile() {
                       : "No visits yet"}
                 </Typography>
               </Grid>
-              <Grid sx={{ width: "160px", marginLeft: "40px" }}>
+              <Grid sx={{ width: "10rem", marginLeft: "2.5rem" }}>
                 <Typography
                   component="p"
                   sx={{
                     color: "#000000",
                     opacity: 0.4,
                     fontWeight: 400,
-                    fontSize: "16px",
-                    lineHeight: "24px",
-                    marginTop: "10px",
+                    fontSize: "1rem",
+                    lineHeight: "1.5rem",
+                    marginTop: "0.625rem",
                   }}
                 >
                   Next Appointment
@@ -367,9 +368,9 @@ export default function ChildProfile() {
                   sx={{
                     color: "#1F8E1F",
                     fontWeight: 600,
-                    fontSize: "16px",
-                    lineHeight: "24px",
-                    marginTop: "10px",
+                    fontSize: "1rem",
+                    lineHeight: "1.5rem",
+                    marginTop: "0.625rem",
                   }}
                 >
                   {schedulesQuery.isPending
@@ -391,10 +392,10 @@ export default function ChildProfile() {
                 sx={{
                   color: "#1F8E1F",
                   backgroundColor: "#1F8E1F33",
-                  padding: "8px",
-                  borderRadius: "900px",
-                  width: "36px",
-                  height: "36px",
+                  padding: "0.5rem",
+                  borderRadius: "56.25rem",
+                  width: "2.25rem",
+                  height: "2.25rem",
                 }}
               />
             </a>
@@ -402,10 +403,10 @@ export default function ChildProfile() {
               sx={{
                 color: "#1F8E1F",
                 backgroundColor: "#1F8E1F33",
-                padding: "8px",
-                borderRadius: "900px",
-                width: "36px",
-                height: "36px",
+                padding: "0.5rem",
+                borderRadius: "56.25rem",
+                width: "2.25rem",
+                height: "2.25rem",
               }}
             />
           </Grid>
@@ -417,16 +418,16 @@ export default function ChildProfile() {
             paddingY: "3%",
             paddingX: "4%",
             backgroundColor: "#FFFFFF",
-            borderRadius: "20px",
-            marginBottom: "30px",
+            borderRadius: "1.25rem",
+            marginBottom: "1.875rem",
           }}
         >
           <Typography
             sx={{
               color: "#000000",
               fontWeight: 600,
-              fontSize: "24px",
-              lineHeight: "36px",
+              fontSize: "1.5rem",
+              lineHeight: "2.25rem",
             }}
           >
             Immunization History
@@ -439,9 +440,9 @@ export default function ChildProfile() {
             paddingY: "3%",
             paddingX: "4%",
             backgroundColor: "#FFFFFF",
-            borderRadius: "20px",
+            borderRadius: "1.25rem",
             margin: "auto",
-            marginBottom: "30px",
+            marginBottom: "1.875rem",
           }}
         >
           <Box sx={{ width: "100%" }}>
@@ -464,8 +465,8 @@ export default function ChildProfile() {
                     backgroundColor: tabValue === 0 ? "#1F8E1F0A" : "#FFFFFF",
                     textTransform: "none",
                     opacity: 0.7,
-                    fontSize: "16px",
-                    lineHeight: "27px",
+                    fontSize: "1rem",
+                    lineHeight: "1.6875rem",
                   }}
                   disableRipple
                 />
@@ -479,8 +480,8 @@ export default function ChildProfile() {
                     width: "50%",
                     textTransform: "none",
                     opacity: 0.7,
-                    fontSize: "16px",
-                    lineHeight: "27px",
+                    fontSize: "1rem",
+                    lineHeight: "1.6875rem",
                   }}
                   disableRipple
                 />
@@ -489,7 +490,7 @@ export default function ChildProfile() {
 
             {schedulesQuery.isPending && (
               <Box sx={{ textAlign: "center", paddingY: "5%" }}>
-                <CircularProgress size="24px" sx={{ color: "#1F8E1F" }} />
+                <CircularProgress size="1.5rem" sx={{ color: "#1F8E1F" }} />
               </Box>
             )}
             {schedulesQuery.isError && (
@@ -522,21 +523,21 @@ export default function ChildProfile() {
             flexDirection: "column",
             paddingY: "5%",
             paddingX: "7%",
-            borderRadius: "20px",
-            marginBottom: "20px",
+            borderRadius: "1.25rem",
+            marginBottom: "1.25rem",
           }}
         >
           <Grid sx={{ margin: "auto", textAlign: "center" }}>
             <Avatar
               src={avatar}
-              sx={{ height: "50px", width: "50px", margin: "auto" }}
+              sx={{ height: "3.125rem", width: "3.125rem", margin: "auto" }}
             />
             <Typography
               sx={{
                 color: "#1F8E1F",
                 fontWeight: 600,
-                fontSize: "16px",
-                lineHeight: "24px",
+                fontSize: "1rem",
+                lineHeight: "1.5rem",
               }}
             >
               {parent?.firstName} {parent?.lastName}
@@ -545,8 +546,8 @@ export default function ChildProfile() {
               sx={{
                 color: "#000000",
                 fontWeight: 400,
-                fontSize: "16px",
-                lineHeight: "24px",
+                fontSize: "1rem",
+                lineHeight: "1.5rem",
                 opacity: 0.4,
               }}
             >
@@ -588,19 +589,19 @@ export default function ChildProfile() {
         <Grid
           sx={{
             backgroundColor: "#FFFFFF",
-            borderRadius: "20px",
+            borderRadius: "1.25rem",
             paddingY: "7%",
             paddingX: "7%",
             display: "flex",
             flexDirection: "column",
             gap: 2,
             alignItems: "center",
-            maxHeight: "270px",
+            maxHeight: "16.875rem",
           }}
           size={12}
         >
           <Typography
-            sx={{ fontWeight: 600, fontSize: "24px", lineHeight: "36px" }}
+            sx={{ fontWeight: 600, fontSize: "1.5rem", lineHeight: "2.25rem" }}
           >
             Other Children
           </Typography>
@@ -615,10 +616,10 @@ export default function ChildProfile() {
             }}
           >
             {siblingsQuery.isPending && (
-              <CircularProgress size="20px" sx={{ color: "#1F8E1F" }} />
+              <CircularProgress size="1.25rem" sx={{ color: "#1F8E1F" }} />
             )}
             {siblingsQuery.isSuccess && siblings.length === 0 && (
-              <Typography sx={{ color: "#00000099", fontSize: "14px" }}>
+              <Typography sx={{ color: "#00000099", fontSize: "0.875rem" }}>
                 No siblings yet
               </Typography>
             )}
@@ -629,7 +630,7 @@ export default function ChildProfile() {
                 style={{
                   color: "#000000",
                   fontWeight: 400,
-                  fontSize: "16px",
+                  fontSize: "1rem",
                   textDecoration: "none",
                 }}
               >
@@ -640,8 +641,8 @@ export default function ChildProfile() {
           <AddCircleRoundedIcon
             onClick={handleOpenAddChild}
             sx={{
-              width: "35px",
-              height: "35px",
+              width: "2.1875rem",
+              height: "2.1875rem",
               color: "#1F8E1F",
               marginRight: "3%",
               cursor: "pointer",
@@ -667,14 +668,14 @@ export default function ChildProfile() {
               textTransform: "none",
               display: "flex",
               flexDirection: "row",
-              gap: "5px",
-              marginBottom: "5px",
+              gap: "0.3125rem",
+              marginBottom: "0.3125rem",
             }}
             disableRipple
           >
             <ArrowBackSharpIcon sx={{ color: "#1F8E1F" }} />
             <Typography
-              sx={{ color: "#000000", fontSize: "16px", fontWeight: 400 }}
+              sx={{ color: "#000000", fontSize: "1rem", fontWeight: 400 }}
             >
               Back
             </Typography>
@@ -684,9 +685,9 @@ export default function ChildProfile() {
               width: "100%",
               color: "#000000",
               fontWeight: 600,
-              fontSize: "24px",
-              lineHeight: "36px",
-              marginBottom: "5px",
+              fontSize: "1.5rem",
+              lineHeight: "2.25rem",
+              marginBottom: "0.3125rem",
             }}
           >
             Onboard a Sibling
@@ -694,11 +695,11 @@ export default function ChildProfile() {
           <Grid sx={{ width: "100%" }}>
             <form onSubmit={handleSubmitChild}>
               {childMutation.isError && childFormError.validationError && (
-                <Box sx={{ marginBottom: "5px" }}>
+                <Box sx={{ marginBottom: "0.3125rem" }}>
                   <ul>
                     {childFormError.validationError.map((valErr) => (
                       <li
-                        style={{ color: "red", fontSize: "15px" }}
+                        style={{ color: "red", fontSize: "0.9375rem" }}
                         key={valErr.msg}
                       >
                         {valErr.msg}
@@ -707,98 +708,98 @@ export default function ChildProfile() {
                   </ul>
                 </Box>
               )}
-              <Box sx={{ marginBottom: "5px" }}>
+              <Box sx={{ marginBottom: "0.3125rem" }}>
                 <InputLabel
                   sx={{
                     color: "#222222",
                     fontWeight: 500,
-                    fontSize: "16px",
-                    lineHeight: "24px",
-                    marginBottom: "5px",
+                    fontSize: "1rem",
+                    lineHeight: "1.5rem",
+                    marginBottom: "0.3125rem",
                   }}
                 >
                   First Name
                 </InputLabel>
                 <TextField
                   placeholder="e.g Oreoluwa"
-                  sx={{ width: "600px", textTransform: "capitalize" }}
+                  sx={{ width: "37.5rem", textTransform: "capitalize" }}
                   name="firstname"
                   type="text"
                 />
               </Box>
-              <Box sx={{ marginBottom: "5px" }}>
+              <Box sx={{ marginBottom: "0.3125rem" }}>
                 <InputLabel
                   sx={{
                     color: "#222222",
                     fontWeight: 500,
-                    fontSize: "16px",
-                    lineHeight: "24px",
-                    marginBottom: "5px",
+                    fontSize: "1rem",
+                    lineHeight: "1.5rem",
+                    marginBottom: "0.3125rem",
                   }}
                 >
                   Last Name
                 </InputLabel>
                 <TextField
                   placeholder="e.g Adepoju"
-                  sx={{ width: "600px", textTransform: "capitalize" }}
+                  sx={{ width: "37.5rem", textTransform: "capitalize" }}
                   name="lastname"
                   type="text"
                 />
               </Box>
-              <Box sx={{ marginBottom: "5px" }}>
+              <Box sx={{ marginBottom: "0.3125rem" }}>
                 <InputLabel
                   sx={{
                     color: "#222222",
                     fontWeight: 500,
-                    fontSize: "16px",
-                    lineHeight: "24px",
-                    marginBottom: "5px",
+                    fontSize: "1rem",
+                    lineHeight: "1.5rem",
+                    marginBottom: "0.3125rem",
                   }}
                 >
                   Sex
                 </InputLabel>
                 <TextField
                   placeholder="e.g FEMALE"
-                  sx={{ width: "600px", textTransform: "uppercase" }}
+                  sx={{ width: "37.5rem", textTransform: "uppercase" }}
                   name="sex"
                   type="text"
                 />
               </Box>
-              <Box sx={{ marginBottom: "5px" }}>
+              <Box sx={{ marginBottom: "0.3125rem" }}>
                 <InputLabel
                   sx={{
                     color: "#222222",
                     fontWeight: 500,
-                    fontSize: "16px",
-                    lineHeight: "24px",
-                    marginBottom: "5px",
+                    fontSize: "1rem",
+                    lineHeight: "1.5rem",
+                    marginBottom: "0.3125rem",
                   }}
                 >
                   Date of Birth
                 </InputLabel>
-                <TextField sx={{ width: "600px" }} name="dob" type="date" />
+                <TextField sx={{ width: "37.5rem" }} name="dob" type="date" />
               </Box>
-              <Box sx={{ marginBottom: "5px" }}>
+              <Box sx={{ marginBottom: "0.3125rem" }}>
                 <InputLabel
                   sx={{
                     color: "#222222",
                     fontWeight: 500,
-                    fontSize: "16px",
-                    lineHeight: "24px",
-                    marginBottom: "5px",
+                    fontSize: "1rem",
+                    lineHeight: "1.5rem",
+                    marginBottom: "0.3125rem",
                   }}
                 >
                   Weight at Birth{" "}
                   <Typography
                     component="span"
-                    sx={{ color: "#222222", fontWeight: 300, fontSize: "12px" }}
+                    sx={{ color: "#222222", fontWeight: 300, fontSize: "0.75rem" }}
                   >
                     (write in kilograms)
                   </Typography>
                 </InputLabel>
                 <TextField
                   placeholder="e.g 3.5"
-                  sx={{ width: "600px" }}
+                  sx={{ width: "37.5rem" }}
                   name="weightAtBirth"
                   type="text"
                 />
@@ -807,9 +808,9 @@ export default function ChildProfile() {
                 sx={{
                   width: "100%",
                   backgroundColor: "#1F8E1F",
-                  paddingY: "12px",
-                  paddingX: "36px",
-                  borderRadius: "80px",
+                  paddingY: "0.75rem",
+                  paddingX: "2.25rem",
+                  borderRadius: "5rem",
                   color: "#FFFFFF",
                   textTransform: "none",
                 }}
@@ -817,7 +818,7 @@ export default function ChildProfile() {
                 disabled={childMutation.isPending}
               >
                 {childMutation.isPending ? (
-                  <CircularProgress size="20px" sx={{ color: "#FFFFFF" }} />
+                  <CircularProgress size="1.25rem" sx={{ color: "#FFFFFF" }} />
                 ) : (
                   "Onboard"
                 )}
@@ -831,7 +832,7 @@ export default function ChildProfile() {
                 width: "100%",
                 textAlign: "center",
                 alignItems: "center",
-                marginTop: "10px",
+                marginTop: "0.625rem",
                 justifyContent: "center",
                 gap: 1,
               }}

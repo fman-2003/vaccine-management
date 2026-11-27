@@ -17,17 +17,6 @@ export const signup = async ({ username, email, password }) => {
       },
     },
   );
-
-  if (res.status === 422) {
-    const validationErrors = res.data.errors;
-    return validationErrors;
-  }
-
-  if (res.status !== 201) {
-    const message =
-      res.data?.errors?.[0]?.msg || res.data?.message || "Something went wrong";
-    throw new Error(message);
-  }
   return res.data;
 };
 
@@ -43,18 +32,6 @@ export const login = async ({ username, password }) => {
       },
     },
   );
-
-  if (res.status === 422) {
-    const validationErrors = res.data.errors;
-    return validationErrors;
-  }
-
-  if (res.status !== 200) {
-    const message =
-      res.data?.errors?.[0]?.msg || res.data?.message || "Something went wrong";
-    throw new Error(message);
-  }
-  // saveToken(res.data.token);
   return res.data;
 };
 
@@ -69,11 +46,6 @@ export const checkAuth = async () => {
   const res = await axios.get(`${API_BASE_URL}/auth/me`, {
     withCredentials: true,
   });
-
-  if (res.status !== 200) {
-    throw new Error("Auth Check failed");
-  }
-
   return res.data;
 };
 
@@ -87,14 +59,8 @@ export const getParents = async ({ page, limit } = {}) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      // Authorization: `Bearer ${getToken()}`,
     },
   });
-  if (res.status !== 200) {
-    const message =
-      res.data?.errors?.[0]?.msg || res.data?.message || "Something went wrong";
-    throw new Error(message);
-  }
   return res.data;
 };
 
@@ -104,14 +70,8 @@ export const getParentById = async (id) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      // Authorization: `Bearer ${getToken()}`,
     },
   });
-  if (res.status !== 200) {
-    const message =
-      res.data?.errors?.[0]?.msg || res.data?.message || "Something went wrong";
-    throw new Error(message);
-  }
   return res.data;
 };
 
@@ -121,20 +81,8 @@ export const createParent = async (data) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      // Authorization: `Bearer ${getToken()}`,
     },
   });
-
-  if (res.status === 422) {
-    const validationErrors = res.data.errors;
-    return validationErrors;
-  }
-
-  if (res.status !== 201) {
-    const message =
-      res.data?.errors?.[0]?.msg || res.data?.message || "Something went wrong";
-    throw new Error(message);
-  }
   return res.data;
 };
 
@@ -144,20 +92,8 @@ export const updateParent = async (id, data) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      // Authorization: `Bearer ${getToken()}`,
     },
   });
-
-  if (res.status === 422) {
-    const validationErrors = res.data.errors;
-    return validationErrors;
-  }
-
-  if (res.status !== 200) {
-    const message =
-      res.data?.errors?.[0]?.msg || res.data?.message || "Something went wrong";
-    throw new Error(message);
-  }
   return res.data;
 };
 
@@ -167,14 +103,8 @@ export const deleteParent = async (id) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      // Authorization: `Bearer ${getToken()}`,
     },
   });
-  if (res.status !== 200) {
-    const message =
-      res.data?.errors?.[0]?.msg || res.data?.message || "Something went wrong";
-    throw new Error(message);
-  }
   return res.data;
 };
 
@@ -189,14 +119,8 @@ export const getChildren = async ({ page, limit, parent } = {}) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      // Authorization: `Bearer ${getToken()}`,
     },
   });
-  if (res.status !== 200) {
-    const message =
-      res.data?.errors?.[0]?.msg || res.data?.message || "Something went wrong";
-    throw new Error(message);
-  }
   return res.data;
 };
 
@@ -206,14 +130,8 @@ export const getChildById = async (id) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      // Authorization: `Bearer ${getToken()}`,
     },
   });
-  if (res.status !== 200) {
-    const message =
-      res.data?.errors?.[0]?.msg || res.data?.message || "Something went wrong";
-    throw new Error(message);
-  }
   return res.data;
 };
 
@@ -223,20 +141,8 @@ export const createChild = async (data) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      // Authorization: `Bearer ${getToken()}`,
     },
   });
-
-  if (res.status === 422) {
-    const validationErrors = res.data.errors;
-    return validationErrors;
-  }
-
-  if (res.status !== 201) {
-    const message =
-      res.data?.errors?.[0]?.msg || res.data?.message || "Something went wrong";
-    throw new Error(message);
-  }
   return res.data;
 };
 
@@ -246,20 +152,8 @@ export const updateChild = async (id, data) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      // Authorization: `Bearer ${getToken()}`,
     },
   });
-
-  if (res.status === 422) {
-    const validationErrors = res.data.errors;
-    return validationErrors;
-  }
-
-  if (res.status !== 200) {
-    const message =
-      res.data?.errors?.[0]?.msg || res.data?.message || "Something went wrong";
-    throw new Error(message);
-  }
   return res.data;
 };
 
@@ -269,14 +163,8 @@ export const deleteChild = async (id) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      // Authorization: `Bearer ${getToken()}`,
     },
   });
-  if (res.status !== 200) {
-    const message =
-      res.data?.errors?.[0]?.msg || res.data?.message || "Something went wrong";
-    throw new Error(message);
-  }
   return res.data;
 };
 
@@ -290,14 +178,8 @@ export const getVaccines = async ({ page, limit } = {}) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      // Authorization: `Bearer ${getToken()}`,
     },
   });
-  if (res.status !== 200) {
-    const message =
-      res.data?.errors?.[0]?.msg || res.data?.message || "Something went wrong";
-    throw new Error(message);
-  }
   return res.data;
 };
 
@@ -307,14 +189,8 @@ export const getVaccineById = async (id) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      // Authorization: `Bearer ${getToken()}`,
     },
   });
-  if (res.status !== 200) {
-    const message =
-      res.data?.errors?.[0]?.msg || res.data?.message || "Something went wrong";
-    throw new Error(message);
-  }
   return res.data;
 };
 
@@ -324,20 +200,8 @@ export const createVaccine = async (data) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      // Authorization: `Bearer ${getToken()}`,
     },
   });
-
-  if (res.status === 422) {
-    const validationErrors = res.data.errors;
-    return validationErrors;
-  }
-
-  if (res.status !== 201) {
-    const message =
-      res.data?.errors?.[0]?.msg || res.data?.message || "Something went wrong";
-    throw new Error(message);
-  }
   return res.data;
 };
 
@@ -347,20 +211,8 @@ export const updateVaccine = async (id, data) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      // Authorization: `Bearer ${getToken()}`,
     },
   });
-
-  if (res.status === 422) {
-    const validationErrors = res.data.errors;
-    return validationErrors;
-  }
-
-  if (res.status !== 200) {
-    const message =
-      res.data?.errors?.[0]?.msg || res.data?.message || "Something went wrong";
-    throw new Error(message);
-  }
   return res.data;
 };
 
@@ -370,14 +222,8 @@ export const deleteVaccine = async (id) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      // Authorization: `Bearer ${getToken()}`,
     },
   });
-  if (res.status !== 200) {
-    const message =
-      res.data?.errors?.[0]?.msg || res.data?.message || "Something went wrong";
-    throw new Error(message);
-  }
   return res.data;
 };
 
@@ -401,14 +247,8 @@ export const getSchedules = async ({
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      // Authorization: `Bearer ${getToken()}`,
     },
   });
-  if (res.status !== 200) {
-    const message =
-      res.data?.errors?.[0]?.msg || res.data?.message || "Something went wrong";
-    throw new Error(message);
-  }
   return res.data;
 };
 
@@ -423,15 +263,9 @@ export const getSchedulesByChild = async (childId, { status } = {}) => {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
-        // Authorization: `Bearer ${getToken()}`,
       },
     },
   );
-  if (res.status !== 200) {
-    const message =
-      res.data?.errors?.[0]?.msg || res.data?.message || "Something went wrong";
-    throw new Error(message);
-  }
   return res.data;
 };
 
@@ -441,14 +275,8 @@ export const getDailySummary = async () => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      // Authorization: `Bearer ${getToken()}`,
     },
   });
-  if (res.status !== 200) {
-    const message =
-      res.data?.errors?.[0]?.msg || res.data?.message || "Something went wrong";
-    throw new Error(message);
-  }
   return res.data;
 };
 
@@ -458,20 +286,8 @@ export const createSchedule = async (data) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      // Authorization: `Bearer ${getToken()}`,
     },
   });
-
-  if (res.status === 422) {
-    const validationErrors = res.data.errors;
-    return validationErrors;
-  }
-
-  if (res.status !== 201) {
-    const message =
-      res.data?.errors?.[0]?.msg || res.data?.message || "Something went wrong";
-    throw new Error(message);
-  }
   return res.data;
 };
 
@@ -483,20 +299,8 @@ export const updateSchedule = async (id, data) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      // Authorization: `Bearer ${getToken()}`,
     },
   });
-
-  if (res.status === 422) {
-    const validationErrors = res.data.errors;
-    return validationErrors;
-  }
-
-  if (res.status !== 200) {
-    const message =
-      res.data?.errors?.[0]?.msg || res.data?.message || "Something went wrong";
-    throw new Error(message);
-  }
   return res.data;
 };
 
@@ -506,13 +310,7 @@ export const deleteSchedule = async (id) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      // Authorization: `Bearer ${getToken()}`,
     },
   });
-  if (res.status !== 200) {
-    const message =
-      res.data?.errors?.[0]?.msg || res.data?.message || "Something went wrong";
-    throw new Error(message);
-  }
   return res.data;
 };

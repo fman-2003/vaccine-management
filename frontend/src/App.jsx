@@ -23,6 +23,7 @@ import Vaccines from "./components/Vaccines.jsx";
 import SchedulesRootLayout from "./components/SchedulesRoot.jsx";
 import Schedules from "./components/Schedules.jsx";
 import VaccineProfile from "./components/VaccineProfile.jsx";
+import DeviceSupportGuard from "./components/DeviceSupportGuard.jsx";
 
 const router = createBrowserRouter([
   {
@@ -92,7 +93,9 @@ function App() {
   return (
     // <div style={{width: "100%"}}>
     <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
+      <DeviceSupportGuard>
+        <RouterProvider router={router} />
+      </DeviceSupportGuard>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
     // </div>

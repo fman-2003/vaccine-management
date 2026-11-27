@@ -80,7 +80,7 @@ export default function DashboardNav() {
           display: "flex",
           flexDirection: "column",
           bgcolor: "#1F8E1F",
-          width: "122px",
+          width: "7.625rem",
           position: "fixed",
           left: 0,
           top: 0,
@@ -99,10 +99,10 @@ export default function DashboardNav() {
           sx={{
             bgcolor: "#1F8E1F",
             width: "100%",
-            paddingTop: "100px",
+            paddingTop: "6.25rem",
             zIndex: 1000,
 
-            maxWidth: "122px",
+            maxWidth: "7.625rem",
 
             "& .MuiTab-root": {
               transition: "none", // Remove animation on hover
@@ -131,10 +131,10 @@ export default function DashboardNav() {
                 textTransform: "none",
                 backgroundColor: `${isActiveHome ? "#FFFFFF" : "#1F8E1F"}`,
                 color: `${isActiveHome ? "#1F8E1F" : "#FFFFFF"}`,
-                marginBottom: "20px",
+                marginBottom: "1.25rem",
                 fontWeight: 400,
-                fontSize: "16px",
-                lineHeight: "24px",
+                fontSize: "1rem",
+                lineHeight: "1.5rem",
               }}
               disableRipple
               //   {...a11yProps(0)}
@@ -163,10 +163,10 @@ export default function DashboardNav() {
                 textTransform: "none",
                 backgroundColor: `${isActiveChildren ? "#FFFFFF" : "#1F8E1F"}`,
                 color: `${isActiveChildren ? "#1F8E1F" : "#FFFFFF"}`,
-                marginBottom: "20px",
+                marginBottom: "1.25rem",
                 fontWeight: 400,
-                fontSize: "16px",
-                lineHeight: "24px",
+                fontSize: "1rem",
+                lineHeight: "1.5rem",
               }}
               disableRipple
               //   {...a11yProps(1)}
@@ -196,10 +196,10 @@ export default function DashboardNav() {
                 textTransform: "none",
                 backgroundColor: `${isActiveParent ? "#FFFFFF" : "#1F8E1F"}`,
                 color: `${isActiveParent ? "#1F8E1F" : "#FFFFFF"}`,
-                marginBottom: "20px",
+                marginBottom: "1.25rem",
                 fontWeight: 400,
-                fontSize: "16px",
-                lineHeight: "24px",
+                fontSize: "1rem",
+                lineHeight: "1.5rem",
               }}
               disableRipple
               //   {...a11yProps(2)}
@@ -228,10 +228,10 @@ export default function DashboardNav() {
                 textTransform: "none",
                 backgroundColor: `${isActiveVaccine ? "#FFFFFF" : "#1F8E1F"}`,
                 color: `${isActiveVaccine ? "#1F8E1F" : "#FFFFFF"}`,
-                marginBottom: "20px",
+                marginBottom: "1.25rem",
                 fontWeight: 400,
-                lineHeight: "24px",
-                fontSize: "16px",
+                lineHeight: "1.5rem",
+                fontSize: "1rem",
               }}
               disableRipple
               icon={
@@ -259,10 +259,10 @@ export default function DashboardNav() {
                 textTransform: "none",
                 backgroundColor: `${isActiveSchedule ? "#FFFFFF" : "#1F8E1F"}`,
                 color: `${isActiveSchedule ? "#1F8E1F" : "#FFFFFF"}`,
-                marginBottom: "20px",
+                marginBottom: "1.25rem",
                 fontWeight: 400,
-                fontSize: "16px",
-                lineHeight: "24px",
+                fontSize: "1rem",
+                lineHeight: "1.5rem",
               }}
               disableRipple
               icon={
@@ -284,7 +284,7 @@ export default function DashboardNav() {
           disableRipple
           variant="outlined"
           sx={{
-            height: "100px",
+            height: "6.25rem",
             width: "100%",
             border: "none",
 
@@ -298,9 +298,9 @@ export default function DashboardNav() {
           <Typography
             sx={{
               fontWeight: 400,
-              fontSize: "16px",
+              fontSize: "1rem",
               color: "#FFFFFF",
-              lineHeight: "24px",
+              lineHeight: "1.5rem",
             }}
           >
             Log out
@@ -311,29 +311,31 @@ export default function DashboardNav() {
 
       <Box
         sx={{
-          width: "95%",
-          marginLeft: "8%",
           backgroundColor: "#FFFFFF",
-          minHeight: "70px",
+          minHeight: "4.375rem",
           position: "fixed",
           top: 0,
+          // Starts exactly where the 7.625rem sidebar ends at every screen size,
+          // and the title lines up with the page content (11.25rem from the left).
+          left: "7.625rem",
+          right: 0,
           display: "flex",
           flexDirection: "row",
           justifyContent: "space-between",
           alignItems: "center",
-          paddingLeft: "5%",
+          paddingLeft: "3.625rem",
           paddingRight: "10%",
           zIndex: 100,
         }}
       >
-        <Typography sx={{ fontSize: "20px", fontWeight: 500 }}>
+        <Typography sx={{ fontSize: "1.25rem", fontWeight: 500 }}>
           {pageName}
         </Typography>
         <Box
           sx={{
             display: "flex",
             flexDirection: "row",
-            gap: "30px",
+            gap: "1.875rem",
             alignItems: "center",
           }}
         >

@@ -41,8 +41,8 @@ export default function ImmunizationPending({ schedules = [] }) {
         <Typography
           sx={{
             fontWeight: 400,
-            fontSize: "16px",
-            lineHeight: "18px",
+            fontSize: "1rem",
+            lineHeight: "1.125rem",
             color: "#000000",
             opacity: 0.7,
           }}
@@ -52,8 +52,8 @@ export default function ImmunizationPending({ schedules = [] }) {
         <Typography
           sx={{
             fontWeight: 400,
-            fontSize: "16px",
-            lineHeight: "18px",
+            fontSize: "1rem",
+            lineHeight: "1.125rem",
             color: "#000000",
             opacity: 0.7,
           }}
@@ -79,14 +79,14 @@ export default function ImmunizationPending({ schedules = [] }) {
                 borderColor: "#0000001A",
                 "&:hover": {
                   backgroundColor: "#1F8E1F0D",
-                  borderRadius: "12px",
+                  borderRadius: "0.75rem",
                   border: 1,
                   borderColor: "#1F8E1F",
                   cursor: "pointer",
                 },
                 "&.Mui-expanded": {
                   backgroundColor: "#1F8E1F0D",
-                  borderRadius: "12px",
+                  borderRadius: "0.75rem",
                   border: 1,
                   borderColor: "#1F8E1F",
                   cursor: "pointer",
@@ -108,8 +108,8 @@ export default function ImmunizationPending({ schedules = [] }) {
                   <Typography
                     sx={{
                       fontWeight: 500,
-                      fontSize: "16px",
-                      lineHeight: "24px",
+                      fontSize: "1rem",
+                      lineHeight: "1.5rem",
                       color: "#000000",
                       paddingLeft: "2%",
                     }}
@@ -120,12 +120,12 @@ export default function ImmunizationPending({ schedules = [] }) {
                     sx={{
                       color: statusColor,
                       fontWeight: 400,
-                      fontSize: "12px",
-                      lineHeight: "14px",
+                      fontSize: "0.75rem",
+                      lineHeight: "0.875rem",
                       backgroundColor: `${statusColor}26`,
-                      borderRadius: "900px",
-                      paddingY: "8px",
-                      paddingX: "16px",
+                      borderRadius: "56.25rem",
+                      paddingY: "0.5rem",
+                      paddingX: "1rem",
                     }}
                   >
                     {statusLabel}
@@ -139,9 +139,9 @@ export default function ImmunizationPending({ schedules = [] }) {
                   sx={{
                     color: "#000000",
                     fontWeight: 600,
-                    fontSize: "16px",
-                    lineHeight: "24px",
-                    marginBottom: "5px",
+                    fontSize: "1rem",
+                    lineHeight: "1.5rem",
+                    marginBottom: "0.3125rem",
                   }}
                 >
                   {schedule.vaccine?.type}
@@ -151,9 +151,9 @@ export default function ImmunizationPending({ schedules = [] }) {
                   sx={{
                     color: "#222222B2",
                     fontWeight: 300,
-                    fontSize: "12px",
-                    lineHeight: "18px",
-                    marginBottom: "20px",
+                    fontSize: "0.75rem",
+                    lineHeight: "1.125rem",
+                    marginBottom: "1.25rem",
                   }}
                 >
                   Dosage: {schedule.vaccine?.dosage || "—"} • Route:{" "}
@@ -172,8 +172,8 @@ export default function ImmunizationPending({ schedules = [] }) {
                     <Typography
                       sx={{
                         fontWeight: 200,
-                        fontSize: "12px",
-                        lineHeight: "18px",
+                        fontSize: "0.75rem",
+                        lineHeight: "1.125rem",
                         color: "#000000",
                       }}
                       component="p"
@@ -185,9 +185,9 @@ export default function ImmunizationPending({ schedules = [] }) {
                         border: 1,
                         textAlign: "center",
                         borderColor: statusColor,
-                        padding: "4px",
-                        borderRadius: "4px",
-                        height: "30px",
+                        padding: "0.25rem",
+                        borderRadius: "0.25rem",
+                        height: "1.875rem",
                       }}
                     />
                   </Box>
@@ -195,8 +195,8 @@ export default function ImmunizationPending({ schedules = [] }) {
                     <Typography
                       sx={{
                         fontWeight: 200,
-                        fontSize: "12px",
-                        lineHeight: "18px",
+                        fontSize: "0.75rem",
+                        lineHeight: "1.125rem",
                         color: "#000000",
                       }}
                       component="p"
@@ -205,12 +205,12 @@ export default function ImmunizationPending({ schedules = [] }) {
                     </Typography>
                     <Box
                       sx={{
-                        padding: "16px",
-                        borderRadius: "8px",
+                        padding: "1rem",
+                        borderRadius: "0.5rem",
                         backgroundColor: "#EEEEEE",
                         color: "#222222",
                         fontWeight: 400,
-                        fontSize: "12px",
+                        fontSize: "0.75rem",
                       }}
                     >
                       {formatDate(schedule.earliestDate)}
@@ -220,8 +220,8 @@ export default function ImmunizationPending({ schedules = [] }) {
                     <Typography
                       sx={{
                         fontWeight: 200,
-                        fontSize: "12px",
-                        lineHeight: "18px",
+                        fontSize: "0.75rem",
+                        lineHeight: "1.125rem",
                         color: "#000000",
                       }}
                       component="p"
@@ -230,12 +230,12 @@ export default function ImmunizationPending({ schedules = [] }) {
                     </Typography>
                     <Box
                       sx={{
-                        padding: "16px",
-                        borderRadius: "8px",
+                        padding: "1rem",
+                        borderRadius: "0.5rem",
                         backgroundColor: "#EEEEEE",
                         color: "#222222",
                         fontWeight: 400,
-                        fontSize: "12px",
+                        fontSize: "0.75rem",
                       }}
                     >
                       {schedule.dateOfImmunization
@@ -247,8 +247,8 @@ export default function ImmunizationPending({ schedules = [] }) {
                     <Typography
                       sx={{
                         fontWeight: 200,
-                        fontSize: "12px",
-                        lineHeight: "18px",
+                        fontSize: "0.75rem",
+                        lineHeight: "1.125rem",
                         color: "#000000",
                       }}
                       component="p"
@@ -257,12 +257,12 @@ export default function ImmunizationPending({ schedules = [] }) {
                     </Typography>
                     <Box
                       sx={{
-                        padding: "16px",
-                        borderRadius: "8px",
+                        padding: "1rem",
+                        borderRadius: "0.5rem",
                         backgroundColor: "#EEEEEE",
                         color: "#222222",
                         fontWeight: 400,
-                        fontSize: "12px",
+                        fontSize: "0.75rem",
                       }}
                     >
                       {schedule.comment || "No comment"}

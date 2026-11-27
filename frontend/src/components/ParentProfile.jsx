@@ -31,6 +31,7 @@ import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import ModalWindow from "./Modal";
+import { getErrorMessage, getValidationErrors } from "../helper/get-error-message";
 
 export default function ParentProfile({ onClose, open, parentId }) {
   const alert = useAlert();
@@ -92,19 +93,19 @@ export default function ParentProfile({ onClose, open, parentId }) {
         alert.showSuccess(data.message);
       },
       onError: (error) => {
-        if (error.message.includes("422")) {
+        if (getValidationErrors(error)) {
           setChildError((prev) => {
             return {
               ...prev,
-              validationError: error.response.data.errors,
+              validationError: getValidationErrors(error),
             };
           });
         }
-        alert.showError(error.response.data.message);
+        alert.showError(getErrorMessage(error));
         setChildError((prev) => {
           return {
             ...prev,
-            error: error.response.data.message,
+            error: getErrorMessage(error),
           };
         });
       },
@@ -134,19 +135,19 @@ export default function ParentProfile({ onClose, open, parentId }) {
           alert.showSuccess(data.message);
         },
         onError: (error) => {
-          if (error.message.includes("422")) {
+          if (getValidationErrors(error)) {
             setParentError((prev) => {
               return {
                 ...prev,
-                validationError: error.response.data.errors,
+                validationError: getValidationErrors(error),
               };
             });
           }
-          alert.showError(error.response.data.message);
+          alert.showError(getErrorMessage(error));
           setParentError((prev) => {
             return {
               ...prev,
-              error: error.response.data.message,
+              error: getErrorMessage(error),
             };
           });
         },
@@ -186,14 +187,14 @@ export default function ParentProfile({ onClose, open, parentId }) {
               textTransform: "none",
               display: "flex",
               flexDirection: "row",
-              gap: "5px",
-              marginBottom: "5px",
+              gap: "0.3125rem",
+              marginBottom: "0.3125rem",
             }}
             disableRipple
           >
             <ArrowBackSharpIcon sx={{ color: "#1F8E1F" }} />{" "}
             <Typography
-              sx={{ color: "#000000", fontSize: "16px", fontWeight: 400 }}
+              sx={{ color: "#000000", fontSize: "1rem", fontWeight: 400 }}
             >
               Back
             </Typography>
@@ -203,9 +204,9 @@ export default function ParentProfile({ onClose, open, parentId }) {
               width: "100%",
               color: "#000000",
               fontWeight: 600,
-              fontSize: "24px",
-              lineHeight: "36px",
-              marginBottom: "5px",
+              fontSize: "1.5rem",
+              lineHeight: "2.25rem",
+              marginBottom: "0.3125rem",
             }}
           >
             Onboard Parent
@@ -213,12 +214,12 @@ export default function ParentProfile({ onClose, open, parentId }) {
           <Grid sx={{ width: "100%" }}>
             <form onSubmit={handleSubmitParent}>
               {updateParentMutation.isError && parentError.validationError && (
-                <Box sx={{ marginBottom: "5px" }}>
+                <Box sx={{ marginBottom: "0.3125rem" }}>
                   <ul>
                     {parentError.validationError.map((valErr) => {
                       return (
                         <li
-                          style={{ color: "red", fontSize: "15px" }}
+                          style={{ color: "red", fontSize: "0.9375rem" }}
                           key={valErr.msg}
                         >
                           {valErr.msg}
@@ -228,161 +229,161 @@ export default function ParentProfile({ onClose, open, parentId }) {
                   </ul>
                 </Box>
               )}
-              <Box sx={{ marginBottom: "5px" }}>
+              <Box sx={{ marginBottom: "0.3125rem" }}>
                 <InputLabel
                   sx={{
                     color: "#222222",
                     fontWeight: 500,
-                    fontSize: "16px",
-                    lineHeight: "24px",
-                    marginBottom: "5px",
+                    fontSize: "1rem",
+                    lineHeight: "1.5rem",
+                    marginBottom: "0.3125rem",
                   }}
                 >
                   First Name
                 </InputLabel>
                 <TextField
                   placeholder="e.g Abubakar"
-                  sx={{ width: "600px", textTransform: "capitalize" }}
+                  sx={{ width: "37.5rem", textTransform: "capitalize" }}
                   name="firstName"
                   type="text"
                   defaultValue={getParentQuery.data?.data?.firstName ?? ""}
                 />
               </Box>
-              <Box sx={{ marginBottom: "5px" }}>
+              <Box sx={{ marginBottom: "0.3125rem" }}>
                 <InputLabel
                   sx={{
                     color: "#222222",
                     fontWeight: 500,
-                    fontSize: "16px",
-                    lineHeight: "24px",
-                    marginBottom: "5px",
+                    fontSize: "1rem",
+                    lineHeight: "1.5rem",
+                    marginBottom: "0.3125rem",
                   }}
                 >
                   Last Name
                 </InputLabel>
                 <TextField
                   placeholder="e.g Olatunji"
-                  sx={{ width: "600px", textTransform: "capitalize" }}
+                  sx={{ width: "37.5rem", textTransform: "capitalize" }}
                   name="lastName"
                   type="text"
                   defaultValue={getParentQuery.data?.data?.lastName ?? ""}
                 />
               </Box>
-              <Box sx={{ marginBottom: "5px" }}>
+              <Box sx={{ marginBottom: "0.3125rem" }}>
                 <InputLabel
                   sx={{
                     color: "#222222",
                     fontWeight: 500,
-                    fontSize: "16px",
-                    lineHeight: "24px",
-                    marginBottom: "5px",
+                    fontSize: "1rem",
+                    lineHeight: "1.5rem",
+                    marginBottom: "0.3125rem",
                   }}
                 >
                   Parental Role
                 </InputLabel>
                 <TextField
                   placeholder="e.g Mom"
-                  sx={{ width: "600px", textTransform: "capitalize" }}
+                  sx={{ width: "37.5rem", textTransform: "capitalize" }}
                   name="title"
                   type="text"
                   defaultValue={getParentQuery.data?.data?.title ?? ""}
                 />
               </Box>
 
-              <Box sx={{ marginBottom: "5px" }}>
+              <Box sx={{ marginBottom: "0.3125rem" }}>
                 <InputLabel
                   sx={{
                     color: "#222222",
                     fontWeight: 500,
-                    fontSize: "16px",
-                    lineHeight: "24px",
-                    marginBottom: "5px",
+                    fontSize: "1rem",
+                    lineHeight: "1.5rem",
+                    marginBottom: "0.3125rem",
                   }}
                 >
                   Date of Birth
                 </InputLabel>
                 <TextField
-                  sx={{ width: "600px" }}
+                  sx={{ width: "37.5rem" }}
                   name="dateOfBirth"
                   type="date"
                   defaultValue={getParentQuery.data?.data?.dateOfBirth ?? ""}
                 />
               </Box>
-              <Box sx={{ marginBottom: "5px" }}>
+              <Box sx={{ marginBottom: "0.3125rem" }}>
                 <InputLabel
                   sx={{
                     color: "#222222",
                     fontWeight: 500,
-                    fontSize: "16px",
-                    lineHeight: "24px",
-                    marginBottom: "5px",
+                    fontSize: "1rem",
+                    lineHeight: "1.5rem",
+                    marginBottom: "0.3125rem",
                   }}
                 >
                   Hospital Number
                 </InputLabel>
                 <TextField
                   placeholder="e.g JUN00222"
-                  sx={{ width: "600px", textTransform: "uppercase" }}
+                  sx={{ width: "37.5rem", textTransform: "uppercase" }}
                   name="hospitalNumber"
                   type="text"
                   defaultValue={getParentQuery.data?.data?.hospitalNumber ?? ""}
                 />
               </Box>
-              <Box sx={{ marginBottom: "5px" }}>
+              <Box sx={{ marginBottom: "0.3125rem" }}>
                 <InputLabel
                   sx={{
                     color: "#222222",
                     fontWeight: 500,
-                    fontSize: "16px",
-                    lineHeight: "24px",
-                    marginBottom: "5px",
+                    fontSize: "1rem",
+                    lineHeight: "1.5rem",
+                    marginBottom: "0.3125rem",
                   }}
                 >
                   NHIS
                 </InputLabel>
                 <TextField
                   placeholder="e.g 4567585"
-                  sx={{ width: "600px" }}
+                  sx={{ width: "37.5rem" }}
                   name="nhis"
                   type="text"
                   defaultValue={getParentQuery.data?.data?.nhis ?? ""}
                 />
               </Box>
-              <Box sx={{ marginBottom: "5px" }}>
+              <Box sx={{ marginBottom: "0.3125rem" }}>
                 <InputLabel
                   sx={{
                     color: "#222222",
                     fontWeight: 500,
-                    fontSize: "16px",
-                    lineHeight: "24px",
-                    marginBottom: "5px",
+                    fontSize: "1rem",
+                    lineHeight: "1.5rem",
+                    marginBottom: "0.3125rem",
                   }}
                 >
                   Email Address
                 </InputLabel>
                 <TextField
                   placeholder="e.g johndoe@gmail.com"
-                  sx={{ width: "600px" }}
+                  sx={{ width: "37.5rem" }}
                   type="email"
                   name="email"
                   defaultValue={getParentQuery.data?.data?.email ?? ""}
                 />
               </Box>
-              <Box sx={{ marginBottom: "5px" }}>
+              <Box sx={{ marginBottom: "0.3125rem" }}>
                 <InputLabel
                   sx={{
                     color: "#222222",
                     fontWeight: 500,
-                    fontSize: "16px",
-                    lineHeight: "24px",
-                    marginBottom: "5px",
+                    fontSize: "1rem",
+                    lineHeight: "1.5rem",
+                    marginBottom: "0.3125rem",
                   }}
                 >
                   Phone Number
                 </InputLabel>
                 <TextField
                   placeholder="e.g 08084972144"
-                  sx={{ width: "600px" }}
+                  sx={{ width: "37.5rem" }}
                   name="phoneNumber"
                   type="tel"
                   defaultValue={getParentQuery.data?.data?.phoneNumber ?? ""}
@@ -392,9 +393,9 @@ export default function ParentProfile({ onClose, open, parentId }) {
                 sx={{
                   width: "100%",
                   backgroundColor: "#1F8E1F",
-                  paddingY: "12px",
-                  paddingX: "36px",
-                  borderRadius: "80px",
+                  paddingY: "0.75rem",
+                  paddingX: "2.25rem",
+                  borderRadius: "5rem",
                   color: "#FFFFFF",
                   textTransform: "none",
                 }}
@@ -408,7 +409,7 @@ export default function ParentProfile({ onClose, open, parentId }) {
                       color: "green",
                       margin: "auto",
                     }}
-                    size={"30px"}
+                    size={"1.875rem"}
                   />
                 ) : (
                   "Update Parent"
@@ -423,7 +424,7 @@ export default function ParentProfile({ onClose, open, parentId }) {
                 width: "100%",
                 textAlign: "center",
                 alignItems: "center",
-                marginTop: "10px",
+                marginTop: "0.625rem",
                 justifyContent: "center",
                 gap: 1,
               }}
@@ -451,14 +452,14 @@ export default function ParentProfile({ onClose, open, parentId }) {
                 textTransform: "none",
                 display: "flex",
                 flexDirection: "row",
-                gap: "5px",
-                marginBottom: "5px",
+                gap: "0.3125rem",
+                marginBottom: "0.3125rem",
               }}
               disableRipple
             >
               <ArrowBackSharpIcon sx={{ color: "#1F8E1F" }} />{" "}
               <Typography
-                sx={{ color: "#000000", fontSize: "16px", fontWeight: 400 }}
+                sx={{ color: "#000000", fontSize: "1rem", fontWeight: 400 }}
               >
                 Back
               </Typography>
@@ -468,9 +469,9 @@ export default function ParentProfile({ onClose, open, parentId }) {
                 width: "100%",
                 color: "#000000",
                 fontWeight: 600,
-                fontSize: "24px",
-                lineHeight: "36px",
-                marginBottom: "5px",
+                fontSize: "1.5rem",
+                lineHeight: "2.25rem",
+                marginBottom: "0.3125rem",
               }}
             >
               Onboard a Child
@@ -478,12 +479,12 @@ export default function ParentProfile({ onClose, open, parentId }) {
             <Grid sx={{ width: "100%" }}>
               <form onSubmit={handleSubmitChild}>
                 {childMutation.isError && childError.validationError && (
-                  <Box sx={{ marginBottom: "5px" }}>
+                  <Box sx={{ marginBottom: "0.3125rem" }}>
                     <ul>
                       {childError.validationError.map((valErr) => {
                         return (
                           <li
-                            style={{ color: "red", fontSize: "15px" }}
+                            style={{ color: "red", fontSize: "0.9375rem" }}
                             key={valErr.msg}
                           >
                             {valErr.msg}
@@ -493,92 +494,92 @@ export default function ParentProfile({ onClose, open, parentId }) {
                     </ul>
                   </Box>
                 )}
-                <Box sx={{ marginBottom: "5px" }}>
+                <Box sx={{ marginBottom: "0.3125rem" }}>
                   <InputLabel
                     sx={{
                       color: "#222222",
                       fontWeight: 500,
-                      fontSize: "16px",
-                      lineHeight: "24px",
-                      marginBottom: "5px",
+                      fontSize: "1rem",
+                      lineHeight: "1.5rem",
+                      marginBottom: "0.3125rem",
                     }}
                   >
                     First Name
                   </InputLabel>
                   <TextField
                     placeholder="e.g Oreoluwa"
-                    sx={{ width: "600px", textTransform: "capitalize" }}
+                    sx={{ width: "37.5rem", textTransform: "capitalize" }}
                     name="firstname"
                     type="text"
                   />
                 </Box>
-                <Box sx={{ marginBottom: "5px" }}>
+                <Box sx={{ marginBottom: "0.3125rem" }}>
                   <InputLabel
                     sx={{
                       color: "#222222",
                       fontWeight: 500,
-                      fontSize: "16px",
-                      lineHeight: "24px",
-                      marginBottom: "5px",
+                      fontSize: "1rem",
+                      lineHeight: "1.5rem",
+                      marginBottom: "0.3125rem",
                     }}
                   >
                     Last Name
                   </InputLabel>
                   <TextField
                     placeholder="e.g Adepoju"
-                    sx={{ width: "600px", textTransform: "capitalize" }}
+                    sx={{ width: "37.5rem", textTransform: "capitalize" }}
                     name="lastname"
                     type="text"
                   />
                 </Box>
-                <Box sx={{ marginBottom: "5px" }}>
+                <Box sx={{ marginBottom: "0.3125rem" }}>
                   <InputLabel
                     sx={{
                       color: "#222222",
                       fontWeight: 500,
-                      fontSize: "16px",
-                      lineHeight: "24px",
-                      marginBottom: "5px",
+                      fontSize: "1rem",
+                      lineHeight: "1.5rem",
+                      marginBottom: "0.3125rem",
                     }}
                   >
                     Sex
                   </InputLabel>
                   <TextField
                     placeholder="e.g FEMALE"
-                    sx={{ width: "600px", textTransform: "uppercase" }}
+                    sx={{ width: "37.5rem", textTransform: "uppercase" }}
                     name="sex"
                     type="text"
                   />
                 </Box>
 
-                <Box sx={{ marginBottom: "5px" }}>
+                <Box sx={{ marginBottom: "0.3125rem" }}>
                   <InputLabel
                     sx={{
                       color: "#222222",
                       fontWeight: 500,
-                      fontSize: "16px",
-                      lineHeight: "24px",
-                      marginBottom: "5px",
+                      fontSize: "1rem",
+                      lineHeight: "1.5rem",
+                      marginBottom: "0.3125rem",
                     }}
                   >
                     Date of Birth
                   </InputLabel>
                   <TextField
                     //   placeholder=""
-                    sx={{ width: "600px" }}
+                    sx={{ width: "37.5rem" }}
                     name="dob"
                     type="date"
                   />
                 </Box>
 
-                <Box sx={{ marginBottom: "5px" }}>
+                <Box sx={{ marginBottom: "0.3125rem" }}>
                   <InputLabel
                     sx={{
                       color: "#222222",
                       fontWeight: 500,
-                      fontSize: "16px",
-                      lineHeight: "24px",
-                      marginBottom: "5px",
+                      fontSize: "1rem",
+                      lineHeight: "1.5rem",
+                      marginBottom: "0.3125rem",
                     }}
                   >
                     Weight at Birth{" "}
@@ -587,9 +588,9 @@ export default function ParentProfile({ onClose, open, parentId }) {
                       sx={{
                         color: "#222222",
                         fontWeight: 300,
-                        fontSize: "12px",
+                        fontSize: "0.75rem",
 
-                        //   lineHeight: "24px",
+                        //   lineHeight: "1.5rem",
                       }}
                     >
                       (write in kilograms)
@@ -597,7 +598,7 @@ export default function ParentProfile({ onClose, open, parentId }) {
                   </InputLabel>
                   <TextField
                     placeholder="e.g 3.5"
-                    sx={{ width: "600px" }}
+                    sx={{ width: "37.5rem" }}
                     name="weightAtBirth"
                     type="text"
                   />
@@ -606,9 +607,9 @@ export default function ParentProfile({ onClose, open, parentId }) {
                   sx={{
                     width: "100%",
                     backgroundColor: "#1F8E1F",
-                    paddingY: "12px",
-                    paddingX: "36px",
-                    borderRadius: "80px",
+                    paddingY: "0.75rem",
+                    paddingX: "2.25rem",
+                    borderRadius: "5rem",
                     color: "#FFFFFF",
                     textTransform: "none",
                   }}
@@ -616,7 +617,7 @@ export default function ParentProfile({ onClose, open, parentId }) {
                 >
                   {childMutation.isPending ? (
                     <CircularProgress
-                      size={"20px"}
+                      size={"1.25rem"}
                       sx={{ margin: "auto", color: "green" }}
                     />
                   ) : (
@@ -632,7 +633,7 @@ export default function ParentProfile({ onClose, open, parentId }) {
                   width: "100%",
                   textAlign: "center",
                   alignItems: "center",
-                  marginTop: "10px",
+                  marginTop: "0.625rem",
                   justifyContent: "center",
                   gap: 1,
                 }}
@@ -646,9 +647,9 @@ export default function ParentProfile({ onClose, open, parentId }) {
 
         <Grid
           sx={{
-            borderRadius: "20px",
+            borderRadius: "1.25rem",
             backgroundColor: "#FFFFFF",
-            width: "1000px",
+            width: "62.5rem",
           }}
         >
           <Box
@@ -657,7 +658,7 @@ export default function ParentProfile({ onClose, open, parentId }) {
               display: "flex",
               flexDirection: "row",
               justifyContent: "space-between",
-              marginBottom: "30px",
+              marginBottom: "1.875rem",
             }}
           >
             <CancelRoundedIcon
@@ -665,14 +666,14 @@ export default function ParentProfile({ onClose, open, parentId }) {
               onClick={onClose}
               sx={{
                 color: "#1F8E1F",
-                width: "30px",
-                height: "30px",
+                width: "1.875rem",
+                height: "1.875rem",
                 "&:hover": {
-                  borderRadius: "900px",
+                  borderRadius: "56.25rem",
                   transform: "scale(1.3)",
                   transition: "0.1s ease",
-                  // width: "40px",
-                  // height: "40px",
+                  // width: "2.5rem",
+                  // height: "2.5rem",
                   cursor: "pointer",
                 },
               }}
@@ -680,14 +681,14 @@ export default function ParentProfile({ onClose, open, parentId }) {
             <EditRoundedIcon
               sx={{
                 color: "#1F8E1F",
-                width: "30px",
-                height: "30px",
+                width: "1.875rem",
+                height: "1.875rem",
                 "&:hover": {
-                  borderRadius: "900px",
+                  borderRadius: "56.25rem",
                   transform: "scale(1.3)",
                   transition: "0.1s ease",
-                  // width: "40px",
-                  // height: "40px",
+                  // width: "2.5rem",
+                  // height: "2.5rem",
                   cursor: "pointer",
                 },
               }}
@@ -696,7 +697,7 @@ export default function ParentProfile({ onClose, open, parentId }) {
           </Box>
           {getParentQuery.isPending ? (
             <CircularProgress
-              sx={{ color: "green", size: "50px", margin: "auto" }}
+              sx={{ color: "green", size: "3.125rem", margin: "auto" }}
             />
           ) : (
             <Grid container spacing={3} sx={{ width: "80%" }}>
@@ -709,21 +710,21 @@ export default function ParentProfile({ onClose, open, parentId }) {
                   flexDirection: "column",
                   paddingY: "5%",
                   paddingX: "7%",
-                  borderRadius: "20px",
-                  marginBottom: "20px",
+                  borderRadius: "1.25rem",
+                  marginBottom: "1.25rem",
                 }}
               >
                 <Grid sx={{ margin: "auto", textAlign: "center" }}>
                   {/* <Avatar
                     src={avatar}
-                    sx={{ height: "50px", width: "50px", margin: "auto" }}
+                    sx={{ height: "3.125rem", width: "3.125rem", margin: "auto" }}
                   /> */}
                   <Typography
                     sx={{
                       color: "#1F8E1F",
                       fontWeight: 600,
-                      fontSize: "16px",
-                      lineHeight: "24px",
+                      fontSize: "1rem",
+                      lineHeight: "1.5rem",
                     }}
                   >
                     {getParentQuery.data.data.firstName}{" "}
@@ -733,8 +734,8 @@ export default function ParentProfile({ onClose, open, parentId }) {
                     sx={{
                       color: "#000000",
                       fontWeight: 400,
-                      fontSize: "16px",
-                      lineHeight: "24px",
+                      fontSize: "1rem",
+                      lineHeight: "1.5rem",
                       opacity: 0.4,
                     }}
                   >
@@ -754,16 +755,16 @@ export default function ParentProfile({ onClose, open, parentId }) {
                       sx={{
                         color: "#1F8E1F",
                         backgroundColor: "#FFFFFF80",
-                        padding: "8px",
-                        borderRadius: "900px",
-                        height: "40px",
-                        width: "40px",
+                        padding: "0.5rem",
+                        borderRadius: "56.25rem",
+                        height: "2.5rem",
+                        width: "2.5rem",
                       }}
                     />{" "}
                     <Typography
                       sx={{
                         fontWeight: 400,
-                        fontSize: "16px",
+                        fontSize: "1rem",
                         color: "#222222CC",
                       }}
                     >
@@ -778,16 +779,16 @@ export default function ParentProfile({ onClose, open, parentId }) {
                       sx={{
                         color: "#1F8E1F",
                         backgroundColor: "#FFFFFF80",
-                        padding: "8px",
-                        borderRadius: "900px",
-                        height: "40px",
-                        width: "40px",
+                        padding: "0.5rem",
+                        borderRadius: "56.25rem",
+                        height: "2.5rem",
+                        width: "2.5rem",
                       }}
                     />{" "}
                     <Typography
                       sx={{
                         fontWeight: 400,
-                        fontSize: "16px",
+                        fontSize: "1rem",
                         color: "#222222CC",
                       }}
                     >
@@ -802,16 +803,16 @@ export default function ParentProfile({ onClose, open, parentId }) {
                       sx={{
                         color: "#1F8E1F",
                         backgroundColor: "#FFFFFF80",
-                        padding: "8px",
-                        borderRadius: "900px",
-                        height: "40px",
-                        width: "40px",
+                        padding: "0.5rem",
+                        borderRadius: "56.25rem",
+                        height: "2.5rem",
+                        width: "2.5rem",
                       }}
                     />{" "}
                     <Typography
                       sx={{
                         fontWeight: 400,
-                        fontSize: "16px",
+                        fontSize: "1rem",
                         color: "#222222CC",
                       }}
                     >
@@ -825,16 +826,16 @@ export default function ParentProfile({ onClose, open, parentId }) {
                       sx={{
                         color: "#1F8E1F",
                         backgroundColor: "#FFFFFF80",
-                        padding: "8px",
-                        borderRadius: "900px",
-                        height: "40px",
-                        width: "40px",
+                        padding: "0.5rem",
+                        borderRadius: "56.25rem",
+                        height: "2.5rem",
+                        width: "2.5rem",
                       }}
                     />{" "}
                     <Typography
                       sx={{
                         fontWeight: 400,
-                        fontSize: "16px",
+                        fontSize: "1rem",
                         color: "#222222CC",
                       }}
                     >
@@ -848,20 +849,20 @@ export default function ParentProfile({ onClose, open, parentId }) {
               <Grid
                 sx={{
                   backgroundColor: "#FFFFFF",
-                  borderRadius: "20px",
+                  borderRadius: "1.25rem",
                   paddingY: "4%",
                   paddingX: "2%",
                   display: "flex",
                   flexDirection: "column",
                   gap: 2,
                   alignItems: "center",
-                  maxHeight: "400px",
+                  maxHeight: "25rem",
                   justifyContent: "center",
                 }}
                 size={6}
               >
                 <Typography
-                  sx={{ fontWeight: 600, fontSize: "24px", lineHeight: "36px" }}
+                  sx={{ fontWeight: 600, fontSize: "1.5rem", lineHeight: "2.25rem" }}
                 >
                   Other Children
                 </Typography>
@@ -887,8 +888,8 @@ export default function ParentProfile({ onClose, open, parentId }) {
                           to={`/children/${child._id}`}
                           style={{
                             color: "#000000",
-                            fontWeight: "400px",
-                            fontSize: "16px",
+                            fontWeight: 400,
+                            fontSize: "1rem",
                             textDecoration: "none",
                             zIndex: 4,
                           }}
@@ -901,12 +902,12 @@ export default function ParentProfile({ onClose, open, parentId }) {
                 </Grid>
                 <AddCircleRoundedIcon
                   sx={{
-                    width: "35px",
-                    height: "35px",
+                    width: "2.1875rem",
+                    height: "2.1875rem",
                     color: "#1F8E1F",
                     marginRight: "3%",
                     "&:hover": {
-                      borderRadius: "900px",
+                      borderRadius: "56.25rem",
                       transform: "scale(1.1)",
                       transition: "0.1s ease",
                       cursor: "pointer",
