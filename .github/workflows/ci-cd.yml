@@ -1,0 +1,128 @@
+# CI on every pull request into v2; CI + deploy on every push to v2.
+#
+# Deploys need these repository secrets (Settings > Secrets and variables > Actions).
+# Each deploy step is skipped with a notice until its secrets exist.
+#   RENDER_DEPLOY_HOOK_URL   Render > backend service > Settings > Deploy Hook
+#   VERCEL_TOKEN             Vercel > Account Settings > Tokens
+#   VERCEL_ORG_ID            Vercel > Team (or account) Settings > General > ID
+#   VERCEL_PROJECT_ID        Vercel > Project > Settings > General > Project ID
+name: CI/CD
+
+on:
+  pull_request:
+    branches: [v2]
+  push:
+    branches: [v2]
+  workflow_dispatch:
+
+# One run per branch: a newer push cancels an older run that is still going,
+# except on v2 itself, where a deploy must never be cut off halfway.
+concurrency:
+  group: ci-cd-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/v2' }}
+
+permissions:
+  contents: read
+
+env:
+  NODE_VERSION: "24"
+
+jobs:
+  frontend:
+    name: Frontend · lint & build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run build
+        env:
+          # Only proves the bundle builds; Vercel builds with its own env vars.
+          VITE_API_URL: https://example.invalid/api
+      - uses: actions/upload-artifact@v7
+        with:
+          name: frontend-dist
+          path: frontend/dist
+          retention-days: 7
+
+  backend:
+    name: Backend · API tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    services:
+      mongo:
+        image: mongo:7
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "mongosh --quiet --eval 'db.runCommand({ ping: 1 })'"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+      - run: npm ci
+      - run: npm test
+        env:
+          MONGODB_URI: mongodb://127.0.0.1:27017/vaccine_test
+
+  deploy-backend:
+    name: Deploy backend · Render
+    needs: [frontend, backend]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/v2'
+    runs-on: ubuntu-latest
+    environment: production
+    env:
+      RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+    steps:
+      - name: Trigger Render deploy
+        if: env.RENDER_DEPLOY_HOOK_URL != ''
+        run: curl --fail --silent --show-error -X POST "$RENDER_DEPLOY_HOOK_URL" > /dev/null
+      - name: Skip (no deploy hook configured)
+        if: env.RENDER_DEPLOY_HOOK_URL == ''
+        run: echo "::notice::RENDER_DEPLOY_HOOK_URL is not set, so the backend was not deployed from CI."
+
+  deploy-frontend:
+    name: Deploy frontend · Vercel
+    needs: [frontend, backend]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/v2'
+    runs-on: ubuntu-latest
+    environment: production
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+    steps:
+      - name: Skip (Vercel secrets not configured)
+        if: env.VERCEL_TOKEN == '' || env.VERCEL_ORG_ID == '' || env.VERCEL_PROJECT_ID == ''
+        run: echo "::notice::Vercel secrets are not set, so the frontend was not deployed from CI."
+      - uses: actions/checkout@v7
+        if: env.VERCEL_TOKEN != '' && env.VERCEL_ORG_ID != '' && env.VERCEL_PROJECT_ID != ''
+      - uses: actions/setup-node@v7
+        if: env.VERCEL_TOKEN != '' && env.VERCEL_ORG_ID != '' && env.VERCEL_PROJECT_ID != ''
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      # Builds with the project's settings and production env vars (VITE_API_URL)
+      # pulled from Vercel, then uploads that exact build.
+      - name: Build and deploy with the Vercel CLI
+        if: env.VERCEL_TOKEN != '' && env.VERCEL_ORG_ID != '' && env.VERCEL_PROJECT_ID != ''
+        run: |
+          npm install --global vercel@latest
+          vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
+          vercel build --prod --token="$VERCEL_TOKEN"
+          vercel deploy --prebuilt --prod --token="$VERCEL_TOKEN"
